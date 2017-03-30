@@ -17,14 +17,17 @@ class Value extends React.Component {
       WebkitUserSelect: "none",
       MozUserSelect: "none"
     }
-	
     var text = <text
                  style={textStyle}
                  refs="text"
                  x={this.props.pos.x}
                  y={this.props.pos.y}
                  ref="text"
-                 >{this.props.symbol}</text>
+                 >{this.props.symbol}
+        </text>
+    var overlay = <g>
+
+        </g>
     
     
     return text
