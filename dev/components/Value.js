@@ -1,12 +1,26 @@
 'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Slider = require('./Slider');
+
+var _Slider2 = _interopRequireDefault(_Slider);
 
 var Value = (function (_React$Component) {
   _inherits(Value, _React$Component);
@@ -15,15 +29,13 @@ var Value = (function (_React$Component) {
     _classCallCheck(this, Value);
 
     _get(Object.getPrototypeOf(Value.prototype), 'constructor', this).call(this, props);
-    //this.handleClick = this.handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   _createClass(Value, [{
     key: 'handleClick',
     value: function handleClick(e) {
-      var bbox = this.refs.text.getDOMNode().getBBox();
-      console.log('bbox', bbox);
-      this.props.select(bbox);
+      console.log('clicked');
     }
   }, {
     key: 'render',
@@ -36,22 +48,42 @@ var Value = (function (_React$Component) {
         WebkitUserSelect: "none",
         MozUserSelect: "none"
       };
-      var text = React.createElement(
+      var text = _react2['default'].createElement(
         'text',
         {
           style: textStyle,
-          refs: 'text',
           x: this.props.pos.x,
           y: this.props.pos.y,
-          ref: 'text'
+          ref: 'text',
+          onClick: this.handleClick
         },
         this.props.symbol
       );
-      var overlay = React.createElement('g', null);
+      var overlay = _react2['default'].createElement(
+        'g',
+        null,
+        _react2['default'].createElement(_Slider2['default'], {
+          scale: this.props.quantity.scale,
+          value: this.props.quantity.value,
+          pos: 20,
+          valueChange: this.props.valueChange })
+      );
 
-      return text;
+      if (this.props.selected) {
+        return _react2['default'].createElement(
+          'g',
+          null,
+          text,
+          overlay
+        );
+      } else {
+        return text;
+      }
     }
   }]);
 
   return Value;
-})(React.Component);
+})(_react2['default'].Component);
+
+exports['default'] = Value;
+module.exports = exports['default'];

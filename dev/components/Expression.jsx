@@ -1,3 +1,4 @@
+import React from "react";
 class Expression extends React.Component{//should this be textbox??
   constructor(props){
     super(props)
@@ -29,3 +30,4 @@ class Expression extends React.Component{//should this be textbox??
     )
   }
 }
+export default Expression;

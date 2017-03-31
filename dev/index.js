@@ -30,6 +30,18 @@ var _componentsSlider = require('./components/Slider');
 
 var _componentsSlider2 = _interopRequireDefault(_componentsSlider);
 
+var _componentsSpring = require('./components/Spring');
+
+var _componentsSpring2 = _interopRequireDefault(_componentsSpring);
+
+var _componentsValue = require('./components/Value');
+
+var _componentsValue2 = _interopRequireDefault(_componentsValue);
+
+var _componentsQuantity = require('./components/Quantity');
+
+var _componentsQuantity2 = _interopRequireDefault(_componentsQuantity);
+
 var App = (function (_React$Component) {
    _inherits(App, _React$Component);
 
@@ -49,14 +61,149 @@ var App = (function (_React$Component) {
             app.setState({ t: value.value });
          };
          return _react2["default"].createElement(
-            "svg",
-            { height: 400, width: 400 },
-            _react2["default"].createElement(_componentsAxis2["default"], { scale: scale, pos: 100, showBar: true }),
-            _react2["default"].createElement(_componentsSlider2["default"], {
-               scale: scale,
-               value: this.state.t,
-               pos: 20,
-               valueChange: valueChange })
+            "div",
+            null,
+            _react2["default"].createElement(
+               "h2",
+               null,
+               "Axis"
+            ),
+            _react2["default"].createElement(
+               "svg",
+               { height: 80, width: 400 },
+               _react2["default"].createElement(_componentsAxis2["default"], { scale: scale, pos: 20, showBar: true })
+            ),
+            _react2["default"].createElement(
+               "h2",
+               null,
+               "Slider"
+            ),
+            _react2["default"].createElement(
+               "svg",
+               { height: 80, width: 400 },
+               _react2["default"].createElement(_componentsSlider2["default"], {
+                  scale: scale,
+                  value: this.state.t,
+                  pos: 20,
+                  valueChange: valueChange })
+            ),
+            _react2["default"].createElement(
+               "div",
+               null,
+               _react2["default"].createElement(
+                  "h2",
+                  null,
+                  "Spring"
+               ),
+               _react2["default"].createElement(
+                  "div",
+                  null,
+                  _react2["default"].createElement(
+                     "b",
+                     null,
+                     "Params:"
+                  ),
+                  _react2["default"].createElement(
+                     "ul",
+                     null,
+                     _react2["default"].createElement(
+                        "li",
+                        null,
+                        "p1: CoordinatePoint"
+                     ),
+                     _react2["default"].createElement(
+                        "li",
+                        null,
+                        "p2: CoordinatePoint"
+                     ),
+                     _react2["default"].createElement(
+                        "li",
+                        null,
+                        "k: Quantity"
+                     )
+                  ),
+                  _react2["default"].createElement(
+                     "b",
+                     null,
+                     "Callbacks:"
+                  ),
+                  _react2["default"].createElement("ul", null),
+                  _react2["default"].createElement(
+                     "b",
+                     null,
+                     "Children:"
+                  ),
+                  _react2["default"].createElement("ul", null)
+               ),
+               _react2["default"].createElement(
+                  "svg",
+                  { height: 80, width: 400 },
+                  _react2["default"].createElement(_componentsSpring2["default"], {
+                     p1: { x: 30, y: 30 },
+                     p2: { x: 150, y: 30 },
+                     k: 20
+                  })
+               )
+            ),
+            _react2["default"].createElement(
+               "div",
+               null,
+               _react2["default"].createElement(
+                  "h2",
+                  null,
+                  "Value"
+               ),
+               _react2["default"].createElement(
+                  "div",
+                  null,
+                  _react2["default"].createElement(
+                     "b",
+                     null,
+                     "Params:"
+                  ),
+                  _react2["default"].createElement(
+                     "ul",
+                     null,
+                     _react2["default"].createElement(
+                        "li",
+                        null,
+                        "pos: CoordinatePoint"
+                     ),
+                     _react2["default"].createElement(
+                        "li",
+                        null,
+                        "symbol: string..change to arbitrary jsx?"
+                     )
+                  ),
+                  _react2["default"].createElement(
+                     "b",
+                     null,
+                     "Callbacks:"
+                  ),
+                  _react2["default"].createElement(
+                     "ul",
+                     null,
+                     "updateValue(Quantity)"
+                  ),
+                  _react2["default"].createElement(
+                     "b",
+                     null,
+                     "Children:"
+                  ),
+                  _react2["default"].createElement("ul", null)
+               ),
+               _react2["default"].createElement(
+                  "svg",
+                  { height: 80, width: 400 },
+                  _react2["default"].createElement(_componentsValue2["default"], {
+                     pos: { x: 30, y: 30 },
+                     symbol: "value",
+                     quantity: new _componentsQuantity2["default"](),
+                     valueChange: valueChange,
+                     selected: true
+                  })
+               )
+            )
          );
       }
    }]);

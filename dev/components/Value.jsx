@@ -1,12 +1,12 @@
+import React from "react";
+import Slider from './Slider'
 class Value extends React.Component {
   constructor(props){
     super(props)
-    //this.handleClick = this.handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
   handleClick(e){
-    var bbox = this.refs.text.getDOMNode().getBBox()
-    console.log('bbox', bbox)
-    this.props.select(bbox)
+	  console.log('clicked')
   }
   render(){
     var textStyle = {
@@ -19,17 +19,29 @@ class Value extends React.Component {
     }
     var text = <text
                  style={textStyle}
-                 refs="text"
                  x={this.props.pos.x}
                  y={this.props.pos.y}
                  ref="text"
+				 onClick={this.handleClick}
                  >{this.props.symbol}
         </text>
     var overlay = <g>
-
+          <Slider
+			  scale={this.props.quantity.scale}
+			  value={this.props.quantity.value}
+			  pos={20}
+			  valueChange={this.props.valueChange}/>
         </g>
     
-    
-    return text
+    if (this.props.selected){
+		return <g>
+			{text}
+			{overlay}
+		</g>
+	} else {
+		return text
+	}
+
   }
 }
+export default Value;
