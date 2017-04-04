@@ -14,7 +14,7 @@ class App extends React.Component {
 		this.state = {t:30}
 	}
 	render(){
-		var scale = new Scale({min:-10, max:500, tMin:100, tMax:300})
+		var scale = new Scale({min:-100, max:500, tMin:100, tMax:300})
 		var app = this
 		var valueChange = function(value){
 			app.setState({t:value.value})

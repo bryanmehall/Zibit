@@ -1,22 +1,31 @@
 import React from 'react';
 
+
 class Axis extends React.Component {
 	
 	render(){
 		var axis = this
 		var scale = this.props.scale
-		var width = scale.tMax-scale.tMin
-		var showBar = this.props.showBar || true
+		var pos = this.props.pos//position at axis min in px orthogonal to axis
+		var showBar = this.props.showBar !== false; //true to show axis bar
+		var vertical = this.props.vertical
 		var tickValues = tickValues(scale)
 		var ticks = tickValues.map(drawTick)
+
 		function drawTick(value,i){
 			var loc = scale.transform(value)
+			var textPos = axis.props.pos
+			var textOffs = 18
+			var x = vertical ? textPos-textOffs : loc;
+			var y = vertical ? loc : textPos+textOffs;
+
 			return (
 				<text 
 					key={i} 
-					x={loc} 
-					y={axis.props.pos+25}
+					x={x}
+					y={y}
 					textAnchor='middle'
+					alignmentBaseline='middle'
 					>{value}</text>)
 		}
 				//define base line
@@ -26,8 +35,14 @@ class Axis extends React.Component {
 			"strokeLinecap": "round"
 		}
 		var baseline;
-		if (this.props.vertical){
-			baseline = <line/>
+		if (vertical){
+			baseline = <line
+				style = {lineStyle}
+				x1={this.props.pos}
+				x2={this.props.pos}
+				y1={scale.tMin}
+				y2={scale.tMax}
+			/>
 		} else {
 			baseline = <line 
 				style = {lineStyle}
@@ -37,8 +52,9 @@ class Axis extends React.Component {
 				y2={this.props.pos}
 			/>
 		}
-		if (this.props.showBar)	{
+		if (showBar) {
 			return (
+
 				<g>
 					{baseline}
 					{ticks}

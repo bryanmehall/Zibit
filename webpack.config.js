@@ -5,10 +5,13 @@ var DEV = path.resolve(__dirname, "dev");
 var OUTPUT = path.resolve(__dirname, "output");
  
 var config = {
-  entry: DEV + "/index.jsx",
+  entry: {
+	  components: DEV + "/index.jsx",
+	  smd: DEV + "/smd.jsx"
+  },
   output: {
     path: OUTPUT,
-    filename: "myCode.js"
+    filename: "[name]-bundle.js"
   },
 	devtool: 'source-map',
   module: {

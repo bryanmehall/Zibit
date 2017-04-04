@@ -22,6 +22,10 @@ var _Axis = require('./Axis');
 
 var _Axis2 = _interopRequireDefault(_Axis);
 
+var _Scale = require('./Scale');
+
+var _Scale2 = _interopRequireDefault(_Scale);
+
 var Slider = (function (_React$Component) {
    _inherits(Slider, _React$Component);
 
@@ -49,7 +53,7 @@ var Slider = (function (_React$Component) {
             e.preventDefault();
             document.addEventListener('mouseup', mouseUp);
             var newValue = clamp(slider.scale.invert(e.clientX) - mouseError, slider.scale.min, slider.scale.max);
-            slider.props.valueChange({ value: newValue });
+            slider.props.valueChange(newValue);
          };
          var mouseUp = function mouseUp(e) {
             document.removeEventListener('mousemove', mouseMove);
@@ -119,8 +123,5 @@ var Slider = (function (_React$Component) {
    return Slider;
 })(_react2['default'].Component);
 
-Slider.propTypes = {
-   valueChange: _react2['default'].PropTypes.func
-};
 exports['default'] = Slider;
 module.exports = exports['default'];

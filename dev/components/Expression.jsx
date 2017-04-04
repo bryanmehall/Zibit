@@ -11,13 +11,13 @@ class Expression extends React.Component{//should this be textbox??
     var x = this.props.pos.x
     this.widths = []
     var newChildren = []
-    children.forEach(function(child){
+    children.forEach(function(child,i){
       var dummyElement = document.createElementNS( 'http://www.w3.org/2000/svg','text')
       dummyElement.textContent = child.props.symbol
       dummyElement.style = "font-style: italic; font-family:'MathJax_Main,Times,serif'; font-size:1.6em;"
-      document.getElementById('app').appendChild(dummyElement)
+      document.getElementById('hiddenSvg').appendChild(dummyElement)
       var width = dummyElement.getBBox().width
-      newChildren.push(React.cloneElement(child, { pos:{x:x,y:20}}))
+      newChildren.push(React.cloneElement(child, { key:i,pos:{x:x,y:25}}))
       x+=width
     })
 

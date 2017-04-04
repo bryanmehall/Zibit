@@ -32,19 +32,27 @@ var Axis = (function (_React$Component) {
       value: function render() {
          var axis = this;
          var scale = this.props.scale;
-         var width = scale.tMax - scale.tMin;
-         var showBar = this.props.showBar || true;
+         var pos = this.props.pos; //position at axis min in px orthogonal to axis
+         var showBar = this.props.showBar !== false; //true to show axis bar
+         var vertical = this.props.vertical;
          var tickValues = tickValues(scale);
          var ticks = tickValues.map(drawTick);
+
          function drawTick(value, i) {
             var loc = scale.transform(value);
+            var textPos = axis.props.pos;
+            var textOffs = 18;
+            var x = vertical ? textPos - textOffs : loc;
+            var y = vertical ? loc : textPos + textOffs;
+
             return _react2['default'].createElement(
                'text',
                {
                   key: i,
-                  x: loc,
-                  y: axis.props.pos + 25,
-                  textAnchor: 'middle'
+                  x: x,
+                  y: y,
+                  textAnchor: 'middle',
+                  alignmentBaseline: 'middle'
                },
                value
             );
@@ -56,8 +64,14 @@ var Axis = (function (_React$Component) {
             "strokeLinecap": "round"
          };
          var baseline;
-         if (this.props.vertical) {
-            baseline = _react2['default'].createElement('line', null);
+         if (vertical) {
+            baseline = _react2['default'].createElement('line', {
+               style: lineStyle,
+               x1: this.props.pos,
+               x2: this.props.pos,
+               y1: scale.tMin,
+               y2: scale.tMax
+            });
          } else {
             baseline = _react2['default'].createElement('line', {
                style: lineStyle,
@@ -67,7 +81,7 @@ var Axis = (function (_React$Component) {
                y2: this.props.pos
             });
          }
-         if (this.props.showBar) {
+         if (showBar) {
             return _react2['default'].createElement(
                'g',
                null,

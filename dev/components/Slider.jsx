@@ -1,5 +1,6 @@
 import React from 'react';
-import Axis from './Axis'
+import Axis from './Axis';
+import Scale from './Scale';
 
 class Slider extends React.Component {
 	//properties
@@ -21,7 +22,7 @@ class Slider extends React.Component {
 			e.preventDefault();
 			document.addEventListener('mouseup', mouseUp)
 			var newValue = clamp(slider.scale.invert(e.clientX)-mouseError, slider.scale.min, slider.scale.max)
-			slider.props.valueChange({value:newValue})
+			slider.props.valueChange(newValue)
 		}
 		var mouseUp = function(e){
 			document.removeEventListener('mousemove', mouseMove)
@@ -60,7 +61,7 @@ class Slider extends React.Component {
 			<g>
 				<line 
 					style={highlightStyle} 
-					x1={scale.tMin} 
+					x1={scale.tMin}
 					x2={scale.tMax} 
 					y1={pos} 
 					y2={pos}
@@ -86,7 +87,5 @@ class Slider extends React.Component {
 	}
 }
 
-Slider.propTypes = {
-  valueChange: React.PropTypes.func,
-};
+
 export default Slider;
