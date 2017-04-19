@@ -1,6 +1,13 @@
 import React from "react"
-import Scale from './Scale'
+import {connect} from "react-redux"
+import { bindActionCreators } from 'redux';
+import * as QuantityActions from '../ducks/quantity/actions';
+import {getValue, getQuantityData} from '../ducks/quantity/selectors'
+import {CoordSys, Scale} from './Scale'
 import Axis from './Axis'
+import Abstraction from './Abstraction'
+
+
 
 class Plot extends React.Component {
   render(){
@@ -23,13 +30,45 @@ class Plot extends React.Component {
 		  tMin:pos.y,
 		  tMax:pos.y-height
 	  })
-	  var coordSys =
+	  var coordSys = new CoordSys(xScale, yScale)
     return (
 		<g>
-		<Axis scale={xScale} pos={pos.y}></Axis>
-		<Axis scale={yScale} pos={pos.x} vertical={true}></Axis>
+			<defs>
+    			<clipPath id="plotId">
+      				<rect x={pos.x} y={pos.y-height} width={width} height={height} />
+    				</clipPath>
+  			</defs>
+			<Abstraction
+				indVar="t"
+				xVar="t"
+				yVar="x"
+				coordSys={coordSys}
+				clipPath="plotId"
+			></Abstraction>
+
+			<Axis scale={xScale} pos={pos.y}></Axis>
+			<Axis scale={yScale} pos={pos.x} vertical={true}></Axis>
 		</g>
 	)
   }
 }
-export default Plot;
+
+function mapStateToProps(state, props) {
+	return {
+		indQuantity:getQuantityData(state, props.xVar),
+		xQuantity:getQuantityData(state, props.xVar),
+		yQuantity:getQuantityData(state, props.yVar)
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(QuantityActions, dispatch)
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Plot);
+

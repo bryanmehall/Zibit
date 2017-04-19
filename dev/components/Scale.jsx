@@ -1,4 +1,4 @@
-var Scale = function(params){
+export const Scale = function(params){
 	var params = params || {}
 	var scale = this
 	this.min = params.min || 0
@@ -19,4 +19,12 @@ var Scale = function(params){
 	}
 }
 
-export default Scale;
+export const CoordSys = function(xScale, yScale){
+
+	this.transform = function(point) {
+		return {
+			x:xScale.transform(point.x),
+			y:yScale.transform(point.y)
+		}
+	}
+}

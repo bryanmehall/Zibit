@@ -24,91 +24,44 @@ var _reactRedux = require("react-redux");
 
 var _redux = require('redux');
 
+var _Path = require("./Path");
+
+var _Path2 = _interopRequireDefault(_Path);
+
 var _ducksQuantityActions = require('../ducks/quantity/actions');
 
 var QuantityActions = _interopRequireWildcard(_ducksQuantityActions);
 
 var _ducksQuantitySelectors = require('../ducks/quantity/selectors');
 
-var _Scale = require('./Scale');
+var Abstraction = (function (_React$Component) {
+   _inherits(Abstraction, _React$Component);
 
-var _Axis = require('./Axis');
+   function Abstraction() {
+      _classCallCheck(this, Abstraction);
 
-var _Axis2 = _interopRequireDefault(_Axis);
-
-var _Abstraction = require('./Abstraction');
-
-var _Abstraction2 = _interopRequireDefault(_Abstraction);
-
-var Plot = (function (_React$Component) {
-   _inherits(Plot, _React$Component);
-
-   function Plot() {
-      _classCallCheck(this, Plot);
-
-      _get(Object.getPrototypeOf(Plot.prototype), "constructor", this).apply(this, arguments);
+      _get(Object.getPrototypeOf(Abstraction.prototype), "constructor", this).apply(this, arguments);
    }
 
-   _createClass(Plot, [{
+   _createClass(Abstraction, [{
       key: "render",
       value: function render() {
-         var width = this.props.width,
-             //width in px from axis min
-         height = this.props.height,
-             //height in px from axis min
-         pos = this.props.pos,
-             xQuantity = this.props.xQuantity,
-             //state object of x quantity
-         yQuantity = this.props.yQuantity,
-             //state object of y quantity
-         indQuantity = this.props.indQuantity || xQuantity; //set independent variable
 
-         var xScale = new _Scale.Scale({
-            min: xQuantity.min,
-            max: xQuantity.max,
-            tMin: pos.x,
-            tMax: pos.x + width
+         var points = this.props.points;
+         return _react2["default"].createElement(_Path2["default"], {
+            points: points,
+            coordSys: this.props.coordSys,
+            clipPath: this.props.clipPath
          });
-         var yScale = new _Scale.Scale({
-            min: yQuantity.min,
-            max: yQuantity.max,
-            tMin: pos.y,
-            tMax: pos.y - height
-         });
-         var coordSys = new _Scale.CoordSys(xScale, yScale);
-         return _react2["default"].createElement(
-            "g",
-            null,
-            _react2["default"].createElement(
-               "defs",
-               null,
-               _react2["default"].createElement(
-                  "clipPath",
-                  { id: "plotId" },
-                  _react2["default"].createElement("rect", { x: pos.x, y: pos.y - height, width: width, height: height })
-               )
-            ),
-            _react2["default"].createElement(_Abstraction2["default"], {
-               indVar: "t",
-               xVar: "t",
-               yVar: "x",
-               coordSys: coordSys,
-               clipPath: "plotId"
-            }),
-            _react2["default"].createElement(_Axis2["default"], { scale: xScale, pos: pos.y }),
-            _react2["default"].createElement(_Axis2["default"], { scale: yScale, pos: pos.x, vertical: true })
-         );
       }
    }]);
 
-   return Plot;
+   return Abstraction;
 })(_react2["default"].Component);
 
 function mapStateToProps(state, props) {
    return {
-      indQuantity: (0, _ducksQuantitySelectors.getQuantityData)(state, props.xVar),
-      xQuantity: (0, _ducksQuantitySelectors.getQuantityData)(state, props.xVar),
-      yQuantity: (0, _ducksQuantitySelectors.getQuantityData)(state, props.yVar)
+      points: (0, _ducksQuantitySelectors.getAbsPoints)(state, props.indVar, props.xVar, props.yVar)
    };
 }
 
@@ -118,5 +71,5 @@ function mapDispatchToProps(dispatch) {
    };
 }
 
-exports["default"] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Plot);
+exports["default"] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Abstraction);
 module.exports = exports["default"];

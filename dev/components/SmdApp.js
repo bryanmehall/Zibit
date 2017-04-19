@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-      value: true
+   value: true
 });
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -24,9 +24,11 @@ var _reactRedux = require("react-redux");
 
 var _redux = require('redux');
 
-var _actionsQuantity = require('../actions/quantity');
+var _ducksQuantityActions = require('../ducks/quantity/actions');
 
-var QuantityActions = _interopRequireWildcard(_actionsQuantity);
+var QuantityActions = _interopRequireWildcard(_ducksQuantityActions);
+
+var _ducksQuantitySelectors = require('../ducks/quantity/selectors');
 
 var _Scale = require('./Scale');
 
@@ -41,58 +43,53 @@ var _Plot = require('./Plot');
 var _Plot2 = _interopRequireDefault(_Plot);
 
 var SmdApp = (function (_React$Component) {
-      _inherits(SmdApp, _React$Component);
+   _inherits(SmdApp, _React$Component);
 
-      function SmdApp(props) {
-            _classCallCheck(this, SmdApp);
+   function SmdApp(props) {
+      _classCallCheck(this, SmdApp);
 
-            _get(Object.getPrototypeOf(SmdApp.prototype), "constructor", this).call(this, props);
+      _get(Object.getPrototypeOf(SmdApp.prototype), "constructor", this).call(this, props);
+   }
+
+   _createClass(SmdApp, [{
+      key: "render",
+      value: function render() {
+         var actions = this.props.actions;
+
+         var app = this;
+         function updateT(value) {
+            app.props.actions.setValue('t', value);
+         }
+         return _react2["default"].createElement(
+            "svg",
+            { width: 700, height: 500 },
+            _react2["default"].createElement(_Plot2["default"], {
+               xVar: "t",
+               yVar: "x",
+               indVar: "t",
+               width: 200,
+               height: 100,
+               pos: { x: 50, y: 400 }
+            })
+         );
       }
+   }]);
 
-      _createClass(SmdApp, [{
-            key: "render",
-            value: function render() {
-                  var _props = this.props;
-                  var quantities = _props.quantities;
-                  var actions = _props.actions;
-
-                  var app = this;
-                  var scale = new _Scale2["default"]({ min: -10, max: 500, tMin: 100, tMax: 300 });
-                  function updateT(value) {
-                        app.props.actions.setValue('t', value);
-                  }
-                  return _react2["default"].createElement(
-                        "svg",
-                        { width: 700, height: 500 },
-                        _react2["default"].createElement(_Plot2["default"], {
-                              xQuantity: quantities.t,
-                              yQuantity: quantities.t,
-                              width: 300, height: 300,
-                              pos: { x: 50, y: 400 }
-                        }),
-                        _react2["default"].createElement(_Slider2["default"], { scale: scale, pos: 20, value: quantities.t.value, valueChange: updateT })
-                  );
-            }
-      }]);
-
-      return SmdApp;
+   return SmdApp;
 })(_react2["default"].Component);
 
 SmdApp.PropTypes = {
-      quantities: _react.PropTypes.array.isRequired,
-      actions: _react.PropTypes.object.isRequired
+   actions: _react.PropTypes.object.isRequired
 };
 
-function mapStateToProps(state) {
-      return {
-            quantities: state.quantities
-      };
+function mapStateToProps(state, props) {
+   return {};
 }
 
 function mapDispatchToProps(dispatch) {
-      return {
-            actions: (0, _redux.bindActionCreators)(QuantityActions, dispatch)
-      };
+   return {
+      actions: (0, _redux.bindActionCreators)(QuantityActions, dispatch)
+   };
 }
 
 exports["default"] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SmdApp);

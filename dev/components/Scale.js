@@ -24,5 +24,14 @@ var Scale = function Scale(params) {
    };
 };
 
-exports["default"] = Scale;
-module.exports = exports["default"];
+exports.Scale = Scale;
+var CoordSys = function CoordSys(xScale, yScale) {
+
+   this.transform = function (point) {
+      return {
+         x: xScale.transform(point.x),
+         y: yScale.transform(point.y)
+      };
+   };
+};
+exports.CoordSys = CoordSys;
