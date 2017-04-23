@@ -38,13 +38,13 @@ var Path = (function (_React$Component) {
             points = this.props.points;
          }
          var clipPathString = 'url(#' + this.props.clipPath + ')';
-         console.log('aaaa', clipPathString);
          return _react2['default'].createElement('path', {
             d: pointsToSVGPath(points),
             fill: 'transparent',
             stroke: 'black',
             strokeWidth: 2,
-            clipPath: clipPathString
+            clipPath: clipPathString,
+            filter: 'url(#highlight)'
          });
       }
    }]);

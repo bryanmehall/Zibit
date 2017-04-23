@@ -1,16 +1,23 @@
 import types from "./types";
 
-const setValue = ( name, value ) => ({
-  type: "SET_VALUE",
-	payload:{name:name, value:value}
-} );
+const setValue = (name, value) => ({
+	type: "SET_VALUE",
+	payload: {
+		name: name,
+		value: value
+	}
+});
 
-const select = ( name ) => ( {
-	type:"SELECT",
-	payload: name
-} );
+const setHighlight = (name, value) => ({
+	type: "SET_HIGHLIGHT",
+	payload: {
+		name,
+		value
+	}
+});
+
 
 export default {
 	setValue,
-	select
+	setHighlight
 };

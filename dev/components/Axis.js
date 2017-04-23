@@ -59,7 +59,7 @@ var Axis = (function (_React$Component) {
          }
          //define base line
          var lineStyle = {
-            "strokeWidth": 1.8,
+            "strokeWidth": 1,
             "stroke": "black",
             "strokeLinecap": "round"
          };

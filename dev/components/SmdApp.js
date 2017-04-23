@@ -30,6 +30,8 @@ var QuantityActions = _interopRequireWildcard(_ducksQuantityActions);
 
 var _ducksQuantitySelectors = require('../ducks/quantity/selectors');
 
+var _ducksWidgetSelectors = require('../ducks/widget/selectors');
+
 var _Scale = require('./Scale');
 
 var _Scale2 = _interopRequireDefault(_Scale);
@@ -41,6 +43,18 @@ var _Slider2 = _interopRequireDefault(_Slider);
 var _Plot = require('./Plot');
 
 var _Plot2 = _interopRequireDefault(_Plot);
+
+var _Abstraction = require('./Abstraction');
+
+var _Abstraction2 = _interopRequireDefault(_Abstraction);
+
+var _Expression = require('./Expression');
+
+var _Expression2 = _interopRequireDefault(_Expression);
+
+var _Value = require('./Value');
+
+var _Value2 = _interopRequireDefault(_Value);
 
 var SmdApp = (function (_React$Component) {
    _inherits(SmdApp, _React$Component);
@@ -56,21 +70,43 @@ var SmdApp = (function (_React$Component) {
       value: function render() {
          var actions = this.props.actions;
 
-         var app = this;
-         function updateT(value) {
-            app.props.actions.setValue('t', value);
+         var childTypes = {
+            "Plot": _Plot2["default"]
+         };
+
+         function createChild(childData) {
+            var type = childTypes[childData.type];
+            var props = childData.props;
+            props.key = props.id;
+            var children = childData.children;
+            return _react2["default"].createElement(type, props, children);
          }
+         var children = this.props.childData.map(createChild);
+         var app = this;
          return _react2["default"].createElement(
             "svg",
             { width: 700, height: 500 },
-            _react2["default"].createElement(_Plot2["default"], {
-               xVar: "t",
-               yVar: "x",
-               indVar: "t",
-               width: 200,
-               height: 100,
-               pos: { x: 50, y: 400 }
-            })
+            _react2["default"].createElement(
+               "defs",
+               null,
+               _react2["default"].createElement(
+                  "filter",
+                  { id: "highlight", primitiveUnits: "userSpaceOnUse" },
+                  _react2["default"].createElement("feMorphology", { operator: "dilate", radius: "1.5", "in": "SourceAlpha", result: "expanded" }),
+                  _react2["default"].createElement("feFlood", { floodColor: "#80d8ff", result: "highlightColor" }),
+                  _react2["default"].createElement("feComposite", { "in": "highlightColor", in2: "expanded", operator: "in", result: "expandedColored" }),
+                  _react2["default"].createElement("feGaussianBlur", { stdDeviation: "2", "in": "expandedColored", result: "highlight" }),
+                  _react2["default"].createElement("feComposite", { operator: "over", "in": "SourceGraphic", in2: "highlight" })
+               )
+            ),
+            children,
+            _react2["default"].createElement(
+               _Expression2["default"],
+               { pos: { x: 20, y: 20 } },
+               _react2["default"].createElement(_Value2["default"], { quantity: "t" }),
+               _react2["default"].createElement(_Value2["default"], { quantity: "x" }),
+               _react2["default"].createElement(_Value2["default"], { quantity: "t" })
+            )
          );
       }
    }]);
@@ -83,7 +119,9 @@ SmdApp.PropTypes = {
 };
 
 function mapStateToProps(state, props) {
-   return {};
+   return {
+      childData: (0, _ducksWidgetSelectors.getChildren)(state, 'app')
+   };
 }
 
 function mapDispatchToProps(dispatch) {

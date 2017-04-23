@@ -2,7 +2,7 @@ import {createSelectors} from 'reselect'
 import {linspace, dopri, at} from 'numeric'
 //define dependent variables --should be pure functions
 function x(t){
-	return 10*Math.sin(t/4)
+	return 4*Math.sin(t/4)+5
 }
 
 function y(sol, t){
@@ -29,7 +29,7 @@ export const getQuantityData = function(state, name){
 			break;
 		default:
 			if (name === undefined){
-				throw 'name is undefined'
+				throw 'Selector Error: name is undefined'
 			} else {
 				throw 'quantitiy', name, 'not found'
 			}

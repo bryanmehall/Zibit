@@ -30,6 +30,8 @@ var QuantityActions = _interopRequireWildcard(_ducksQuantityActions);
 
 var _ducksQuantitySelectors = require('../ducks/quantity/selectors');
 
+var _ducksWidgetSelectors = require('../ducks/widget/selectors');
+
 var _Scale = require('./Scale');
 
 var _Axis = require('./Axis');
@@ -52,16 +54,14 @@ var Plot = (function (_React$Component) {
    _createClass(Plot, [{
       key: "render",
       value: function render() {
-         var width = this.props.width,
+         var plotId = this.props.id,
+             width = this.props.width,
              //width in px from axis min
          height = this.props.height,
              //height in px from axis min
          pos = this.props.pos,
              xQuantity = this.props.xQuantity,
-             //state object of x quantity
-         yQuantity = this.props.yQuantity,
-             //state object of y quantity
-         indQuantity = this.props.indQuantity || xQuantity; //set independent variable
+             yQuantity = this.props.yQuantity;
 
          var xScale = new _Scale.Scale({
             min: xQuantity.min,
@@ -76,6 +76,21 @@ var Plot = (function (_React$Component) {
             tMax: pos.y - height
          });
          var coordSys = new _Scale.CoordSys(xScale, yScale);
+
+         var childTypes = {
+            "Abstraction": _Abstraction2["default"]
+         };
+         function createChild(childData) {
+            var type = childTypes[childData.type];
+            var props = childData.props;
+            props.key = props.id;
+            props.coordSys = coordSys;
+            props.clipPath = plotId;
+            var children = childData.children;
+            return _react2["default"].createElement(type, props, children);
+         }
+         var children = this.props.childData.map(createChild);
+
          return _react2["default"].createElement(
             "g",
             null,
@@ -84,17 +99,11 @@ var Plot = (function (_React$Component) {
                null,
                _react2["default"].createElement(
                   "clipPath",
-                  { id: "plotId" },
+                  { id: plotId },
                   _react2["default"].createElement("rect", { x: pos.x, y: pos.y - height, width: width, height: height })
                )
             ),
-            _react2["default"].createElement(_Abstraction2["default"], {
-               indVar: "t",
-               xVar: "t",
-               yVar: "x",
-               coordSys: coordSys,
-               clipPath: "plotId"
-            }),
+            children,
             _react2["default"].createElement(_Axis2["default"], { scale: xScale, pos: pos.y }),
             _react2["default"].createElement(_Axis2["default"], { scale: yScale, pos: pos.x, vertical: true })
          );
@@ -106,9 +115,9 @@ var Plot = (function (_React$Component) {
 
 function mapStateToProps(state, props) {
    return {
-      indQuantity: (0, _ducksQuantitySelectors.getQuantityData)(state, props.xVar),
       xQuantity: (0, _ducksQuantitySelectors.getQuantityData)(state, props.xVar),
-      yQuantity: (0, _ducksQuantitySelectors.getQuantityData)(state, props.yVar)
+      yQuantity: (0, _ducksQuantitySelectors.getQuantityData)(state, props.yVar),
+      childData: (0, _ducksWidgetSelectors.getChildren)(state, props.id)
    };
 }
 

@@ -3,10 +3,13 @@ import {connect} from "react-redux"
 import { bindActionCreators } from 'redux';
 import * as QuantityActions from '../ducks/quantity/actions';
 import {getValue} from '../ducks/quantity/selectors'
+import {getChildren} from '../ducks/widget/selectors'
 import Scale from './Scale'
 import Slider from './Slider'
 import Plot from './Plot'
-
+import Abstraction from './Abstraction'
+import Expression from './Expression'
+import Value from './Value'
 
 class SmdApp extends React.Component {
 	constructor(props){
@@ -14,31 +17,46 @@ class SmdApp extends React.Component {
 	}
 	render(){
 		const { actions } = this.props;
-		var app = this
-		function updateT(value){
-			app.props.actions.setValue('t', value)
+		var childTypes = {
+			"Plot": Plot
 		}
-		return <svg width={700} height={500}>
-			<Plot
-				xVar = 't'
-				yVar = 'x'
-				indVar='t'
-				width={200}
-				height={100}
-				pos={{x:50,y:400}}
-				>
-			</Plot>
-		</svg>
+
+		function createChild(childData){
+			var type = childTypes[childData.type]
+			var props = childData.props
+			props.key = props.id
+			var children = childData.children
+			return React.createElement(type, props, children)
+		}
+		var children = this.props.childData.map(createChild)
+		var app = this
+		return (<svg width={700} height={500}>
+			<defs>
+				<filter id="highlight" primitiveUnits="userSpaceOnUse">
+					<feMorphology operator="dilate" radius="1.5" in="SourceAlpha" result="expanded"/>
+					<feFlood floodColor="#80d8ff" result="highlightColor"/>
+					<feComposite in="highlightColor" in2="expanded" operator="in" result="expandedColored" />
+					<feGaussianBlur stdDeviation="2" in="expandedColored" result="highlight"/>
+				 	<feComposite operator="over" in="SourceGraphic" in2="highlight"/>
+				 </filter>
+			</defs>
+			{children}
+			<Expression pos={{x:20, y:20}}>
+				<Value quantity="t"></Value>
+				<Value quantity="x"></Value>
+				<Value quantity="t"></Value>
+			</Expression>
+		</svg>)
 	}
 }
-
 SmdApp.PropTypes = {
 	actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, props) {
-  return {
-  };
+	return {
+		childData: getChildren(state, 'app')
+	};
 }
 
 function mapDispatchToProps(dispatch) {

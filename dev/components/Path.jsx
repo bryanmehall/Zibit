@@ -11,7 +11,6 @@ class Path extends React.Component {
 			points = this.props.points
 		}
 		var clipPathString = 'url(#'+this.props.clipPath+')'
-		console.log('aaaa',clipPathString)
 		return(
 			<path
 				d={pointsToSVGPath(points)}
@@ -19,6 +18,7 @@ class Path extends React.Component {
 				stroke="black"
 				strokeWidth ={2}
 				clipPath={clipPathString}
+				filter="url(#highlight)"
 				></path>
 		)
 	}
