@@ -18,63 +18,53 @@ var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var Expression = (function (_React$Component) {
-   _inherits(Expression, _React$Component);
+var Draggable = (function (_React$Component) {
+   _inherits(Draggable, _React$Component);
 
-   //should this be textbox??
+   function Draggable(props) {
+      _classCallCheck(this, Draggable);
 
-   function Expression(props) {
-      _classCallCheck(this, Expression);
-
-      _get(Object.getPrototypeOf(Expression.prototype), 'constructor', this).call(this, props);
-      this.offsets = [];
+      _get(Object.getPrototypeOf(Draggable.prototype), 'constructor', this).call(this, props);
+      this.mouseDown = this.mouseDown.bind(this);
    }
 
-   _createClass(Expression, [{
-      key: 'render',
-      value: function render() {
-         var exp = this;
-         var children = this.props.children || [],
-             len = children.length,
-             newChildren,
-             pos = this.props.pos,
-             currentWidth = pos.x;
-         if (children.length === 1) {
-            children = [children];
-         }
-         function getWidth(width, index) {
-            //allow child to pass width to parent
-            console.log('gotWidth', index, width);
-            newChildren[index].props.pos.x = currentWidth;
-            exp.offsets.push(currentWidth);
-            currentWidth += width;
-            if (len - 1 === index) {
-               newChildren.reverse();
-               console.log('newChildren', newChildren);
-            }
+   _createClass(Draggable, [{
+      key: 'mouseDown',
+      value: function mouseDown(e) {
+         var initPos = { x: e.clientX, y: e.clientY };
+         var draggable = this;
+         if (this.props.hasOwnProperty('dragStart')) {
+            this.props.dragStart(initPos);
          }
 
-         newChildren = children.map(function (child, i) {
-            console.log('setting offsets');
-            return _react2['default'].cloneElement(child, { key: i, index: i, pos: { x: exp.offsets[i], y: exp.props.pos.y }, getWidth: getWidth });
-         });
-         console.log('rendering', newChildren);
-         return (//render children with refs first
-            _react2['default'].createElement(
-               'g',
-               null,
-               _react2['default'].createElement(
-                  'g',
-                  { x: this.props.pos.x, y: this.props.pos.y, ref: 'expression' },
-                  newChildren
-               )
-            )
+         var mouseMove = function mouseMove(e) {
+            e.preventDefault();
+            if (draggable.props.hasOwnProperty('dragMove')) {
+               draggable.props.dragMove({ x: e.clientX, y: e.clientY });
+            }
+         };
+         var mouseUp = function mouseUp(e) {
+            document.removeEventListener('mousemove', mouseMove);
+            if (draggable.props.hasOwnProperty('dragEnd')) {
+               draggable.props.dragEnd({ x: e.clientX, y: e.clientY });
+            }
+         };
+         document.addEventListener('mousemove', mouseMove);
+         document.addEventListener('mouseup', mouseUp);
+      }
+   }, {
+      key: 'render',
+      value: function render() {
+         return _react2['default'].createElement(
+            'g',
+            { onMouseDown: this.mouseDown },
+            this.props.children
          );
       }
    }]);
 
-   return Expression;
+   return Draggable;
 })(_react2['default'].Component);
 
-exports['default'] = Expression;
+exports['default'] = Draggable;
 module.exports = exports['default'];

@@ -28,87 +28,71 @@ var _ducksQuantityActions2 = _interopRequireDefault(_ducksQuantityActions);
 
 var _ducksQuantitySelectors = require('../ducks/quantity/selectors');
 
-var _Path = require("./Path");
+var _Draggable = require("./Draggable");
 
-var _Path2 = _interopRequireDefault(_Path);
+var _Draggable2 = _interopRequireDefault(_Draggable);
 
-var Spring = (function (_React$Component) {
-   _inherits(Spring, _React$Component);
+var Mass = (function (_React$Component) {
+   _inherits(Mass, _React$Component);
 
-   function Spring() {
-      _classCallCheck(this, Spring);
+   function Mass(props) {
+      _classCallCheck(this, Mass);
 
-      _get(Object.getPrototypeOf(Spring.prototype), "constructor", this).apply(this, arguments);
+      _get(Object.getPrototypeOf(Mass.prototype), "constructor", this).call(this, props);
+      this.dragStart = this.dragStart.bind(this);
+      this.dragMove = this.dragMove.bind(this);
    }
 
-   _createClass(Spring, [{
+   _createClass(Mass, [{
+      key: "dragStart",
+      value: function dragStart(initPos) {
+         this.startOffset = this.props.pos.y - initPos.y; //offset in px
+      }
+   }, {
+      key: "dragMove",
+      value: function dragMove(newPos) {
+         var newYPos = newPos.y + this.startOffset;
+         this.props.setY0(newYPos, this.props.coordSys.yScale);
+      }
+   }, {
       key: "render",
       value: function render() {
-         var coordSys = this.props.coordSys;
-         var coordSys2 = this.props.coordSys2;
-         var p1 = this.props.p1;
-         var p2 = this.props.p2;
-         var path = springPath(p1, p2);
-         return _react2["default"].createElement(_Path2["default"], {
-            fill: "transparent",
-            stroke: "black",
-            strokeWidth: Math.log10(this.props.k + 1.1),
-            points: path
-         });
+         var pos = this.props.pos;
+         var width = 80;
+         var height = 50;
+         return _react2["default"].createElement(
+            _Draggable2["default"],
+            { dragStart: this.dragStart, dragMove: this.dragMove },
+            _react2["default"].createElement("rect", { x: pos.x, y: pos.y - height, width: width, height: height })
+         );
       }
    }]);
 
-   return Spring;
+   return Mass;
 })(_react2["default"].Component);
-
-function springPath(p1, p2) {
-   var x1 = p1.x;
-   var y1 = p1.y;
-   var x2 = p2.x;
-   var y2 = p2.y;
-   var w = 15;
-   var L = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-   var l = 0.6 * L;
-   var n = 5;
-   var dx = l / n * (x2 - x1) / L;
-   var dy = l / n * (y2 - y1) / L;
-   var vx = w * (y2 - y1) / L;
-   var vy = w * (x1 - x2) / L;
-   var g1 = { x: (L - l) / (2 * L) * (x2 - x1) + x1, y: (L - l) / (2 * L) * (y2 - y1) + y1 };
-   var g2 = { x: x2 - (L - l) / (2 * L) * (x2 - x1), y: y2 - (L - l) / (2 * L) * (y2 - y1) };
-   var data = [{ x: x1, y: y1 }, g1];
-   for (var i = 0; i < n; i++) {
-      data.push({ x: (L - l) / (2 * L) * (x2 - x1) + x1 + i * dx + 0.25 * dx + vx, y: (L - l) / (2 * L) * (y2 - y1) + y1 + i * dy + 0.25 * dy + vy }, { x: (L - l) / (2 * L) * (x2 - x1) + x1 + i * dx + 0.75 * dx - vx, y: (L - l) / (2 * L) * (y2 - y1) + y1 + i * dy + 0.75 * dy - vy });
-   }
-   data.push(g2, { x: x2, y: y2 });
-
-   return data;
-}
 
 function mapStateToProps(state, props) {
    var br = props.boundingRect;
-   var coordSys = (0, _ducksQuantitySelectors.getCoordSys)(state, props.xVar1, props.yVar1, br);
-   var coordSys2 = (0, _ducksQuantitySelectors.getCoordSys)(state, props.xVar2, props.yVar2, br);
+   var coordSys = (0, _ducksQuantitySelectors.getCoordSys)(state, props.xVar, props.yVar, br);
    return {
-      k: (0, _ducksQuantitySelectors.getValue)(state, 'k'),
-      p2: {
-         x: (0, _ducksQuantitySelectors.getTransformedValue)(state, props.xVar1, coordSys.xScale),
-         y: (0, _ducksQuantitySelectors.getTransformedValue)(state, props.yVar1, coordSys.yScale)
-      },
-      p1: {
-         x: (0, _ducksQuantitySelectors.getTransformedValue)(state, props.xVar2, coordSys2.xScale),
-         y: (0, _ducksQuantitySelectors.getTransformedValue)(state, props.yVar2, coordSys2.yScale)
+      mass: (0, _ducksQuantitySelectors.getValue)(state, 'm'),
+
+      pos: {
+         x: (0, _ducksQuantitySelectors.getTransformedValue)(state, props.xVar, coordSys.xScale),
+         y: (0, _ducksQuantitySelectors.getTransformedValue)(state, props.yVar, coordSys.yScale)
       }
+
    };
 }
 
 function mapDispatchToProps(dispatch) {
    return {
-      setY0: function setY0(value) {
-         dispatch(_ducksQuantityActions2["default"].setValue('y0', value));
+      setY0: function setY0(value, scale) {
+
+         dispatch(_ducksQuantityActions2["default"].setValueFromCoords('y0', value, scale));
       }
    };
 }
 
-exports["default"] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Spring);
+exports["default"] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Mass);
 module.exports = exports["default"];

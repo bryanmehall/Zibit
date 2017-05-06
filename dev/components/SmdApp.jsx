@@ -30,11 +30,19 @@ class SmdApp extends React.Component {
 		}
 		var children = this.props.childData.map(createChild)
 		var app = this
-		return (<svg width={700} height={500}>
+		return (
+			<svg width={700} height={600}>
 			<defs>
 				<filter id="highlight" primitiveUnits="userSpaceOnUse">
 					<feMorphology operator="dilate" radius="1.5" in="SourceAlpha" result="expanded"/>
 					<feFlood floodColor="#80d8ff" result="highlightColor"/>
+					<feComposite in="highlightColor" in2="expanded" operator="in" result="expandedColored" />
+					<feGaussianBlur stdDeviation="2" in="expandedColored" result="highlight"/>
+				 	<feComposite operator="over" in="SourceGraphic" in2="highlight"/>
+				 </filter>
+				<filter id="textBackground" primitiveUnits="userSpaceOnUse">
+					<feMorphology operator="dilate" radius="20" in="SourceAlpha" result="expanded"/>
+					<feFlood floodColor="white" result="highlightColor"/>
 					<feComposite in="highlightColor" in2="expanded" operator="in" result="expandedColored" />
 					<feGaussianBlur stdDeviation="2" in="expandedColored" result="highlight"/>
 				 	<feComposite operator="over" in="SourceGraphic" in2="highlight"/>
@@ -44,7 +52,7 @@ class SmdApp extends React.Component {
 			<Expression pos={{x:20, y:20}}>
 				<Value quantity="t"></Value>
 				<Value quantity="x"></Value>
-				<Value quantity="t"></Value>
+				<Value quantity="y"></Value>
 			</Expression>
 		</svg>)
 	}

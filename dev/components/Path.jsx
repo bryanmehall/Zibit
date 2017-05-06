@@ -1,9 +1,11 @@
 import React from "react";
 
-
 class Path extends React.Component {
 	render(){
-		var points;
+		var points,
+			stroke = this.props.strokeColor || 'black',
+			strokeWidth = this.props.strokeWidth || 1.8,
+			filter = (this.props.highlighted) ? "url(#highlight)": null
 		if (this.props.hasOwnProperty('coordSys')){
 			var coordSys = this.props.coordSys
 			points = this.props.points.map(coordSys.transform)
@@ -15,10 +17,11 @@ class Path extends React.Component {
 			<path
 				d={pointsToSVGPath(points)}
 				fill="transparent"
-				stroke="black"
-				strokeWidth ={2}
+				stroke={stroke}
+				strokeWidth={strokeWidth}
 				clipPath={clipPathString}
-				filter="url(#highlight)"
+				filter={filter}
+				strokeLinejoin="round"
 				></path>
 		)
 	}

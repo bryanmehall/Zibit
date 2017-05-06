@@ -85,7 +85,7 @@ var SmdApp = (function (_React$Component) {
          var app = this;
          return _react2["default"].createElement(
             "svg",
-            { width: 700, height: 500 },
+            { width: 700, height: 600 },
             _react2["default"].createElement(
                "defs",
                null,
@@ -97,6 +97,15 @@ var SmdApp = (function (_React$Component) {
                   _react2["default"].createElement("feComposite", { "in": "highlightColor", in2: "expanded", operator: "in", result: "expandedColored" }),
                   _react2["default"].createElement("feGaussianBlur", { stdDeviation: "2", "in": "expandedColored", result: "highlight" }),
                   _react2["default"].createElement("feComposite", { operator: "over", "in": "SourceGraphic", in2: "highlight" })
+               ),
+               _react2["default"].createElement(
+                  "filter",
+                  { id: "textBackground", primitiveUnits: "userSpaceOnUse" },
+                  _react2["default"].createElement("feMorphology", { operator: "dilate", radius: "20", "in": "SourceAlpha", result: "expanded" }),
+                  _react2["default"].createElement("feFlood", { floodColor: "white", result: "highlightColor" }),
+                  _react2["default"].createElement("feComposite", { "in": "highlightColor", in2: "expanded", operator: "in", result: "expandedColored" }),
+                  _react2["default"].createElement("feGaussianBlur", { stdDeviation: "2", "in": "expandedColored", result: "highlight" }),
+                  _react2["default"].createElement("feComposite", { operator: "over", "in": "SourceGraphic", in2: "highlight" })
                )
             ),
             children,
@@ -105,7 +114,7 @@ var SmdApp = (function (_React$Component) {
                { pos: { x: 20, y: 20 } },
                _react2["default"].createElement(_Value2["default"], { quantity: "t" }),
                _react2["default"].createElement(_Value2["default"], { quantity: "x" }),
-               _react2["default"].createElement(_Value2["default"], { quantity: "t" })
+               _react2["default"].createElement(_Value2["default"], { quantity: "y" })
             )
          );
       }

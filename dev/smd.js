@@ -35,20 +35,65 @@ var initialAppState = {
       app: {
          type: 'SmdApp',
          props: {},
-         children: ['massPlot']
+         children: ['massPlot', 'forcingPlot', 'posPlot']
       },
       massPlot: {
          type: 'Plot',
          props: {
-            xVar: 'x',
-            yVar: 'x',
+            xVar: 's',
+            yVar: 'y',
+            xVars: ['s', 't'],
+            yVars: ['y', 'x'],
             width: 200,
-            height: 200,
-            pos: { x: 200, y: 400 }
+            height: 350,
+            pos: { x: 250, y: 400 }
          },
-         children: ['abstraction2']
+         children: ['mass', 'spring']
       },
-
+      mass: {
+         type: 'Mass',
+         props: {
+            xVar: 's',
+            yVar: 'y'
+         },
+         children: []
+      },
+      spring: {
+         type: 'Spring',
+         props: {
+            xVar1: 's',
+            yVar1: 'x',
+            xVar2: 's',
+            yVar2: 'y'
+         },
+         children: []
+      },
+      posPlot: {
+         type: 'Plot',
+         props: {
+            xVar: 't',
+            yVar: 'y',
+            xVars: ['t'],
+            yVars: ['x'],
+            width: 300,
+            height: 350,
+            pos: { x: 500, y: 400 }
+         },
+         children: ['abstraction1']
+      },
+      forcingPlot: {
+         type: 'Plot',
+         props: {
+            xVar: 'x',
+            yVar: 'imx',
+            xVars: ['x'],
+            yVars: ['imx'],
+            width: 150,
+            height: 150,
+            pos: { x: 100, y: 500 }
+         },
+         children: []
+      },
       abstraction1: {
          type: "Abstraction",
          props: {
@@ -57,21 +102,17 @@ var initialAppState = {
             yVar: "x"
          },
          children: []
-      },
-      abstraction2: {
-         type: "Abstraction",
-         props: {
-            indVar: "t",
-            xVar: "x",
-            yVar: "x"
-         },
-         children: []
       }
-
    },
    quantities: {
-      t: { value: 0, min: -100, max: 40, abstractions: 200, independent: true, symbol: 't', highlighted: false },
-      x: { value: 0, min: -10, max: 10, abstractions: 0, symbol: 'x', highlighted: false }
+      t: { value: 0, min: 0, max: 40, abstractions: 200, independent: true, symbol: 't', highlighted: false }, //time
+      imx: { value: 0, min: -10, max: 10, abstractions: 0, independent: false, symbol: 'im(x)', highlighted: false }, //imaginary component of x
+      x: { value: 0, min: -10, max: 10, abstractions: 0, symbol: 'x', highlighted: false }, //real component of x
+      y: { value: 0, min: -30, max: 20, symbol: 'y', highlighted: false }, //position of mass
+      k: { value: 50, min: 0, max: 100, symbol: 'k', abstractions: 10, independent: true, highlighted: false }, //spring constant
+      m: { value: 1, min: 0, max: 30, symbol: '', independent: true, highlighted: false }, //mass
+      y0: { value: 0, mon: -20, max: 20, symbol: 'y0', independent: true, highlighted: false }, //initial mass position
+      s: { value: 0, min: -10, max: 10, abstractions: 0, symbol: 's', highlighted: false } // lateral position
    }
 };
 

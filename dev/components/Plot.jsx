@@ -7,6 +7,8 @@ import {getChildren} from '../ducks/widget/selectors'
 import {CoordSys, Scale} from './Scale'
 import Axis from './Axis'
 import Abstraction from './Abstraction'
+import Mass from './Mass'
+import Spring from './Spring'
 
 
 
@@ -16,8 +18,10 @@ class Plot extends React.Component {
 			width = this.props.width,//width in px from axis min
 		 	height = this.props.height,//height in px from axis min
 			pos = this.props.pos,
-			xQuantity = this.props.xQuantity,
-			yQuantity = this.props.yQuantity
+			xQuantities = this.props.xQuantities,
+			yQuantities = this.props.yQuantities,
+			xQuantity = xQuantities[this.props.xActive],
+			yQuantity = yQuantities[this.props.yActive]
 
 		var xScale = new Scale({
 			min:xQuantity.min,
@@ -30,43 +34,53 @@ class Plot extends React.Component {
 			max:yQuantity.max,
 			tMin:pos.y,
 		  tMax:pos.y-height
-	  })
-	  var coordSys = new CoordSys(xScale, yScale)
-
-	  var childTypes = {
-		  "Abstraction": Abstraction
-	  }
-	  function createChild(childData){
-		  var type = childTypes[childData.type]
-		  var props = childData.props
-		  props.key = props.id
-		  props.coordSys = coordSys
-		  props.clipPath = plotId
-		  var children = childData.children
-		  return React.createElement(type, props, children)
-	  }
-	  var children = this.props.childData.map(createChild)
-
-	  return (
-		  <g>
-			  <defs>
-				  <clipPath id={plotId}>
-					  <rect x={pos.x} y={pos.y-height} width={width} height={height} />
-				  </clipPath>
-			  </defs>
-			  {children}
-			  <Axis scale={xScale} pos={pos.y}></Axis>
-			  <Axis scale={yScale} pos={pos.x} vertical={true}></Axis>
-		  </g>
-	  )
-  }
+		})
+		var coordSys = new CoordSys(xScale, yScale)
+		var childTypes = {
+			Abstraction: Abstraction,
+			Mass:Mass,
+			Spring: Spring
+		}
+		function createChild(childData){
+			var type = childTypes[childData.type]
+			var props = childData.props
+			props.key = props.id
+			props.coordSys = coordSys
+			props.boundingRect = {xMin:pos.x,xMax:pos.x+width,yMin:pos.y,yMax:pos.y-height}
+			props.clipPath = plotId
+			var children = childData.children
+			return React.createElement(type, props, children)
+		}
+		var children = this.props.childData.map(createChild)
+		return (
+			<g>
+				<defs>
+					<clipPath id={plotId}>
+						<rect x={pos.x} y={pos.y-height} width={width} height={height} />
+					</clipPath>
+				</defs>
+				{children}
+				<Axis scale={xScale} pos={pos.y}></Axis>
+				<Axis scale={yScale} pos={pos.x} vertical={true}></Axis>
+			</g>
+		)
+	}
 }
 
 function mapStateToProps(state, props) {
+	function getQuantities(quantityList){
+		var quantities = {}
+		quantityList.forEach(function(name){
+			quantities[name] = getQuantityData(state, name)
+		})
+		return quantities
+	}
 	return {
-		xQuantity:getQuantityData(state, props.xVar),
-		yQuantity:getQuantityData(state, props.yVar),
-		childData:getChildren(state,props.id)
+		xActive: props.xVars[0],
+		yActive: props.yVars[0],
+		xQuantities: getQuantities(props.xVars),
+		yQuantities: getQuantities(props.yVars),
+		childData: getChildren(state,props.id)
 	};
 }
 

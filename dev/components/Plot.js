@@ -42,6 +42,14 @@ var _Abstraction = require('./Abstraction');
 
 var _Abstraction2 = _interopRequireDefault(_Abstraction);
 
+var _Mass = require('./Mass');
+
+var _Mass2 = _interopRequireDefault(_Mass);
+
+var _Spring = require('./Spring');
+
+var _Spring2 = _interopRequireDefault(_Spring);
+
 var Plot = (function (_React$Component) {
    _inherits(Plot, _React$Component);
 
@@ -60,8 +68,10 @@ var Plot = (function (_React$Component) {
          height = this.props.height,
              //height in px from axis min
          pos = this.props.pos,
-             xQuantity = this.props.xQuantity,
-             yQuantity = this.props.yQuantity;
+             xQuantities = this.props.xQuantities,
+             yQuantities = this.props.yQuantities,
+             xQuantity = xQuantities[this.props.xActive],
+             yQuantity = yQuantities[this.props.yActive];
 
          var xScale = new _Scale.Scale({
             min: xQuantity.min,
@@ -76,21 +86,22 @@ var Plot = (function (_React$Component) {
             tMax: pos.y - height
          });
          var coordSys = new _Scale.CoordSys(xScale, yScale);
-
          var childTypes = {
-            "Abstraction": _Abstraction2["default"]
+            Abstraction: _Abstraction2["default"],
+            Mass: _Mass2["default"],
+            Spring: _Spring2["default"]
          };
          function createChild(childData) {
             var type = childTypes[childData.type];
             var props = childData.props;
             props.key = props.id;
             props.coordSys = coordSys;
+            props.boundingRect = { xMin: pos.x, xMax: pos.x + width, yMin: pos.y, yMax: pos.y - height };
             props.clipPath = plotId;
             var children = childData.children;
             return _react2["default"].createElement(type, props, children);
          }
          var children = this.props.childData.map(createChild);
-
          return _react2["default"].createElement(
             "g",
             null,
@@ -114,9 +125,18 @@ var Plot = (function (_React$Component) {
 })(_react2["default"].Component);
 
 function mapStateToProps(state, props) {
+   function getQuantities(quantityList) {
+      var quantities = {};
+      quantityList.forEach(function (name) {
+         quantities[name] = (0, _ducksQuantitySelectors.getQuantityData)(state, name);
+      });
+      return quantities;
+   }
    return {
-      xQuantity: (0, _ducksQuantitySelectors.getQuantityData)(state, props.xVar),
-      yQuantity: (0, _ducksQuantitySelectors.getQuantityData)(state, props.yVar),
+      xActive: props.xVars[0],
+      yActive: props.yVars[0],
+      xQuantities: getQuantities(props.xVars),
+      yQuantities: getQuantities(props.yVars),
       childData: (0, _ducksWidgetSelectors.getChildren)(state, props.id)
    };
 }
