@@ -6,12 +6,10 @@ import Scale from './components/Scale'
 import Slider from './components/Slider'
 import Spring from './components/Spring'
 import Value from './components/Value'
-import Quantity from './components/Quantity'
 
 class App extends React.Component {
 	constructor(props){
 		super(props)
-		this.state = {t:30}
 	}
 	render(){
 		var scale = new Scale({min:-100, max:500, tMin:100, tMax:300})

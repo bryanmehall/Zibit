@@ -18,79 +18,52 @@ var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = require("react-redux");
+var Animation = (function (_React$Component) {
+   _inherits(Animation, _React$Component);
 
-var _redux = require('redux');
+   function Animation(props) {
+      _classCallCheck(this, Animation);
 
-var _ducksQuantityActions = require('../ducks/quantity/actions');
-
-var _ducksQuantityActions2 = _interopRequireDefault(_ducksQuantityActions);
-
-var _ducksQuantitySelectors = require('../ducks/quantity/selectors');
-
-var _Draggable = require("./Draggable");
-
-var _Draggable2 = _interopRequireDefault(_Draggable);
-
-var Mass = (function (_React$Component) {
-   _inherits(Mass, _React$Component);
-
-   function Mass(props) {
-      _classCallCheck(this, Mass);
-
-      _get(Object.getPrototypeOf(Mass.prototype), "constructor", this).call(this, props);
-      this.dragStart = this.dragStart.bind(this);
-      this.dragMove = this.dragMove.bind(this);
+      _get(Object.getPrototypeOf(Animation.prototype), "constructor", this).call(this, props);
    }
 
-   _createClass(Mass, [{
-      key: "dragStart",
-      value: function dragStart(initPos) {
-         this.startOffset = this.props.pos.y - initPos.y; //offset in px
-      }
-   }, {
-      key: "dragMove",
-      value: function dragMove(newPos) {
-         var newYPos = newPos.y + this.startOffset;
-         this.props.setY0(newYPos, this.props.coordSys.yScale);
-      }
-   }, {
+   _createClass(Animation, [{
       key: "render",
       value: function render() {
-         var pos = this.props.pos;
-         var width = 80;
-         var height = 50;
+         console.log('play', this.props.playing);
+         var self = this;
+         var pause = "M11,10 L18,13.74 18,22.28 11,26 M18,13.74 L26,18 26,18 18,22.28";
+         var play = "M11,10 L17,10 17,26 11,26 M20,10 L26,10 26,26 20,26";
+         var fromPath = this.props.playing ? pause : play;
+         var toPath = this.props.playing ? play : pause;
+         console.log(fromPath);
          return _react2["default"].createElement(
-            _Draggable2["default"],
-            { dragStart: this.dragStart, dragMove: this.dragMove },
-            _react2["default"].createElement("rect", { x: pos.x, y: pos.y - height, width: width, height: height })
+            "path",
+            {
+               d: toPath,
+               pointerEvents: "bounding-box",
+               fill: "gray",
+               onClick: function () {
+                  self.props.onClick(!self.props.playing);
+               }
+            },
+            _react2["default"].createElement("animate", {
+               from: fromPath,
+               to: toPath,
+               begin: "click",
+               attributeType: "XML",
+               attributeName: "d",
+               fill: "freeze",
+               keySplines: ".4 0 1 1",
+               repeatCount: "1",
+               dur: ".2s"
+            })
          );
       }
    }]);
 
-   return Mass;
+   return Animation;
 })(_react2["default"].Component);
 
-function mapStateToProps(state, props) {
-   var br = props.boundingRect;
-   var coordSys = (0, _ducksQuantitySelectors.getCoordSys)(state, props.xVar, props.yVar, br);
-   return {
-      mass: (0, _ducksQuantitySelectors.getValue)(state, 'm'),
-      pos: {
-         x: (0, _ducksQuantitySelectors.getTransformedValue)(state, props.xVar, coordSys.xScale),
-         y: (0, _ducksQuantitySelectors.getTransformedValue)(state, props.yVar, coordSys.yScale)
-      }
-
-   };
-}
-
-function mapDispatchToProps(dispatch) {
-   return {
-      setY0: function setY0(value, scale) {
-         dispatch(_ducksQuantityActions2["default"].setValueFromCoords('y0', value, scale));
-      }
-   };
-}
-
-exports["default"] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Mass);
+exports["default"] = Animation;
 module.exports = exports["default"];

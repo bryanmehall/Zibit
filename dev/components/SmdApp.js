@@ -112,9 +112,9 @@ var SmdApp = (function (_React$Component) {
             _react2["default"].createElement(
                _Expression2["default"],
                { pos: { x: 20, y: 20 } },
-               _react2["default"].createElement(_Value2["default"], { quantity: "t" }),
-               _react2["default"].createElement(_Value2["default"], { quantity: "x" }),
-               _react2["default"].createElement(_Value2["default"], { quantity: "y" })
+               _react2["default"].createElement(_Value2["default"], { quantity: "t", key: "t" }),
+               _react2["default"].createElement(_Value2["default"], { quantity: "x", key: "x" }),
+               _react2["default"].createElement(_Value2["default"], { quantity: "y", key: "y" })
             )
          );
       }

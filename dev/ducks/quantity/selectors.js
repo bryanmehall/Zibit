@@ -8,7 +8,7 @@ import {
 from 'numeric'
 
 //define dependent variables --should be pure functions
-function x(t) {
+function x(t) { //could depend on numeric spline
 	return 4 * Math.cos(t / 4)
 }
 
@@ -36,9 +36,21 @@ export const getQuantityData = function (state, name) {
 	}
 }
 
-export const getMin = (state, name) => (getQuantityData(state, name).min)
+export const getMin = (state, name, scaleName) => (getQuantityData(state, name).min)
 
 export const getMax = (state, name) => (getQuantityData(state, name).max)
+
+export const getAnimatable = (state, name) => (getQuantityData(state, name).hasOwnProperty('animation'))
+
+export const getPlaying = (state, name) => {
+	var animatable = getAnimatable(state, name)
+	if (animatable) {
+		console.log('fetching', getQuantityData(state, name).animation.playing)
+		return getQuantityData(state, name).animation.playing
+	} else {
+		return false
+	}
+}
 
 export const getCoordSys = (state, xVar, yVar, parentBB) => ({
 	xScale: {

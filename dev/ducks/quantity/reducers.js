@@ -30,31 +30,31 @@ const quantityReducer = (state = {
 			})
 			break;
 		}
+
+	case 'ANIM_PLAY_PAUSE':
+		var animObj = state.animation
+		var time = new Date()
+		var newAnimObject = Object.assign({}, animObj, {
+			playing: action.payload.value,
+			startTime: time
+		})
+		return Object.assign({}, state, {
+			animation: newAnimObject
+		})
 	}
 	return state
 }
 
 const quantitiesReducer = (state = {}, action) => {
 	//here state refers to quantities object of state tree
-	switch (action.type) {
-	case 'SET_VALUE':
-		{
-			var name = action.payload.name
-			return Object.assign({}, state, {
-				[name]: quantityReducer(state[name], action)
-			})
-			break;
-		}
-	case 'SET_HIGHLIGHT':
-		{
-			var name = action.payload.name
-			return Object.assign({}, state, {
-				[name]: quantityReducer(state[name], action)
-			})
-			break;
-		}
+	if (action.hasOwnProperty('payload')) {
+		var name = action.payload.name
+		return Object.assign({}, state, {
+			[name]: quantityReducer(state[name], action)
+		})
+	} else {
+		return state
 	}
-	return state
 }
 
 

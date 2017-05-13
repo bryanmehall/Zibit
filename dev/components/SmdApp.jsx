@@ -50,9 +50,9 @@ class SmdApp extends React.Component {
 			</defs>
 			{children}
 			<Expression pos={{x:20, y:20}}>
-				<Value quantity="t"></Value>
-				<Value quantity="x"></Value>
-				<Value quantity="y"></Value>
+				<Value quantity="t" key='t'></Value>
+				<Value quantity="x" key='x'></Value>
+				<Value quantity="y" key='y'></Value>
 			</Expression>
 		</svg>)
 	}

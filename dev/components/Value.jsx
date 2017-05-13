@@ -3,7 +3,8 @@ import Slider from './Slider'
 import {connect} from "react-redux"
 import { bindActionCreators } from 'redux';
 import QuantityActions from '../ducks/quantity/actions';
-import {getValue, getQuantityData} from '../ducks/quantity/selectors'
+import {getValue, getQuantityData, getAnimatable, getPlaying} from '../ducks/quantity/selectors'
+import Animation from './Animation'
 
 class Value extends React.Component {
 	constructor(props){
@@ -37,7 +38,9 @@ class Value extends React.Component {
 	mouseOver(){
 		this.props.setHighlight(this.props.quantity, true)
 	}
-	mouseOut(){
+	mouseOut(e){
+		e.preventDefault()
+		e.stopPropagation()
 		this.props.setHighlight(this.props.quantity, false)
 	}
 
@@ -47,11 +50,12 @@ class Value extends React.Component {
 			dummyElement.style = "font-style: italic; font-family:'MathJax_Main,Times,serif'; font-size:1.6em;"
 			document.getElementById('hiddenSvg').appendChild(dummyElement)
 			this.width = dummyElement.getBBox().width
-			console.log(this.props.index, this.width)
+			console.log('value will mount', this.props.index, this.width)
 			this.props.getWidth(this.width, this.props.index)
 	}
 
 	componentDidMount(){
+		console.log('value mounted')
 		var pointToString = function(string, point){
 			return string + point.x+','+point.y+' '
 		}
@@ -75,40 +79,53 @@ class Value extends React.Component {
 	}
 
 	render(){
+		console.log('rendering value')
+		var self = this
 		var filter = (this.props.highlighted) ? "url(#highlight)": null
 
 		var text = (
-			<text
+			<tspan
 				style={this.textStyle}
-				x={this.props.pos.x}
-				y={this.props.pos.y}
 				ref="text"
 				filter={filter}
 				onMouseOver={this.mouseOver}
-				onMouseOut={this.mouseOut}
 			>
 				{this.props.symbol}
-			</text>
+			</tspan>
 		)
-    var overlay = <g>
-			<g >
-				<text
-					x={this.props.pos.x+this.width}
-					y={this.props.pos.y}
-					style={this.textStyle}
-					filter="url(#textBackground)">
-					{' = '+(Math.round(this.props.quantityValue*100)/100)}
-				</text>
-			</g>
+
+    	var overlay = (
+			<g
+				onMouseOut={this.mouseOut}
+			>
+				<g>
+
+
+					<text
+						x={this.props.pos.x+this.width}
+						y={this.props.pos.y}
+						style={this.textStyle}
+						filter="url(#textBackground)">
+						{' = '+(Math.round(this.props.quantityValue*100)/100)}
+					</text>
+
+				</g>
+			<Animation
+						onClick={function(playing){
+							self.props.setPlay(self.props.quantity, playing)
+						}}
+						playing={this.props.playing}
+						></Animation>
+			{text}
 			<polygon fill='gray' points={this.arrow} />
 
 
         </g>
+		)
     
     if (this.props.highlighted){
 		return <g>
 			{overlay}
-			{text}
 		</g>
 	} else {
 		return text
@@ -122,15 +139,20 @@ function mapStateToProps(state, props) {
 		symbol: quantityData.symbol,
 		independent:quantityData.independent,
 		highlighted:quantityData.highlighted,
-		quantityValue: getValue(state, props.quantity)
+		quantityValue: getValue(state, props.quantity),
+		animatable:getAnimatable(state, props.quantity),
+		playing: getPlaying(state, props.quantity)
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		setHighlight:(name,value) => {
+		setHighlight:(name, value) => {
 			dispatch(QuantityActions.setHighlight(name, value))
 		},
+		setPlay:(name, value) => {
+			dispatch(QuantityActions.setPlay(name, value))
+		}
 	};
 }
 

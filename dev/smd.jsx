@@ -6,7 +6,6 @@ import {createLogger} from "redux-logger";
 import SmdApp from "./components/SmdApp"
 import * as reducers from "./ducks";
 
-
 const rootReducer = combineReducers(reducers)
 
 const middleware = applyMiddleware(createLogger())
@@ -86,13 +85,22 @@ const initialAppState = {
 		}
 	},
 	quantities:{
-		t: {value:0, min:0, max:40, abstractions:200, independent:true, symbol:'t', highlighted:false},//time
+		t: { //time
+			value:0,
+			min:0,
+			max:40,
+			abstractions:200,
+			independent:true,
+			symbol:'a',
+			highlighted:false,
+			animation:{playing:false}
+		},
 		imx: {value:0, min:-10, max:10, abstractions:0, independent:false, symbol:'im(x)', highlighted:false},//imaginary component of x
-		x: {value:0, min:-10, max:10, abstractions:0, symbol:'x', highlighted:false}, //real component of x
-		y: {value:0, min:-30, max:20, symbol:'y', highlighted:false},//position of mass
+		x: {value:0, min:-10, max:40, abstractions:0, symbol:'bc', highlighted:false}, //real component of x
+		y: {value:0, min:-30, max:20, symbol:'def', highlighted:false},//position of mass
 		k: {value:50, min:0, max:100, symbol:'k', abstractions:10, independent:true, highlighted:false},//spring constant
-		m: {value:1, min:0, max:30, symbol:'', independent:true, highlighted: false},//mass
-		y0: {value:0, mon:-20, max:20, symbol:'y0', independent:true, highlighted:false},//initial mass position
+		m: {value:1, min:0, max:30, symbol:'m', independent:true, highlighted: false},//mass
+		y0: {value:0, min:-20, max:20, symbol:'y0', independent:true, highlighted:false},//initial mass position
 		s:{value:0, min:-10, max:10, abstractions:0, symbol:'s', highlighted:false}// lateral position
 	}
 }

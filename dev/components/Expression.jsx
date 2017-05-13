@@ -4,6 +4,12 @@ class Expression extends React.Component{//should this be textbox??
 		super(props)
 		this.offsets = []
 	}
+	componentWillMount(){
+		console.log('expression will mount', this.props.children)
+	}
+	componentDidMount(){
+		console.log('expression did mount')
+	}
 
 	render(){
 		var exp = this
@@ -15,27 +21,29 @@ class Expression extends React.Component{//should this be textbox??
 		if (children.length === 1){
 			children = [children]
 		}
+		console.log(children)
+
+
 		function getWidth(width, index){//allow child to pass width to parent
 			console.log('gotWidth', index, width)
 			newChildren[index].props.pos.x = currentWidth
-			exp.offsets.push(currentWidth)
+			exp.offsets.unshift(currentWidth)
 			currentWidth+=width
-			if (len-1 === index){
-				newChildren.reverse()
-				console.log('newChildren', newChildren)
-			}
 		}
 
-		newChildren = children.map(function(child,i){
-			console.log('setting offsets')
-			return React.cloneElement(child, { key:i, index:i, pos:{x:exp.offsets[i], y:exp.props.pos.y}, getWidth:getWidth})
+		newChildren = []
+		//for (var i= children.length-1; i>=0; i--){
+			//var child = children[i]
+		children.forEach(function(child,i){
+			var element = React.cloneElement(child, { key:child.key, index:i, pos:{x:exp.offsets[children.length-i-1], y:exp.props.pos.y}, getWidth:getWidth})
+			newChildren.unshift(element)
 		})
-		console.log('rendering', newChildren)
+		console.log('renderng expression', newChildren)
 		return (//render children with refs first
 			<g>
-				<g x={this.props.pos.x} y={this.props.pos.y}  ref='expression'>
+				<text x={this.props.pos.x} y={this.props.pos.y}  ref='expression'>
 					{newChildren}
-				</g>
+				</text>
 			</g>
 		)
 	  }

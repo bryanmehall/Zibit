@@ -56,7 +56,7 @@ function mapStateToProps(state, props) {
 	return {
 		k: getValue(state, 'k'),
 		p2:{
-			x:getTransformedValue(state,props.xVar1, coordSys.xScale),
+			x:getTransformedValue(state, props.xVar1, coordSys.xScale),
 			y:getTransformedValue(state, props.yVar1, coordSys.yScale)
 		},
 		p1:{

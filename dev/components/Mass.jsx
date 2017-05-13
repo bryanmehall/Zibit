@@ -36,7 +36,6 @@ function mapStateToProps(state, props) {
 	var coordSys = getCoordSys(state, props.xVar, props.yVar, br)
 	return {
 		mass: getValue(state, 'm'),
-
 		pos:{
 			x:getTransformedValue(state, props.xVar, coordSys.xScale),
 			y:getTransformedValue(state, props.yVar, coordSys.yScale)
@@ -48,7 +47,6 @@ function mapStateToProps(state, props) {
 function mapDispatchToProps(dispatch) {
 	return {
 		setY0:(value, scale) => {
-
 			dispatch(QuantityActions.setValueFromCoords('y0', value, scale))
 		},
 	};

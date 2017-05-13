@@ -32,6 +32,10 @@ var _ducksQuantityActions2 = _interopRequireDefault(_ducksQuantityActions);
 
 var _ducksQuantitySelectors = require('../ducks/quantity/selectors');
 
+var _Animation = require('./Animation');
+
+var _Animation2 = _interopRequireDefault(_Animation);
+
 var Value = (function (_React$Component) {
    _inherits(Value, _React$Component);
 
@@ -71,7 +75,9 @@ var Value = (function (_React$Component) {
       }
    }, {
       key: "mouseOut",
-      value: function mouseOut() {
+      value: function mouseOut(e) {
+         e.preventDefault();
+         e.stopPropagation();
          this.props.setHighlight(this.props.quantity, false);
       }
    }, {
@@ -82,12 +88,13 @@ var Value = (function (_React$Component) {
          dummyElement.style = "font-style: italic; font-family:'MathJax_Main,Times,serif'; font-size:1.6em;";
          document.getElementById('hiddenSvg').appendChild(dummyElement);
          this.width = dummyElement.getBBox().width;
-         console.log(this.props.index, this.width);
+         console.log('value will mount', this.props.index, this.width);
          this.props.getWidth(this.width, this.props.index);
       }
    }, {
       key: "componentDidMount",
       value: function componentDidMount() {
+         console.log('value mounted');
          var pointToString = function pointToString(string, point) {
             return string + point.x + ',' + point.y + ' ';
          };
@@ -118,24 +125,26 @@ var Value = (function (_React$Component) {
    }, {
       key: "render",
       value: function render() {
+         console.log('rendering value');
+         var self = this;
          var filter = this.props.highlighted ? "url(#highlight)" : null;
 
          var text = _react2["default"].createElement(
-            "text",
+            "tspan",
             {
                style: this.textStyle,
-               x: this.props.pos.x,
-               y: this.props.pos.y,
                ref: "text",
                filter: filter,
-               onMouseOver: this.mouseOver,
-               onMouseOut: this.mouseOut
+               onMouseOver: this.mouseOver
             },
             this.props.symbol
          );
+
          var overlay = _react2["default"].createElement(
             "g",
-            null,
+            {
+               onMouseOut: this.mouseOut
+            },
             _react2["default"].createElement(
                "g",
                null,
@@ -149,6 +158,13 @@ var Value = (function (_React$Component) {
                   ' = ' + Math.round(this.props.quantityValue * 100) / 100
                )
             ),
+            _react2["default"].createElement(_Animation2["default"], {
+               onClick: function (playing) {
+                  self.props.setPlay(self.props.quantity, playing);
+               },
+               playing: this.props.playing
+            }),
+            text,
             _react2["default"].createElement("polygon", { fill: "gray", points: this.arrow })
          );
 
@@ -156,8 +172,7 @@ var Value = (function (_React$Component) {
             return _react2["default"].createElement(
                "g",
                null,
-               overlay,
-               text
+               overlay
             );
          } else {
             return text;
@@ -174,7 +189,9 @@ function mapStateToProps(state, props) {
       symbol: quantityData.symbol,
       independent: quantityData.independent,
       highlighted: quantityData.highlighted,
-      quantityValue: (0, _ducksQuantitySelectors.getValue)(state, props.quantity)
+      quantityValue: (0, _ducksQuantitySelectors.getValue)(state, props.quantity),
+      animatable: (0, _ducksQuantitySelectors.getAnimatable)(state, props.quantity),
+      playing: (0, _ducksQuantitySelectors.getPlaying)(state, props.quantity)
    };
 }
 
@@ -182,6 +199,9 @@ function mapDispatchToProps(dispatch) {
    return {
       setHighlight: function setHighlight(name, value) {
          dispatch(_ducksQuantityActions2["default"].setHighlight(name, value));
+      },
+      setPlay: function setPlay(name, value) {
+         dispatch(_ducksQuantityActions2["default"].setPlay(name, value));
       }
    };
 }
