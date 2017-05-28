@@ -18,15 +18,15 @@ class SmdApp extends React.Component {
 	render(){
 		const { actions } = this.props;
 		var childTypes = {
-			"Plot": Plot
+			"Plot": Plot,
+			"Expression": Expression
 		}
 
 		function createChild(childData){
 			var type = childTypes[childData.type]
 			var props = childData.props
 			props.key = props.id
-			var children = childData.children
-			return React.createElement(type, props, children)
+			return React.createElement(type, props)
 		}
 		var children = this.props.childData.map(createChild)
 		var app = this
@@ -49,11 +49,6 @@ class SmdApp extends React.Component {
 				 </filter>
 			</defs>
 			{children}
-			<Expression pos={{x:20, y:20}}>
-				<Value quantity="t" key='t'></Value>
-				<Value quantity="x" key='x'></Value>
-				<Value quantity="y" key='y'></Value>
-			</Expression>
 		</svg>)
 	}
 }

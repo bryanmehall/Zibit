@@ -44,24 +44,13 @@ var _Animation = require('./Animation');
 
 var _Animation2 = _interopRequireDefault(_Animation);
 
-var Value = (function (_React$Component) {
-   _inherits(Value, _React$Component);
+var ValueOverlay = (function (_React$Component) {
+   _inherits(ValueOverlay, _React$Component);
 
-   function Value(props) {
-      _classCallCheck(this, Value);
+   function ValueOverlay(props) {
+      _classCallCheck(this, ValueOverlay);
 
-      _get(Object.getPrototypeOf(Value.prototype), "constructor", this).call(this, props);
-      this.mouseOver = this.mouseOver.bind(this);
-      this.mouseOut = this.mouseOut.bind(this);
-
-      this.textStyle = {
-         fontStyle: "italic",
-         fontFamily: 'MathJax_Main,"Times New Roman",Times,serif',
-         fontSize: "1.6em",
-         WebkitTouchCallout: "none",
-         WebkitUserSelect: "none",
-         MozUserSelect: "none"
-      };
+      _get(Object.getPrototypeOf(ValueOverlay.prototype), "constructor", this).call(this, props);
       this.numberStyle = {
          fontFamily: 'MathJax_Main,"Times New Roman",Times,serif',
          fontSize: "1.6em",
@@ -70,13 +59,9 @@ var Value = (function (_React$Component) {
          MozUserSelect: "none"
 
       };
-      this.numberBoxStyle = {
-         animationName: "scaleNumbers",
-         animationDuration: '0.6s'
-      };
    }
 
-   _createClass(Value, [{
+   _createClass(ValueOverlay, [{
       key: "mouseOver",
       value: function mouseOver() {
          this.props.setHighlight(this.props.quantity, true);
@@ -100,75 +85,35 @@ var Value = (function (_React$Component) {
       }*/
 
    }, {
-      key: "componentDidMount",
-      value: function componentDidMount() {}
-   }, {
       key: "render",
       value: function render() {
-         var _this = this;
-
-         console.log('rendering value');
-         var self = this;
-         var pos = this.props.pos;
-         var filter = this.props.highlighted ? "url(#highlight)" : null;
-         var textRef = function textRef(elem) {
-            console.log('ref value');
-            if (elem !== null) {
-               //react sets elem to null if element is not re-rendered
-               _this.props.getWidth(elem.getBBox());
-               console.log('pos', _this.props.pos.x);
-               elem.setAttribute('x', _this.props.pos.x);
-            }
-         };
-         var text = _react2["default"].createElement(
-            "text",
-            {
-               style: this.textStyle,
-               filter: filter,
-               x: pos.x,
-               y: pos.y,
-               onMouseOver: this.mouseOver,
-               onMouseOut: this.mouseOut,
-               ref: textRef
-            },
-            this.props.quantity
+         console.log('rendering overlay', this.props);
+         var overlay = _react2["default"].createElement(
+            "g",
+            null,
+            _react2["default"].createElement(
+               "text",
+               {
+                  x: this.props.x,
+                  y: this.props.y,
+                  style: this.numberStyle,
+                  filter: "url(#textBackground)"
+               },
+               ' = ' + Math.round(this.props.quantityValue * 100) / 100
+            ),
+            _react2["default"].createElement(_Animation2["default"], {
+               onClick: function (playing) {
+                  self.props.setPlay(self.props.quantity, playing);
+               },
+               playing: this.props.playing
+            }),
+            _react2["default"].createElement("polygon", { fill: "gray", points: this.arrow })
          );
-         /*
-           	var overlay = (
-         	<g
-
-         	>
-         		<g>
-         					<text
-         				x={this.props.pos.x+this.width}
-         				y={this.props.pos.y}
-         				style={this.textStyle}
-         				filter="url(#textBackground)">
-         				{' = '+(Math.round(this.props.quantityValue*100)/100)}
-         			</text>
-         			</g>
-         	<Animation
-         				onClick={function(playing){
-         					self.props.setPlay(self.props.quantity, playing)
-         				}}
-         				playing={this.props.playing}
-         				></Animation>
-         	{text}
-         	<polygon fill='gray' points={this.arrow} />
-                 </g>
-         )
-
-           if (this.props.highlighted){
-         return <g>
-         	{overlay}
-         </g>
-         } else {*/
-         return text;
-         //}
+         return overlay;
       }
    }]);
 
-   return Value;
+   return ValueOverlay;
 })(_react2["default"].Component);
 
 var pointToString = function pointToString(string, point) {
@@ -196,7 +141,9 @@ function calcArrow(pos, scale) {
 }
 function mapStateToProps(state, props) {
    var quantityData = (0, _ducksQuantitySelectors.getQuantityData)(state, props.quantity);
+   console.log('props', props.valueBBox);
    return {
+      valueBBox: props.valueBBox,
       symbol: quantityData.symbol,
       //independent:quantityData.independent,
       highlighted: quantityData.highlighted,
@@ -220,5 +167,5 @@ function mapDispatchToProps(dispatch) {
    };
 }
 
-exports["default"] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Value);
+exports["default"] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ValueOverlay);
 module.exports = exports["default"];

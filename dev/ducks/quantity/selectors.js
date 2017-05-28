@@ -40,6 +40,8 @@ export const getMin = (state, name, scaleName) => (getQuantityData(state, name).
 
 export const getMax = (state, name) => (getQuantityData(state, name).max)
 
+export const getSymbol = (state, name) => (getQuantityData(state, name).symbol)
+
 export const getAnimatable = (state, name) => (getQuantityData(state, name).hasOwnProperty('animation'))
 
 export const getPlaying = (state, name) => {

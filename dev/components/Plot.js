@@ -98,8 +98,7 @@ var Plot = (function (_React$Component) {
             props.coordSys = coordSys;
             props.boundingRect = { xMin: pos.x, xMax: pos.x + width, yMin: pos.y, yMax: pos.y - height };
             props.clipPath = plotId;
-            var children = childData.children;
-            return _react2["default"].createElement(type, props, children);
+            return _react2["default"].createElement(type, props);
          }
          var children = this.props.childData.map(createChild);
          return _react2["default"].createElement(

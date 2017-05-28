@@ -48,8 +48,7 @@ class Plot extends React.Component {
 			props.coordSys = coordSys
 			props.boundingRect = {xMin:pos.x,xMax:pos.x+width,yMin:pos.y,yMax:pos.y-height}
 			props.clipPath = plotId
-			var children = childData.children
-			return React.createElement(type, props, children)
+			return React.createElement(type, props)
 		}
 		var children = this.props.childData.map(createChild)
 		return (

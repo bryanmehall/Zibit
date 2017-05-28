@@ -18,74 +18,108 @@ var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _Value = require('./Value');
+
+var _Value2 = _interopRequireDefault(_Value);
+
+var _ValueOverlay = require('./ValueOverlay');
+
+var _ValueOverlay2 = _interopRequireDefault(_ValueOverlay);
+
+var _reactRedux = require("react-redux");
+
+var _redux = require('redux');
+
+var _ducksQuantityActions = require('../ducks/quantity/actions');
+
+var _ducksQuantityActions2 = _interopRequireDefault(_ducksQuantityActions);
+
+var _ducksWidgetSelectors = require('../ducks/widget/selectors');
+
 var Expression = (function (_React$Component) {
    _inherits(Expression, _React$Component);
-
-   //should this be textbox??
 
    function Expression(props) {
       _classCallCheck(this, Expression);
 
       _get(Object.getPrototypeOf(Expression.prototype), 'constructor', this).call(this, props);
-      this.offsets = [];
+      this.getWidth = this.getWidth.bind(this);
+      this.childProps = [];
+      this.offset = 0;
    }
 
    _createClass(Expression, [{
-      key: 'componentWillMount',
-      value: function componentWillMount() {
-         console.log('expression will mount', this.props.children);
+      key: 'getWidth',
+      value: function getWidth(bbox) {
+         console.log(bbox);
+         this.offset += bbox.width;
       }
    }, {
       key: 'componentDidMount',
-      value: function componentDidMount() {
-         console.log('expression did mount');
-      }
+      value: function componentDidMount() {}
    }, {
       key: 'render',
       value: function render() {
-         var exp = this;
-         var children = this.props.children || [],
-             len = children.length,
-             newChildren,
-             pos = this.props.pos,
-             currentWidth = pos.x;
-         if (children.length === 1) {
-            children = [children];
+         console.log('rendering expression');
+         var self = this;
+         var childTypes = {
+            Expression: Expression,
+            Value: _Value2['default']
+         };
+         function createChild(childData) {
+            var type = childTypes[childData.type];
+            var props = childData.props;
+            props.key = props.id;
+            props.pos = { x: 100, y: 100 };
+            props.ref = function (elem) {
+               console.log('rendering child', elem.props, self.offset);
+               elem.props.pos.x = self.offset;
+            };
+            props.isSubExpression = true;
+            props.getWidth = self.getWidth;
+            return _react2['default'].createElement(type, props);
          }
-         console.log(children);
 
-         function getWidth(width, index) {
-            //allow child to pass width to parent
-            console.log('gotWidth', index, width);
-            newChildren[index].props.pos.x = currentWidth;
-            exp.offsets.unshift(currentWidth);
-            currentWidth += width;
-         }
-
-         newChildren = [];
-         //for (var i= children.length-1; i>=0; i--){
-         //var child = children[i]
-         children.forEach(function (child, i) {
-            var element = _react2['default'].cloneElement(child, { key: child.key, index: i, pos: { x: exp.offsets[children.length - i - 1], y: exp.props.pos.y }, getWidth: getWidth });
-            newChildren.unshift(element);
-         });
-         console.log('renderng expression', newChildren);
+         var children = this.props.childData.map(createChild);
+         var pos = this.props.pos;
+         //if (this.props.isSubExpression){
+         //	return (
+         //		<tspan>
+         //			{children}
+         //		</tspan>
+         //	)
+         //} else {
          return (//render children with refs first
             _react2['default'].createElement(
                'g',
-               null,
-               _react2['default'].createElement(
-                  'text',
-                  { x: this.props.pos.x, y: this.props.pos.y, ref: 'expression' },
-                  newChildren
-               )
+               { transform: 'translate(' + pos.x + ',' + pos.y + ')' },
+               children
             )
          );
+         //}
       }
    }]);
 
    return Expression;
 })(_react2['default'].Component);
 
-exports['default'] = Expression;
+function mapStateToProps(state, props) {
+
+   return {
+      childData: (0, _ducksWidgetSelectors.getChildren)(state, props.id)
+   };
+}
+
+function mapDispatchToProps(dispatch) {
+   return {
+      /*setHighlight:(name, value) => {
+      	dispatch(QuantityActions.setHighlight(name, value))
+      },
+      setPlay:(name, value) => {
+      	dispatch(QuantityActions.setPlay(name, value))
+      }*/
+   };
+}
+
+exports['default'] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Expression);
 module.exports = exports['default'];

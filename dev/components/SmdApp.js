@@ -71,15 +71,15 @@ var SmdApp = (function (_React$Component) {
          var actions = this.props.actions;
 
          var childTypes = {
-            "Plot": _Plot2["default"]
+            "Plot": _Plot2["default"],
+            "Expression": _Expression2["default"]
          };
 
          function createChild(childData) {
             var type = childTypes[childData.type];
             var props = childData.props;
             props.key = props.id;
-            var children = childData.children;
-            return _react2["default"].createElement(type, props, children);
+            return _react2["default"].createElement(type, props);
          }
          var children = this.props.childData.map(createChild);
          var app = this;
@@ -108,14 +108,7 @@ var SmdApp = (function (_React$Component) {
                   _react2["default"].createElement("feComposite", { operator: "over", "in": "SourceGraphic", in2: "highlight" })
                )
             ),
-            children,
-            _react2["default"].createElement(
-               _Expression2["default"],
-               { pos: { x: 20, y: 20 } },
-               _react2["default"].createElement(_Value2["default"], { quantity: "t", key: "t" }),
-               _react2["default"].createElement(_Value2["default"], { quantity: "x", key: "x" }),
-               _react2["default"].createElement(_Value2["default"], { quantity: "y", key: "y" })
-            )
+            children
          );
       }
    }]);

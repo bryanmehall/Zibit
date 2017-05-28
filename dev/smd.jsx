@@ -15,7 +15,35 @@ const initialAppState = {
 		app:{
 			type:'SmdApp',
 			props:{},
-			children:['massPlot','forcingPlot','posPlot']
+			children:['massPlot','forcingPlot', 'posPlot','eq']
+		},
+		eq:{
+			type:'Expression',
+			props:{
+				pos:{x:50,y:50}
+			},
+			children:['xVal', 'tVal', 'yVal']
+		},
+		xVal:{
+			type:'Value',
+			props:{
+				quantity:'x',
+				active:true
+			}
+		},
+		yVal:{
+			type:'Value',
+			props:{
+				quantity:'y',
+				active:false
+			}
+		},
+		tVal:{
+			type:'Value',
+			props:{
+				quantity:'t',
+				active:false
+			}
 		},
 		massPlot:{
 			type:'Plot',

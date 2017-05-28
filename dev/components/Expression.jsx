@@ -1,52 +1,87 @@
-import React from "react";
-class Expression extends React.Component{//should this be textbox??
+import React from "react"
+import Value from './Value'
+import ValueOverlay from './ValueOverlay'
+import {connect} from "react-redux"
+import { bindActionCreators } from 'redux'
+import QuantityActions from '../ducks/quantity/actions'
+import {getChildren} from '../ducks/widget/selectors'
+
+class Expression extends React.Component{
 	constructor(props){
 		super(props)
-		this.offsets = []
+		this.getWidth = this.getWidth.bind(this)
+		this.childProps = []
+		this.offset = 0
 	}
-	componentWillMount(){
-		console.log('expression will mount', this.props.children)
+	getWidth(bbox){
+		console.log(bbox)
+		this.offset += bbox.width
+
 	}
+
 	componentDidMount(){
-		console.log('expression did mount')
 	}
 
 	render(){
-		var exp = this
-		var children = this.props.children || [],
-			len = children.length,
-			newChildren,
-			pos = this.props.pos,
-			currentWidth = pos.x
-		if (children.length === 1){
-			children = [children]
+		console.log('rendering expression')
+		var self = this
+		var childTypes = {
+			Expression,
+			Value
 		}
-		console.log(children)
-
-
-		function getWidth(width, index){//allow child to pass width to parent
-			console.log('gotWidth', index, width)
-			newChildren[index].props.pos.x = currentWidth
-			exp.offsets.unshift(currentWidth)
-			currentWidth+=width
+		function createChild(childData){
+			var type = childTypes[childData.type]
+			var props = childData.props
+			props.key = props.id
+			props.pos = {x:100, y:100}
+			props.ref = (elem) => {
+				console.log('rendering child',elem.props, self.offset)
+				elem.props.pos.x = self.offset
+			}
+			props.isSubExpression = true
+			props.getWidth = self.getWidth
+			return React.createElement(type, props)
 		}
 
-		newChildren = []
-		//for (var i= children.length-1; i>=0; i--){
-			//var child = children[i]
-		children.forEach(function(child,i){
-			var element = React.cloneElement(child, { key:child.key, index:i, pos:{x:exp.offsets[children.length-i-1], y:exp.props.pos.y}, getWidth:getWidth})
-			newChildren.unshift(element)
-		})
-		console.log('renderng expression', newChildren)
-		return (//render children with refs first
-			<g>
-				<text x={this.props.pos.x} y={this.props.pos.y}  ref='expression'>
-					{newChildren}
-				</text>
-			</g>
-		)
+		var children = this.props.childData.map(createChild)
+		var pos = this.props.pos
+		//if (this.props.isSubExpression){
+		//	return (
+		//		<tspan>
+		//			{children}
+		//		</tspan>
+		//	)
+		//} else {
+			return (//render children with refs first
+				<g transform={'translate('+pos.x+','+pos.y+')'}>
+						{children}
+				</g>
+			)
+		//}
+
 	  }
 }
 
-export default Expression;
+
+function mapStateToProps(state, props) {
+
+	return {
+		childData: getChildren(state, props.id)
+	}
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		/*setHighlight:(name, value) => {
+			dispatch(QuantityActions.setHighlight(name, value))
+		},
+		setPlay:(name, value) => {
+			dispatch(QuantityActions.setPlay(name, value))
+		}*/
+	};
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Expression);
