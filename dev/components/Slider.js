@@ -35,7 +35,6 @@ var Slider = (function (_React$Component) {
       _classCallCheck(this, Slider);
 
       _get(Object.getPrototypeOf(Slider.prototype), 'constructor', this).call(this, props);
-      this.scale = this.props.scale;
       this.width = 150;
       this.mouseDown = this.mouseDown.bind(this);
       this.pxPerUnit = this.width / (this.scale.max - this.scale.min);
@@ -72,6 +71,12 @@ var Slider = (function (_React$Component) {
    }, {
       key: 'render',
       value: function render() {
+         var scale = new _Scale2['default']({
+            min: quantity.min,
+            max: quantity.max,
+            tMin: 0,
+            tMax: this.width
+         });
          var handleStyle = {
             "strokeWidth": "2",
             "stroke": "gray",

@@ -9,7 +9,11 @@ from 'numeric'
 
 //define dependent variables --should be pure functions
 function x(t) { //could depend on numeric spline
-	return 4 * Math.cos(t / 4)
+	return 4 * Math.cos(t * 5)
+}
+
+function s(t) {
+	return 0
 }
 
 function y(sol, t) {
@@ -84,7 +88,7 @@ export const getValue = function (state, name, given) {
 		break;
 	case 's':
 		var t = given.t || getValue(state, 't')
-		return t
+		return s(t)
 	case "y":
 		var t = given.t || getValue(state, 't')
 		return getValue(state, 'y0')

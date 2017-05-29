@@ -26,6 +26,8 @@ class Expression extends React.Component{
 
 	render(){
 		var self = this
+		var subPos = this.state.subPositions
+		var positioned = !(Object.keys(subPos).length === 0 && subPos.constructor === Object)
 		var childTypes = {
 			Expression,
 			Value
@@ -34,20 +36,18 @@ class Expression extends React.Component{
 			var type = childTypes[childData.type]
 			var props = childData.props
 			props.key = props.id
-			props.pos = self.state.subPositions[props.id]
+			props.pos = subPos[props.id]
 			props.bbox = self.bBoxes[props.id]
 			props.isSubExpression = true
 			props.getWidth = self.getWidth
 			return React.createElement(type, props)
 		}
 		//define children in order to get widths and in reverse order for rendering
-		var subPos = this.state.subPositions
-		if (Object.keys(subPos).length === 0 && subPos.constructor === Object){//if subPositins is empty
-			console.log('new')
-			var children = this.props.childData.map(createChild)
-		} else {
-			console.log('rerender')
+
+		if (positioned){//if subPositins is empty
 			var children = this.props.childData.map(createChild).reverse()
+		} else {
+			var children = this.props.childData.map(createChild)
 		}
 
 		var pos = this.props.pos

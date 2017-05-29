@@ -13,7 +13,7 @@ class Value extends React.Component {
 		super(props)
 		this.mouseOver = this.mouseOver.bind(this)
 		this.mouseOut = this.mouseOut.bind(this)
-
+		this.arrow = calcArrow({x:100, y:100}, 100)
 		this.textStyle = {
       		fontStyle: "italic",
 			fontFamily:'MathJax_Main,"Times New Roman",Times,serif',
@@ -65,37 +65,39 @@ class Value extends React.Component {
 				filter={filter}
 				x={pos.x}
 				y={pos.y}
-				onMouseOver={this.mouseOver}
-				onMouseOut={this.mouseOut}
+				onMouseEnter={this.mouseOver}
 			>
 				{this.props.symbol}
 			</text>
 		)
 
     	var overlay = (
-			<g transform = {'translate('+pos.x+','+pos.y+')'}>
+			<g
+				transform = {'translate('+pos.x+','+pos.y+')'}
+				>
 				<g>
 					<text
-						x={bbox.width}
+						x={bbox.width+5}
 						y={0}
-						style={this.textStyle}
+						style={this.numberStyle}
 						filter="url(#textBackground)">
-						{'='+(Math.round(this.props.quantityValue*100)/100)}
+						{'= '+(Math.round(this.props.quantityValue*100)/100)}
 					</text>
-
 				</g>
-			<Animation
-						onClick={function(playing){
-							self.props.setPlay(self.props.quantity, playing)
-						}}
-						playing={this.props.playing}
-						></Animation>
-			<polygon fill='gray' points={this.arrow} />
-        </g>
+
+				<Animation
+					pos={{x:0, y:10}}
+					quantity = {this.props.quantity}
+					playing={this.props.playing}
+				></Animation>
+				<path fill='gray' d={this.arrow} />
+        	</g>
 		)
     
     if (this.props.highlighted){
-		return <g>
+		return <g
+				   onMouseLeave={this.mouseOut}
+				   >
 			{overlay}
 			{text}
 
@@ -131,7 +133,7 @@ function mapStateToProps(state, props) {
 		highlighted:quantityData.highlighted,
 		quantityValue: getValue(state, props.quantity),
 		//animatable:getAnimatable(state, props.quantity),
-		//playing: getPlaying(state, props.quantity)
+		playing: getPlaying(state, props.quantity)
 	};
 }
 

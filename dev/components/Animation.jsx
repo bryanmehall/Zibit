@@ -1,24 +1,50 @@
 import React from "react";
+import {connect} from "react-redux"
+import { bindActionCreators } from 'redux'
+import QuantityActions from '../ducks/quantity/actions'
+import {getValue, getQuantityData, getAnimatable, getPlaying} from '../ducks/quantity/selectors'
 
 class Animation extends React.Component {
 	constructor(props){
 		super(props)
+		this.animate = this.animate.bind(this)
+	}
+
+	animate() {
+		var t0 = new Date()
+		var v0 = this.props.value
+		var self = this
+
+		var step = function(){
+			var globalT = new Date()
+			var t = (globalT-t0)/1000
+			var value = t+v0
+			self.props.setValue(self.props.quantity, value)
+			console.log('updating', value)
+			if (self.props.playing){
+				window.requestAnimationFrame(step)
+			}
+		}
+		window.requestAnimationFrame(step)
 	}
 
 	render() {
-		console.log('play', this.props.playing)
+		var pos = this.props.pos
 		var self = this
-		var pause = "M11,10 L18,13.74 18,22.28 11,26 M18,13.74 L26,18 26,18 18,22.28"
-		var play = "M11,10 L17,10 17,26 11,26 M20,10 L26,10 26,26 20,26"
+		var pause = "M0,0 L9,5 9,15 0,20 M9,5 L18,10 18,10 9,15"
+		var play = "M0,0 L7,0 7,20 0,20 M11,0 L18,0 18,20 11,20"
 		var fromPath = this.props.playing ? pause : play
 		var toPath = this.props.playing ? play : pause
-		console.log(fromPath)
 		return (
 			<path
+				transform = {'matrix(0.8 0 0 0.8 '+pos.x+' '+pos.y+')'}
 				d={toPath}
 				pointerEvents="bounding-box"
 				fill='gray'
-				onClick={function(){self.props.onClick(!self.props.playing)}}
+				onClick={function(){
+					self.props.setPlay(self.props.quantity, !self.props.playing)
+					self.animate()
+				}}
 				>
 
 				<animate
@@ -36,4 +62,34 @@ class Animation extends React.Component {
 		)
 	}
 }
-export default Animation
+
+function mapStateToProps(state, props) {
+	var quantityData = getQuantityData(state, props.quantity)
+	return {
+		playing: getPlaying(state, props.quantity),
+		value: getValue(state, props.quantity)
+
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		setHighlight:(name, value) => {
+			dispatch(QuantityActions.setHighlight(name, value))
+		},
+		setActive:(name, value) => {
+			dispatch(WidgetActions.setActive(name, value))
+		},
+		setPlay:(name, value) => {
+			dispatch(QuantityActions.setPlay(name, value))
+		},
+		setValue:(name, value)=> {
+			dispatch(QuantityActions.setValue(name, value))
+		}
+	};
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Animation);

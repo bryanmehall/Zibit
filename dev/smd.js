@@ -144,8 +144,8 @@ var initialAppState = {
          animation: { playing: false }
       },
       imx: { value: 0, min: -10, max: 10, abstractions: 0, independent: false, symbol: 'im(x)', highlighted: false }, //imaginary component of x
-      x: { value: 0, min: -10, max: 40, abstractions: 0, symbol: 'xx', highlighted: false }, //real component of x
-      y: { value: 0, min: -30, max: 20, symbol: 'yyy', highlighted: false }, //position of mass
+      x: { value: 0, min: -10, max: 40, abstractions: 0, symbol: 'x', highlighted: false }, //real component of x
+      y: { value: 0, min: -30, max: 20, symbol: 'y', highlighted: false }, //position of mass
       k: { value: 50, min: 0, max: 100, symbol: 'k', abstractions: 10, independent: true, highlighted: false }, //spring constant
       m: { value: 1, min: 0, max: 30, symbol: 'm', independent: true, highlighted: false }, //mass
       y0: { value: 0, min: -20, max: 20, symbol: 'y0', independent: true, highlighted: false }, //initial mass position

@@ -18,6 +18,16 @@ var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = require("react-redux");
+
+var _redux = require('redux');
+
+var _ducksQuantityActions = require('../ducks/quantity/actions');
+
+var _ducksQuantityActions2 = _interopRequireDefault(_ducksQuantityActions);
+
+var _ducksQuantitySelectors = require('../ducks/quantity/selectors');
+
 var Animation = (function (_React$Component) {
    _inherits(Animation, _React$Component);
 
@@ -25,26 +35,47 @@ var Animation = (function (_React$Component) {
       _classCallCheck(this, Animation);
 
       _get(Object.getPrototypeOf(Animation.prototype), "constructor", this).call(this, props);
+      this.animate = this.animate.bind(this);
    }
 
    _createClass(Animation, [{
+      key: "animate",
+      value: function animate() {
+         var t0 = new Date();
+         var v0 = this.props.value;
+         var self = this;
+
+         var step = function step() {
+            var globalT = new Date();
+            var t = (globalT - t0) / 1000;
+            var value = t + v0;
+            self.props.setValue(self.props.quantity, value);
+            console.log('updating', value);
+            if (self.props.playing) {
+               window.requestAnimationFrame(step);
+            }
+         };
+         window.requestAnimationFrame(step);
+      }
+   }, {
       key: "render",
       value: function render() {
-         console.log('play', this.props.playing);
+         var pos = this.props.pos;
          var self = this;
-         var pause = "M11,10 L18,13.74 18,22.28 11,26 M18,13.74 L26,18 26,18 18,22.28";
-         var play = "M11,10 L17,10 17,26 11,26 M20,10 L26,10 26,26 20,26";
+         var pause = "M0,0 L9,5 9,15 0,20 M9,5 L18,10 18,10 9,15";
+         var play = "M0,0 L7,0 7,20 0,20 M11,0 L18,0 18,20 11,20";
          var fromPath = this.props.playing ? pause : play;
          var toPath = this.props.playing ? play : pause;
-         console.log(fromPath);
          return _react2["default"].createElement(
             "path",
             {
+               transform: 'matrix(0.8 0 0 0.8 ' + pos.x + ' ' + pos.y + ')',
                d: toPath,
                pointerEvents: "bounding-box",
                fill: "gray",
                onClick: function () {
-                  self.props.onClick(!self.props.playing);
+                  self.props.setPlay(self.props.quantity, !self.props.playing);
+                  self.animate();
                }
             },
             _react2["default"].createElement("animate", {
@@ -65,5 +96,31 @@ var Animation = (function (_React$Component) {
    return Animation;
 })(_react2["default"].Component);
 
-exports["default"] = Animation;
+function mapStateToProps(state, props) {
+   var quantityData = (0, _ducksQuantitySelectors.getQuantityData)(state, props.quantity);
+   return {
+      playing: (0, _ducksQuantitySelectors.getPlaying)(state, props.quantity),
+      value: (0, _ducksQuantitySelectors.getValue)(state, props.quantity)
+
+   };
+}
+
+function mapDispatchToProps(dispatch) {
+   return {
+      setHighlight: function setHighlight(name, value) {
+         dispatch(_ducksQuantityActions2["default"].setHighlight(name, value));
+      },
+      setActive: function setActive(name, value) {
+         dispatch(WidgetActions.setActive(name, value));
+      },
+      setPlay: function setPlay(name, value) {
+         dispatch(_ducksQuantityActions2["default"].setPlay(name, value));
+      },
+      setValue: function setValue(name, value) {
+         dispatch(_ducksQuantityActions2["default"].setValue(name, value));
+      }
+   };
+}
+
+exports["default"] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Animation);
 module.exports = exports["default"];

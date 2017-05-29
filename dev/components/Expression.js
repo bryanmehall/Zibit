@@ -64,6 +64,8 @@ var Expression = (function (_React$Component) {
       key: 'render',
       value: function render() {
          var self = this;
+         var subPos = this.state.subPositions;
+         var positioned = !(Object.keys(subPos).length === 0 && subPos.constructor === Object);
          var childTypes = {
             Expression: Expression,
             Value: _Value2['default']
@@ -72,21 +74,19 @@ var Expression = (function (_React$Component) {
             var type = childTypes[childData.type];
             var props = childData.props;
             props.key = props.id;
-            props.pos = self.state.subPositions[props.id];
+            props.pos = subPos[props.id];
             props.bbox = self.bBoxes[props.id];
             props.isSubExpression = true;
             props.getWidth = self.getWidth;
             return _react2['default'].createElement(type, props);
          }
          //define children in order to get widths and in reverse order for rendering
-         var subPos = this.state.subPositions;
-         if (Object.keys(subPos).length === 0 && subPos.constructor === Object) {
+
+         if (positioned) {
             //if subPositins is empty
-            console.log('new');
-            var children = this.props.childData.map(createChild);
-         } else {
-            console.log('rerender');
             var children = this.props.childData.map(createChild).reverse();
+         } else {
+            var children = this.props.childData.map(createChild);
          }
 
          var pos = this.props.pos;

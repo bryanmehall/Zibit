@@ -6,7 +6,6 @@ class Slider extends React.Component {
 	//properties
 	constructor(props){
 		super(props);
-		this.scale = this.props.scale
 		this.width = 150;
 		this.mouseDown = this.mouseDown.bind(this)
 		this.pxPerUnit = this.width/(this.scale.max-this.scale.min)
@@ -39,6 +38,12 @@ class Slider extends React.Component {
 		}
 	}
 	render() {
+		var scale = new Scale({
+			min:quantity.min,
+			max:quantity.max,
+			tMin:0,
+			tMax:this.width
+		})
 		var handleStyle = {
 			"strokeWidth":"2",
 			"stroke":"gray",

@@ -12,14 +12,16 @@ const setValue = (name, value) => ({
 	}
 })
 
-const setPlay = (name, value) => ({
-	type: "ANIM_PLAY_PAUSE",
-	payload: {
-		name: name,
-		value: value
+const setPlay = (name, value) => {
+	return {
+		type: "ANIM_PLAY_PAUSE",
+		payload: {
+			name: name,
+			value: value
 
+		}
 	}
-})
+}
 
 function invert(tValue, scale) {
 	var range = scale.max - scale.min;

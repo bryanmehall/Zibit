@@ -33,10 +33,10 @@ const quantityReducer = (state = {
 
 	case 'ANIM_PLAY_PAUSE':
 		var animObj = state.animation
-		var time = new Date()
+		var t0 = new Date()
 		var newAnimObject = Object.assign({}, animObj, {
 			playing: action.payload.value,
-			startTime: time
+			startTime: t0
 		})
 		return Object.assign({}, state, {
 			animation: newAnimObject

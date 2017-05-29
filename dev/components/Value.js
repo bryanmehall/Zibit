@@ -53,7 +53,7 @@ var Value = (function (_React$Component) {
       _get(Object.getPrototypeOf(Value.prototype), "constructor", this).call(this, props);
       this.mouseOver = this.mouseOver.bind(this);
       this.mouseOut = this.mouseOut.bind(this);
-
+      this.arrow = calcArrow({ x: 100, y: 100 }, 100);
       this.textStyle = {
          fontStyle: "italic",
          fontFamily: 'MathJax_Main,"Times New Roman",Times,serif',
@@ -112,41 +112,43 @@ var Value = (function (_React$Component) {
                filter: filter,
                x: pos.x,
                y: pos.y,
-               onMouseOver: this.mouseOver,
-               onMouseOut: this.mouseOut
+               onMouseEnter: this.mouseOver
             },
             this.props.symbol
          );
 
          var overlay = _react2["default"].createElement(
             "g",
-            { transform: 'translate(' + pos.x + ',' + pos.y + ')' },
+            {
+               transform: 'translate(' + pos.x + ',' + pos.y + ')'
+            },
             _react2["default"].createElement(
                "g",
                null,
                _react2["default"].createElement(
                   "text",
                   {
-                     x: bbox.width,
+                     x: bbox.width + 5,
                      y: 0,
-                     style: this.textStyle,
+                     style: this.numberStyle,
                      filter: "url(#textBackground)" },
-                  '=' + Math.round(this.props.quantityValue * 100) / 100
+                  '= ' + Math.round(this.props.quantityValue * 100) / 100
                )
             ),
             _react2["default"].createElement(_Animation2["default"], {
-               onClick: function (playing) {
-                  self.props.setPlay(self.props.quantity, playing);
-               },
+               pos: { x: 0, y: 10 },
+               quantity: this.props.quantity,
                playing: this.props.playing
             }),
-            _react2["default"].createElement("polygon", { fill: "gray", points: this.arrow })
+            _react2["default"].createElement("path", { fill: "gray", d: this.arrow })
          );
 
          if (this.props.highlighted) {
             return _react2["default"].createElement(
                "g",
-               null,
+               {
+                  onMouseLeave: this.mouseOut
+               },
                overlay,
                text
             );
@@ -188,12 +190,12 @@ function mapStateToProps(state, props) {
       symbol: quantityData.symbol,
       //independent:quantityData.independent,
       highlighted: quantityData.highlighted,
-      quantityValue: (0, _ducksQuantitySelectors.getValue)(state, props.quantity)
+      quantityValue: (0, _ducksQuantitySelectors.getValue)(state, props.quantity),
+      //animatable:getAnimatable(state, props.quantity),
+      playing: (0, _ducksQuantitySelectors.getPlaying)(state, props.quantity)
    };
 }
 
-//animatable:getAnimatable(state, props.quantity),
-//playing: getPlaying(state, props.quantity)
 function mapDispatchToProps(dispatch) {
    return {
       setHighlight: function setHighlight(name, value) {
