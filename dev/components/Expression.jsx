@@ -11,39 +11,45 @@ class Expression extends React.Component{
 		super(props)
 		this.getWidth = this.getWidth.bind(this)
 		this.childProps = []
+		this.bBoxes = {}
+		this.state = {subPositions:{}}
 		this.offset = 0
 	}
-	getWidth(bbox){
-		console.log(bbox)
+
+	getWidth(bbox, id){
+		var newSubPositions = Object.assign(this.state.subPositions, {[id]:{x:this.offset, y:0}})
 		this.offset += bbox.width
-
+		this.bBoxes[id] = bbox
+		this.setState(newSubPositions)
 	}
 
-	componentDidMount(){
-	}
 
 	render(){
-		console.log('rendering expression')
 		var self = this
 		var childTypes = {
 			Expression,
 			Value
 		}
-		function createChild(childData){
+		function createChild(childData,i){
 			var type = childTypes[childData.type]
 			var props = childData.props
 			props.key = props.id
-			props.pos = {x:100, y:100}
-			props.ref = (elem) => {
-				console.log('rendering child',elem.props, self.offset)
-				elem.props.pos.x = self.offset
-			}
+			props.pos = self.state.subPositions[props.id]
+			props.bbox = self.bBoxes[props.id]
 			props.isSubExpression = true
 			props.getWidth = self.getWidth
 			return React.createElement(type, props)
 		}
+		//define children in order to get widths and in reverse order for rendering
+		var subPos = this.state.subPositions
+		if (Object.keys(subPos).length === 0 && subPos.constructor === Object){//if subPositins is empty
+			console.log('new')
+			var children = this.props.childData.map(createChild)
+		} else {
+			console.log('rerender')
+			var children = this.props.childData.map(createChild).reverse()
+		}
 
-		var children = this.props.childData.map(createChild)
 		var pos = this.props.pos
 		//if (this.props.isSubExpression){
 		//	return (

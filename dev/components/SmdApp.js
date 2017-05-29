@@ -101,10 +101,10 @@ var SmdApp = (function (_React$Component) {
                _react2["default"].createElement(
                   "filter",
                   { id: "textBackground", primitiveUnits: "userSpaceOnUse" },
-                  _react2["default"].createElement("feMorphology", { operator: "dilate", radius: "20", "in": "SourceAlpha", result: "expanded" }),
+                  _react2["default"].createElement("feMorphology", { operator: "dilate", radius: "100", "in": "SourceAlpha", result: "expanded" }),
                   _react2["default"].createElement("feFlood", { floodColor: "white", result: "highlightColor" }),
                   _react2["default"].createElement("feComposite", { "in": "highlightColor", in2: "expanded", operator: "in", result: "expandedColored" }),
-                  _react2["default"].createElement("feGaussianBlur", { stdDeviation: "2", "in": "expandedColored", result: "highlight" }),
+                  _react2["default"].createElement("feGaussianBlur", { stdDeviation: "1", "in": "expandedColored", result: "highlight" }),
                   _react2["default"].createElement("feComposite", { operator: "over", "in": "SourceGraphic", in2: "highlight" })
                )
             ),

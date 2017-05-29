@@ -41,10 +41,10 @@ class SmdApp extends React.Component {
 				 	<feComposite operator="over" in="SourceGraphic" in2="highlight"/>
 				 </filter>
 				<filter id="textBackground" primitiveUnits="userSpaceOnUse">
-					<feMorphology operator="dilate" radius="20" in="SourceAlpha" result="expanded"/>
+					<feMorphology operator="dilate" radius="100" in="SourceAlpha" result="expanded"/>
 					<feFlood floodColor="white" result="highlightColor"/>
 					<feComposite in="highlightColor" in2="expanded" operator="in" result="expandedColored" />
-					<feGaussianBlur stdDeviation="2" in="expandedColored" result="highlight"/>
+					<feGaussianBlur stdDeviation="1" in="expandedColored" result="highlight"/>
 				 	<feComposite operator="over" in="SourceGraphic" in2="highlight"/>
 				 </filter>
 			</defs>

@@ -88,38 +88,23 @@ var Value = (function (_React$Component) {
          e.stopPropagation();
          this.props.setHighlight(this.props.quantity, false);
       }
-
-      /*componentWillMount(){
-      	var dummyElement = document.createElementNS( 'http://www.w3.org/2000/svg','text')
-      		dummyElement.textContent = this.props.symbol
-      		dummyElement.style = "font-style: italic; font-family:'MathJax_Main,Times,serif'; font-size:1.6em;"
-      		document.getElementById('hiddenSvg').appendChild(dummyElement)
-      		this.width = dummyElement.getBBox().width
-      		console.log('value will mount', this.props.index, this.width)
-      		this.props.getWidth(this.width, this.props.index)
-      }*/
-
    }, {
       key: "componentDidMount",
-      value: function componentDidMount() {}
+      value: function componentDidMount() {
+         if (this.props.pos === undefined) {
+            var bBox = _reactDom2["default"].findDOMNode(this).getBBox();
+            this.props.getWidth(bBox, this.props.id);
+         }
+      }
    }, {
       key: "render",
       value: function render() {
-         var _this = this;
-
-         console.log('rendering value');
          var self = this;
-         var pos = this.props.pos;
+         var pos = this.props.pos || { x: 200, y: 200 };
+         var bbox = this.props.bbox || { width: 0 };
+
          var filter = this.props.highlighted ? "url(#highlight)" : null;
-         var textRef = function textRef(elem) {
-            console.log('ref value');
-            if (elem !== null) {
-               //react sets elem to null if element is not re-rendered
-               _this.props.getWidth(elem.getBBox());
-               console.log('pos', _this.props.pos.x);
-               elem.setAttribute('x', _this.props.pos.x);
-            }
-         };
+
          var text = _react2["default"].createElement(
             "text",
             {
@@ -128,43 +113,46 @@ var Value = (function (_React$Component) {
                x: pos.x,
                y: pos.y,
                onMouseOver: this.mouseOver,
-               onMouseOut: this.mouseOut,
-               ref: textRef
+               onMouseOut: this.mouseOut
             },
-            this.props.quantity
+            this.props.symbol
          );
-         /*
-           	var overlay = (
-         	<g
 
-         	>
-         		<g>
-         					<text
-         				x={this.props.pos.x+this.width}
-         				y={this.props.pos.y}
-         				style={this.textStyle}
-         				filter="url(#textBackground)">
-         				{' = '+(Math.round(this.props.quantityValue*100)/100)}
-         			</text>
-         			</g>
-         	<Animation
-         				onClick={function(playing){
-         					self.props.setPlay(self.props.quantity, playing)
-         				}}
-         				playing={this.props.playing}
-         				></Animation>
-         	{text}
-         	<polygon fill='gray' points={this.arrow} />
-                 </g>
-         )
+         var overlay = _react2["default"].createElement(
+            "g",
+            { transform: 'translate(' + pos.x + ',' + pos.y + ')' },
+            _react2["default"].createElement(
+               "g",
+               null,
+               _react2["default"].createElement(
+                  "text",
+                  {
+                     x: bbox.width,
+                     y: 0,
+                     style: this.textStyle,
+                     filter: "url(#textBackground)" },
+                  '=' + Math.round(this.props.quantityValue * 100) / 100
+               )
+            ),
+            _react2["default"].createElement(_Animation2["default"], {
+               onClick: function (playing) {
+                  self.props.setPlay(self.props.quantity, playing);
+               },
+               playing: this.props.playing
+            }),
+            _react2["default"].createElement("polygon", { fill: "gray", points: this.arrow })
+         );
 
-           if (this.props.highlighted){
-         return <g>
-         	{overlay}
-         </g>
-         } else {*/
-         return text;
-         //}
+         if (this.props.highlighted) {
+            return _react2["default"].createElement(
+               "g",
+               null,
+               overlay,
+               text
+            );
+         } else {
+            return text;
+         }
       }
    }]);
 

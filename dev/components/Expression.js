@@ -10,6 +10,8 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
@@ -45,42 +47,48 @@ var Expression = (function (_React$Component) {
       _get(Object.getPrototypeOf(Expression.prototype), 'constructor', this).call(this, props);
       this.getWidth = this.getWidth.bind(this);
       this.childProps = [];
+      this.bBoxes = {};
+      this.state = { subPositions: {} };
       this.offset = 0;
    }
 
    _createClass(Expression, [{
       key: 'getWidth',
-      value: function getWidth(bbox) {
-         console.log(bbox);
+      value: function getWidth(bbox, id) {
+         var newSubPositions = Object.assign(this.state.subPositions, _defineProperty({}, id, { x: this.offset, y: 0 }));
          this.offset += bbox.width;
+         this.bBoxes[id] = bbox;
+         this.setState(newSubPositions);
       }
-   }, {
-      key: 'componentDidMount',
-      value: function componentDidMount() {}
    }, {
       key: 'render',
       value: function render() {
-         console.log('rendering expression');
          var self = this;
          var childTypes = {
             Expression: Expression,
             Value: _Value2['default']
          };
-         function createChild(childData) {
+         function createChild(childData, i) {
             var type = childTypes[childData.type];
             var props = childData.props;
             props.key = props.id;
-            props.pos = { x: 100, y: 100 };
-            props.ref = function (elem) {
-               console.log('rendering child', elem.props, self.offset);
-               elem.props.pos.x = self.offset;
-            };
+            props.pos = self.state.subPositions[props.id];
+            props.bbox = self.bBoxes[props.id];
             props.isSubExpression = true;
             props.getWidth = self.getWidth;
             return _react2['default'].createElement(type, props);
          }
+         //define children in order to get widths and in reverse order for rendering
+         var subPos = this.state.subPositions;
+         if (Object.keys(subPos).length === 0 && subPos.constructor === Object) {
+            //if subPositins is empty
+            console.log('new');
+            var children = this.props.childData.map(createChild);
+         } else {
+            console.log('rerender');
+            var children = this.props.childData.map(createChild).reverse();
+         }
 
-         var children = this.props.childData.map(createChild);
          var pos = this.props.pos;
          //if (this.props.isSubExpression){
          //	return (

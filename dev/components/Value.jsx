@@ -14,7 +14,6 @@ class Value extends React.Component {
 		this.mouseOver = this.mouseOver.bind(this)
 		this.mouseOut = this.mouseOut.bind(this)
 
-
 		this.textStyle = {
       		fontStyle: "italic",
 			fontFamily:'MathJax_Main,"Times New Roman",Times,serif',
@@ -46,33 +45,20 @@ class Value extends React.Component {
 		this.props.setHighlight(this.props.quantity, false)
 	}
 
-	/*componentWillMount(){
-		var dummyElement = document.createElementNS( 'http://www.w3.org/2000/svg','text')
-			dummyElement.textContent = this.props.symbol
-			dummyElement.style = "font-style: italic; font-family:'MathJax_Main,Times,serif'; font-size:1.6em;"
-			document.getElementById('hiddenSvg').appendChild(dummyElement)
-			this.width = dummyElement.getBBox().width
-			console.log('value will mount', this.props.index, this.width)
-			this.props.getWidth(this.width, this.props.index)
-	}*/
-
 	componentDidMount(){
-
+		if (this.props.pos === undefined){
+			var bBox = ReactDOM.findDOMNode(this).getBBox()
+			this.props.getWidth(bBox, this.props.id)
+		}
 	}
 
 	render(){
-		console.log('rendering value')
 		var self = this
-		var pos = this.props.pos
+		var pos = this.props.pos || {x:200, y:200}
+		var bbox = this.props.bbox || {width:0}
+
 		var filter = (this.props.highlighted) ? "url(#highlight)": null
-		var textRef = (elem)=>{
-			console.log('ref value')
-			if (elem !== null){//react sets elem to null if element is not re-rendered
-				this.props.getWidth(elem.getBBox())
-				console.log('pos', this.props.pos.x)
-				elem.setAttribute('x', this.props.pos.x)
-			}
-		}
+
 		var text = (
 			<text
 				style={this.textStyle}
@@ -81,25 +67,20 @@ class Value extends React.Component {
 				y={pos.y}
 				onMouseOver={this.mouseOver}
 				onMouseOut={this.mouseOut}
-				ref={textRef}
 			>
-				{this.props.quantity}
+				{this.props.symbol}
 			</text>
 		)
-		/*
+
     	var overlay = (
-			<g
-
-			>
+			<g transform = {'translate('+pos.x+','+pos.y+')'}>
 				<g>
-
-
 					<text
-						x={this.props.pos.x+this.width}
-						y={this.props.pos.y}
+						x={bbox.width}
+						y={0}
 						style={this.textStyle}
 						filter="url(#textBackground)">
-						{' = '+(Math.round(this.props.quantityValue*100)/100)}
+						{'='+(Math.round(this.props.quantityValue*100)/100)}
 					</text>
 
 				</g>
@@ -109,20 +90,19 @@ class Value extends React.Component {
 						}}
 						playing={this.props.playing}
 						></Animation>
-			{text}
 			<polygon fill='gray' points={this.arrow} />
-
-
         </g>
 		)
     
     if (this.props.highlighted){
 		return <g>
 			{overlay}
+			{text}
+
 		</g>
-	} else {*/
+	} else {
 		return text
-	//}
+	}
   }
 }
 
