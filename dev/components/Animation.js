@@ -35,29 +35,9 @@ var Animation = (function (_React$Component) {
       _classCallCheck(this, Animation);
 
       _get(Object.getPrototypeOf(Animation.prototype), "constructor", this).call(this, props);
-      this.animate = this.animate.bind(this);
    }
 
    _createClass(Animation, [{
-      key: "animate",
-      value: function animate() {
-         var t0 = new Date();
-         var v0 = this.props.value;
-         var self = this;
-
-         var step = function step() {
-            var globalT = new Date();
-            var t = (globalT - t0) / 1000;
-            var value = t + v0;
-            self.props.setValue(self.props.quantity, value);
-            console.log('updating', value);
-            if (self.props.playing) {
-               window.requestAnimationFrame(step);
-            }
-         };
-         window.requestAnimationFrame(step);
-      }
-   }, {
       key: "render",
       value: function render() {
          var pos = this.props.pos;
@@ -75,7 +55,6 @@ var Animation = (function (_React$Component) {
                fill: "gray",
                onClick: function () {
                   self.props.setPlay(self.props.quantity, !self.props.playing);
-                  self.animate();
                }
             },
             _react2["default"].createElement("animate", {

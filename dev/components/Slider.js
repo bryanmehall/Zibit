@@ -57,6 +57,7 @@ var Slider = (function (_React$Component) {
          var mouseUp = function mouseUp(e) {
             document.removeEventListener('mousemove', mouseMove);
          };
+
          document.addEventListener('mousemove', mouseMove);
          function clamp(val, min, max) {
             if (val < min) {

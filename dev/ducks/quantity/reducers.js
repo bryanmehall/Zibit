@@ -17,31 +17,36 @@ const quantityReducer = (state = {
 	//here state refers to an individual quantity object
 	switch (action.type) {
 	case 'SET_VALUE':
-		{
-			return Object.assign({}, state, {
-				value: action.payload.value
-			})
-			break;
-		}
+		return Object.assign({}, state, {
+			value: action.payload.value
+		})
+		break;
 	case 'SET_HIGHLIGHT':
-		{
-			return Object.assign({}, state, {
-				highlighted: action.payload.value
-			})
-			break;
-		}
+		return Object.assign({}, state, {
+			highlighted: action.payload.value
+		})
+		break;
 
-	case 'ANIM_PLAY_PAUSE':
+	case 'ANIM_PLAY':
 		var animObj = state.animation
-		var t0 = new Date()
 		var newAnimObject = Object.assign({}, animObj, {
-			playing: action.payload.value,
-			startTime: t0
+			playing: true
+		})
+		return Object.assign({}, state, {
+			animation: newAnimObject
+		})
+		break;
+	case 'ANIM_PAUSE':
+		var animObj = state.animation
+		var newAnimObject = Object.assign({}, animObj, {
+			playing: false
 		})
 		return Object.assign({}, state, {
 			animation: newAnimObject
 		})
 	}
+
+
 	return state
 }
 

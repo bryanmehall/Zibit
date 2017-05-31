@@ -22,13 +22,54 @@ var _componentsSmdApp = require("./components/SmdApp");
 
 var _componentsSmdApp2 = _interopRequireDefault(_componentsSmdApp);
 
+var _ducksQuantityActions = require('./ducks/quantity/actions');
+
+var _ducksQuantityActions2 = _interopRequireDefault(_ducksQuantityActions);
+
+var _ducksQuantitySelectors = require('./ducks/quantity/selectors');
+
 var _ducks = require("./ducks");
 
 var reducers = _interopRequireWildcard(_ducks);
 
 var rootReducer = (0, _redux.combineReducers)(reducers);
 
-var middleware = (0, _redux.applyMiddleware)((0, _reduxLogger.createLogger)());
+var animMiddleware = function animMiddleware(store) {
+   return function (next) {
+      return function (action) {
+         if (action.type === 'ANIM_PLAY') {
+            var animStart = function animStart() {
+               var t = Date.now();
+               var name = 't';
+               var state = store.getState();
+               var initValue = (0, _ducksQuantitySelectors.getValue)(state, name);
+               store.dispatch(_ducksQuantityActions2["default"].animStep(name, t, initValue));
+            };
+
+            requestAnimationFrame(animStart);
+         } else if (action.type === 'ANIM_STEP') {
+            var animStep = function animStep() {
+               var t0 = action.payload.initTime;
+               var v0 = action.payload.initValue;
+               var t = Date.now();
+               var value = (t - t0) / 1000 + v0;
+               store.dispatch(_ducksQuantityActions2["default"].setValue(name, value));
+               store.dispatch(_ducksQuantityActions2["default"].animStep(name, t0, v0));
+            };
+
+            var name = action.payload.name;
+            var state = store.getState();
+            var isPlaying = (0, _ducksQuantitySelectors.getPlaying)(state, name);
+            if (isPlaying) {
+               requestAnimationFrame(animStep);
+            }
+         }
+         next(action);
+      };
+   };
+};
+
+var middleware = (0, _redux.applyMiddleware)(animMiddleware); //createLogger())
 
 var initialAppState = {
    widgets: {
@@ -137,7 +178,7 @@ var initialAppState = {
          value: 0,
          min: 0,
          max: 40,
-         abstractions: 200,
+         abstractions: 300,
          independent: true,
          symbol: 't',
          highlighted: false,

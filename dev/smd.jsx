@@ -4,11 +4,42 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider, connect} from 'react-redux';
 import {createLogger} from "redux-logger";
 import SmdApp from "./components/SmdApp"
+import QuantityActions from './ducks/quantity/actions'
+import {getValue, getQuantityData, getAnimatable, getPlaying} from './ducks/quantity/selectors'
 import * as reducers from "./ducks";
 
 const rootReducer = combineReducers(reducers)
 
-const middleware = applyMiddleware(createLogger())
+const animMiddleware = store => next => action => {
+	if (action.type === 'ANIM_PLAY') {
+		function animStart(){
+			var t = Date.now()
+			var name = 't'
+			var state = store.getState()
+			var initValue = getValue(state, name)
+			store.dispatch(QuantityActions.animStep(name, t, initValue))
+		}
+		requestAnimationFrame(animStart);
+	} else if (action.type === 'ANIM_STEP') {
+		var name = action.payload.name
+		var state = store.getState()
+		var isPlaying = getPlaying(state, name)
+		if (isPlaying){
+			requestAnimationFrame(animStep)
+		}
+		function animStep(){
+			var t0 = action.payload.initTime
+			var v0 = action.payload.initValue
+			var t = Date.now()
+			var value = (t-t0)/1000 +v0
+			store.dispatch(QuantityActions.setValue(name, value))
+			store.dispatch(QuantityActions.animStep(name, t0, v0))
+		}
+	}
+	next(action)
+};
+
+const middleware = applyMiddleware(animMiddleware)//createLogger())
 
 const initialAppState = {
 	widgets:{
@@ -117,7 +148,7 @@ const initialAppState = {
 			value:0,
 			min:0,
 			max:40,
-			abstractions:200,
+			abstractions:300,
 			independent:true,
 			symbol:'t',
 			highlighted:false,

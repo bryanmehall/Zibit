@@ -51,7 +51,6 @@ export const getAnimatable = (state, name) => (getQuantityData(state, name).hasO
 export const getPlaying = (state, name) => {
 	var animatable = getAnimatable(state, name)
 	if (animatable) {
-		console.log('fetching', getQuantityData(state, name).animation.playing)
 		return getQuantityData(state, name).animation.playing
 	} else {
 		return false

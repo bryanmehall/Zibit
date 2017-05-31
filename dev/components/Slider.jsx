@@ -26,6 +26,7 @@ class Slider extends React.Component {
 		var mouseUp = function(e){
 			document.removeEventListener('mousemove', mouseMove)
 		}
+
 		document.addEventListener('mousemove', mouseMove)
 		function clamp(val,min,max){
 			if (val<min){

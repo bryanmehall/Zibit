@@ -7,26 +7,9 @@ import {getValue, getQuantityData, getAnimatable, getPlaying} from '../ducks/qua
 class Animation extends React.Component {
 	constructor(props){
 		super(props)
-		this.animate = this.animate.bind(this)
 	}
 
-	animate() {
-		var t0 = new Date()
-		var v0 = this.props.value
-		var self = this
 
-		var step = function(){
-			var globalT = new Date()
-			var t = (globalT-t0)/1000
-			var value = t+v0
-			self.props.setValue(self.props.quantity, value)
-			console.log('updating', value)
-			if (self.props.playing){
-				window.requestAnimationFrame(step)
-			}
-		}
-		window.requestAnimationFrame(step)
-	}
 
 	render() {
 		var pos = this.props.pos
@@ -43,7 +26,6 @@ class Animation extends React.Component {
 				fill='gray'
 				onClick={function(){
 					self.props.setPlay(self.props.quantity, !self.props.playing)
-					self.animate()
 				}}
 				>
 

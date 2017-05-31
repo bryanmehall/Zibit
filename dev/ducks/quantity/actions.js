@@ -4,6 +4,27 @@ import {
 }
 from 'redux'
 
+import {
+	getValue
+}
+from './selectors'
+
+function animate(quantity) {
+	var t0 = new Date()
+	var v0 = getValue()
+	var step = function () {
+		var globalT = new Date()
+		var t = (globalT - t0) / 1000
+		var value = t + v0
+		self.props.setValue(self.props.quantity, value)
+		console.log('updating', value)
+		if (self.props.playing) {
+			window.requestAnimationFrame(step)
+		}
+	}
+	window.requestAnimationFrame(step)
+}
+
 const setValue = (name, value) => ({
 	type: "SET_VALUE",
 	payload: {
@@ -13,12 +34,33 @@ const setValue = (name, value) => ({
 })
 
 const setPlay = (name, value) => {
-	return {
-		type: "ANIM_PLAY_PAUSE",
-		payload: {
-			name: name,
-			value: value
+	if (value === true) {
+		return {
+			type: "ANIM_PLAY",
+			payload: {
+				name: name,
+				value: value
 
+			}
+		}
+	} else {
+		return {
+			type: "ANIM_PAUSE",
+			payload: {
+				name: name,
+				value: false
+
+			}
+		}
+	}
+
+}
+
+const animStep = (name, initTime, initValue) => {
+	return {
+		type: 'ANIM_STEP',
+		payload: {
+			name, initValue, initTime
 		}
 	}
 }
@@ -47,5 +89,6 @@ export default {
 	setValue,
 	setValueFromCoords,
 	setHighlight,
-	setPlay
+	setPlay,
+	animStep
 };
