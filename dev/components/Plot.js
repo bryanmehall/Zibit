@@ -50,6 +50,10 @@ var _Spring = require('./Spring');
 
 var _Spring2 = _interopRequireDefault(_Spring);
 
+var _Anchor = require('./Anchor');
+
+var _Anchor2 = _interopRequireDefault(_Anchor);
+
 var Plot = (function (_React$Component) {
    _inherits(Plot, _React$Component);
 
@@ -89,7 +93,8 @@ var Plot = (function (_React$Component) {
          var childTypes = {
             Abstraction: _Abstraction2["default"],
             Mass: _Mass2["default"],
-            Spring: _Spring2["default"]
+            Spring: _Spring2["default"],
+            Anchor: _Anchor2["default"]
          };
          function createChild(childData) {
             var type = childTypes[childData.type];

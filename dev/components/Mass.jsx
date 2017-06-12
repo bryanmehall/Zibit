@@ -34,7 +34,7 @@ class Mass extends React.Component {
 		return(
 			<Draggable dragStart={this.dragStart} dragMove={this.dragMove} dragEnd={this.dragEnd}>
 				<g >
-					<rect x={pos.x} y={0} width={width} height={pos.y+height} mask={maskString} fill='none'></rect>
+					<rect x={pos.x} y={0} width={width} height={pos.y+height} mask={maskString} fill='none' cursor='grab'></rect>
 					<rect x={pos.x} y={pos.y-height} width={width} height={height} mask={maskString} fill='none' strokeWidth='2'stroke='black'></rect>
 				</g>
 

@@ -13,15 +13,12 @@ class Anchor extends React.Component {
 		this.dragEnd = this.dragEnd.bind(this)
 	}
 	dragStart(initPos){
-		this.props.setPlay('t', false)
-		this.props.setValue('t', 0)
 		this.startOffset = this.props.pos.y-initPos.y //offset in px
-		this.props.setY0(this.startOffset, this.props.coordSys.yScale)
-
+		this.props.setX0(this.startOffset, this.props.coordSys.yScale)
 	}
 	dragMove(newPos){
 		var newYPos = newPos.y+this.startOffset
-		this.props.setY0(newYPos, this.props.coordSys.yScale)
+		this.props.setX0(newYPos, this.props.coordSys.yScale)
 	}
 	dragEnd(endPos){
 		this.props.setPlay('t', true)
@@ -29,13 +26,13 @@ class Anchor extends React.Component {
 	render(){
 		var pos = this.props.pos
 		var width = 80
-		var height = 50
+		var height = 20
 		var maskString = 'url(#'+this.props.mask+')'
 		return(
 			<Draggable dragStart={this.dragStart} dragMove={this.dragMove} dragEnd={this.dragEnd}>
 				<g >
-					<rect x={pos.x} y={0} width={width} height={pos.y+height} mask={maskString} fill='none'></rect>
-					<rect x={pos.x} y={pos.y-height} width={width} height={height} mask={maskString} fill='none' strokeWidth='2'stroke='black'></rect>
+					<rect x={pos.x} y={0} width={width} height={pos.y+height} mask={maskString} fill='none' cursor='grab'></rect>
+					<rect x={pos.x} y={pos.y} width={width} height={height} mask={maskString} fill='rgba(0, 0, 0, 0.5)'></rect>
 				</g>
 
 			</Draggable>

@@ -9,6 +9,7 @@ import Axis from './Axis'
 import Abstraction from './Abstraction'
 import Mass from './Mass'
 import Spring from './Spring'
+import Anchor from './Anchor'
 
 
 
@@ -33,13 +34,14 @@ class Plot extends React.Component {
 			min:yQuantity.min,
 			max:yQuantity.max,
 			tMin:pos.y,
-		  tMax:pos.y-height
+		  	tMax:pos.y-height
 		})
 		var coordSys = new CoordSys(xScale, yScale)
 		var childTypes = {
 			Abstraction: Abstraction,
 			Mass:Mass,
-			Spring: Spring
+			Spring: Spring,
+			Anchor: Anchor
 		}
 		function createChild(childData){
 			var type = childTypes[childData.type]

@@ -47,16 +47,14 @@ var Anchor = (function (_React$Component) {
    _createClass(Anchor, [{
       key: "dragStart",
       value: function dragStart(initPos) {
-         this.props.setPlay('t', false);
-         this.props.setValue('t', 0);
          this.startOffset = this.props.pos.y - initPos.y; //offset in px
-         this.props.setY0(this.startOffset, this.props.coordSys.yScale);
+         this.props.setX0(this.startOffset, this.props.coordSys.yScale);
       }
    }, {
       key: "dragMove",
       value: function dragMove(newPos) {
          var newYPos = newPos.y + this.startOffset;
-         this.props.setY0(newYPos, this.props.coordSys.yScale);
+         this.props.setX0(newYPos, this.props.coordSys.yScale);
       }
    }, {
       key: "dragEnd",
@@ -68,7 +66,7 @@ var Anchor = (function (_React$Component) {
       value: function render() {
          var pos = this.props.pos;
          var width = 80;
-         var height = 50;
+         var height = 20;
          var maskString = 'url(#' + this.props.mask + ')';
          return _react2["default"].createElement(
             _Draggable2["default"],
@@ -76,8 +74,8 @@ var Anchor = (function (_React$Component) {
             _react2["default"].createElement(
                "g",
                null,
-               _react2["default"].createElement("rect", { x: pos.x, y: 0, width: width, height: pos.y + height, mask: maskString, fill: "none" }),
-               _react2["default"].createElement("rect", { x: pos.x, y: pos.y - height, width: width, height: height, mask: maskString, fill: "none", strokeWidth: "2", stroke: "black" })
+               _react2["default"].createElement("rect", { x: pos.x, y: 0, width: width, height: pos.y + height, mask: maskString, fill: "none", cursor: "grab" }),
+               _react2["default"].createElement("rect", { x: pos.x, y: pos.y, width: width, height: height, mask: maskString, fill: "rgba(0, 0, 0, 0.5)" })
             )
          );
       }

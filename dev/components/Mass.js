@@ -76,7 +76,7 @@ var Mass = (function (_React$Component) {
             _react2["default"].createElement(
                "g",
                null,
-               _react2["default"].createElement("rect", { x: pos.x, y: 0, width: width, height: pos.y + height, mask: maskString, fill: "none" }),
+               _react2["default"].createElement("rect", { x: pos.x, y: 0, width: width, height: pos.y + height, mask: maskString, fill: "none", cursor: "grab" }),
                _react2["default"].createElement("rect", { x: pos.x, y: pos.y - height, width: width, height: height, mask: maskString, fill: "none", strokeWidth: "2", stroke: "black" })
             )
          );

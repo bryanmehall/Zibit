@@ -88,7 +88,15 @@ const initialAppState = {
 				height:350,
 				pos:{x:250,y:400}
 			},
-			children:['mass', 'spring']
+			children:['anchor', 'mass', 'spring']
+		},
+		anchor:{
+			type:'Anchor',
+			props:{
+				xVar:'s',
+				yVar:'x'
+			},
+			children:[]
 		},
 		mass:{
 			type:'Mass',
