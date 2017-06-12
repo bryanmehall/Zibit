@@ -97,7 +97,7 @@ var Plot = (function (_React$Component) {
             props.key = props.id;
             props.coordSys = coordSys;
             props.boundingRect = { xMin: pos.x, xMax: pos.x + width, yMin: pos.y, yMax: pos.y - height };
-            props.clipPath = plotId;
+            props.mask = plotId;
             return _react2["default"].createElement(type, props);
          }
          var children = this.props.childData.map(createChild);
@@ -108,9 +108,9 @@ var Plot = (function (_React$Component) {
                "defs",
                null,
                _react2["default"].createElement(
-                  "clipPath",
+                  "mask",
                   { id: plotId },
-                  _react2["default"].createElement("rect", { x: pos.x, y: pos.y - height, width: width, height: height })
+                  _react2["default"].createElement("rect", { x: pos.x, y: pos.y - height, width: width, height: height, fill: "white", opacity: "1" })
                )
             ),
             children,

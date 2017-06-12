@@ -49,11 +49,13 @@ var Spring = (function (_React$Component) {
          var p1 = this.props.p1;
          var p2 = this.props.p2;
          var path = springPath(p1, p2);
+
          return _react2["default"].createElement(_Path2["default"], {
             fill: "transparent",
             stroke: "black",
             strokeWidth: Math.log10(this.props.k + 1.1),
-            points: path
+            points: path,
+            mask: this.props.mask
          });
       }
    }]);

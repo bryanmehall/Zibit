@@ -13,7 +13,7 @@ class Abstraction extends React.Component {
 			<Path
 				points={points}
 				coordSys={this.props.coordSys}
-				clipPath={this.props.clipPath}
+				mask={this.props.mask}
 				></Path>
 		)
 	}

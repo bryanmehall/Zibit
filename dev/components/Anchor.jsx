@@ -5,7 +5,7 @@ import QuantityActions from '../ducks/quantity/actions';
 import {getTransformedValue, getValue, getCoordSys, getQuantityData} from '../ducks/quantity/selectors'
 import Draggable from "./Draggable"
 
-class Mass extends React.Component {
+class Anchor extends React.Component {
 	constructor(props){
 		super(props)
 		this.dragStart = this.dragStart.bind(this)
@@ -47,19 +47,18 @@ function mapStateToProps(state, props) {
 	var br = props.boundingRect
 	var coordSys = getCoordSys(state, props.xVar, props.yVar, br)
 	return {
-		mass: getValue(state, 'm'),
 		pos:{
 			x:getTransformedValue(state, props.xVar, coordSys.xScale),
 			y:getTransformedValue(state, props.yVar, coordSys.yScale)
-		},
+		}
 
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		setY0:(value, scale) => {
-			dispatch(QuantityActions.setValueFromCoords('y0', value, scale))
+		setX0:(value, scale) => {
+			dispatch(QuantityActions.setValueFromCoords('x', value, scale))
 		},
 		setValue:(name, value) => {
 			dispatch(QuantityActions.setValue(name, value))
@@ -73,4 +72,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Mass);
+)(Anchor);

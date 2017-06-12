@@ -12,16 +12,17 @@ class Path extends React.Component {
 		} else {
 			points = this.props.points
 		}
-		var clipPathString = 'url(#'+this.props.clipPath+')'
+		var maskString = 'url(#'+this.props.mask+')'
 		return(
 			<path
 				d={pointsToSVGPath(points)}
 				fill="transparent"
 				stroke={stroke}
 				strokeWidth={strokeWidth}
-				clipPath={clipPathString}
+				mask={maskString}
 				filter={filter}
 				strokeLinejoin="round"
+				shapeRendering="geometricPrecision"
 				></path>
 		)
 	}

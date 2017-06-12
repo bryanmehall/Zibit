@@ -57,7 +57,10 @@ var Draggable = (function (_React$Component) {
       value: function render() {
          return _react2['default'].createElement(
             'g',
-            { onMouseDown: this.mouseDown },
+            {
+               onMouseDown: this.mouseDown,
+               pointerEvents: 'all'
+            },
             this.props.children
          );
       }

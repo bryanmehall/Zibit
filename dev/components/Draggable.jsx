@@ -30,7 +30,10 @@ class Draggable extends React.Component {
 
 	render(){
 		return(
-			<g onMouseDown={this.mouseDown}>
+			<g
+				onMouseDown={this.mouseDown}
+				pointerEvents = 'all'
+				>
 				{this.props.children}
 			</g>
 		)

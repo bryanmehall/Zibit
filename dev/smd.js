@@ -53,23 +53,24 @@ var animMiddleware = function animMiddleware(store) {
                var v0 = action.payload.initValue;
                var t = Date.now();
                var value = (t - t0) / 1000 + v0;
-               store.dispatch(_ducksQuantityActions2["default"].setValue(name, value));
-               store.dispatch(_ducksQuantityActions2["default"].animStep(name, t0, v0));
+               var name = action.payload.name;
+               var state = store.getState();
+               var isPlaying = (0, _ducksQuantitySelectors.getPlaying)(state, name);
+               if (isPlaying) {
+                  //only update and continue if quantity is still playing
+                  store.dispatch(_ducksQuantityActions2["default"].setValue(name, value));
+                  store.dispatch(_ducksQuantityActions2["default"].animStep(name, t0, v0));
+               }
             };
 
-            var name = action.payload.name;
-            var state = store.getState();
-            var isPlaying = (0, _ducksQuantitySelectors.getPlaying)(state, name);
-            if (isPlaying) {
-               requestAnimationFrame(animStep);
-            }
+            requestAnimationFrame(animStep);
          }
          next(action);
       };
    };
 };
 
-var middleware = (0, _redux.applyMiddleware)(animMiddleware); //createLogger())
+var middleware = (0, _redux.applyMiddleware)(animMiddleware); //, createLogger())
 
 var initialAppState = {
    widgets: {
@@ -95,7 +96,7 @@ var initialAppState = {
       yVal: {
          type: 'Value',
          props: {
-            quantity: 'y',
+            quantity: 'y0',
             active: false
          }
       },
@@ -143,7 +144,7 @@ var initialAppState = {
             xVar: 't',
             yVar: 'y',
             xVars: ['t'],
-            yVars: ['x'],
+            yVars: ['y'],
             width: 300,
             height: 350,
             pos: { x: 500, y: 400 }
@@ -168,7 +169,7 @@ var initialAppState = {
          props: {
             indVar: "t",
             xVar: "t",
-            yVar: "x"
+            yVar: "y"
          },
          children: []
       }
@@ -177,7 +178,7 @@ var initialAppState = {
       t: { //time
          value: 0,
          min: 0,
-         max: 40,
+         max: 20,
          abstractions: 300,
          independent: true,
          symbol: 't',
@@ -185,11 +186,22 @@ var initialAppState = {
          animation: { playing: false }
       },
       imx: { value: 0, min: -10, max: 10, abstractions: 0, independent: false, symbol: 'im(x)', highlighted: false }, //imaginary component of x
-      x: { value: 0, min: -10, max: 40, abstractions: 0, symbol: 'x', highlighted: false }, //real component of x
+      x: { value: 0, min: -10, max: 40, abstractions: 0, symbol: 'x', prevPoints: [], highlighted: false }, //real component of x
       y: { value: 0, min: -30, max: 20, symbol: 'y', highlighted: false }, //position of mass
       k: { value: 50, min: 0, max: 100, symbol: 'k', abstractions: 10, independent: true, highlighted: false }, //spring constant
       m: { value: 1, min: 0, max: 30, symbol: 'm', independent: true, highlighted: false }, //mass
-      y0: { value: 0, min: -20, max: 20, symbol: 'y0', independent: true, highlighted: false }, //initial mass position
+      c: { value: 0, min: 0, max: 30, symbol: 'c', independent: true, highlighted: false },
+      y0: { value: 0, min: -20, max: 20, symbol: _react2["default"].createElement(
+            "tspan",
+            null,
+            "y",
+            _react2["default"].createElement(
+               "tspan",
+               { dx: "-2", fontSize: "0.5em", dy: "8" },
+               "0"
+            )
+         ), independent: true, highlighted: false }, //initial mass position
+      dy0: { value: 0, min: -20, max: 20, symbol: 'dy0', independent: true, highlighted: false },
       s: { value: 0, min: -10, max: 10, abstractions: 0, symbol: 's', highlighted: false } // lateral position
    }
 };

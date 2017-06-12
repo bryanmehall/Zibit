@@ -51,7 +51,7 @@ var Abstraction = (function (_React$Component) {
          return _react2["default"].createElement(_Path2["default"], {
             points: points,
             coordSys: this.props.coordSys,
-            clipPath: this.props.clipPath
+            mask: this.props.mask
          });
       }
    }]);

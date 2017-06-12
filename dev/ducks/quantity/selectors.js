@@ -1,5 +1,5 @@
 import {
-	createSelectors
+	createSelector
 }
 from 'reselect'
 import {
@@ -9,7 +9,7 @@ from 'numeric'
 
 //define dependent variables --should be pure functions
 function x(t) { //could depend on numeric spline
-	return 4 * Math.cos(t * 5)
+	return 4 * Math.cos(t)
 }
 
 function s(t) {
@@ -40,7 +40,7 @@ export const getQuantityData = function (state, name) {
 	}
 }
 
-export const getMin = (state, name, scaleName) => (getQuantityData(state, name).min)
+export const getMin = (state, name) => (getQuantityData(state, name).min)
 
 export const getMax = (state, name) => (getQuantityData(state, name).max)
 
@@ -78,19 +78,21 @@ export const getValue = function (state, name, given) {
 		//given is an object of independent variables that replace concrete values
 	var quantityData = getQuantityData(state, name)
 	if (quantityData.independent) {
-		return given[name] || quantityData.value
+		return (given[name] === undefined) ? quantityData.value : given[name]
 	}
 	switch (name) {
 	case "x":
-		var t = given.t || getValue(state, 't')
+		var t = (given.t === undefined) ? getValue(state, 't') : given.t
 		return x(t)
 		break;
 	case 's':
-		var t = given.t || getValue(state, 't')
+		var t = (given.t === undefined) ? getValue(state, 't') : given.t
 		return s(t)
 	case "y":
-		var t = given.t || getValue(state, 't')
-		return getValue(state, 'y0')
+		var t = (given.t === undefined) ? getValue(state, 't') : given.t
+		var sol = getSol(state)
+		var y = sol.at(t)[0]
+		return y
 
 	default:
 		throw "make sure that " + name + " is labeled as independent"
@@ -104,22 +106,41 @@ export const getTransformedValue = function (state, name, scale, given) { //chan
 	return transformedValue
 }
 
+function getValueff(name) {
+	return (state) => getValue(state, name)
+}
 
+function getMinff(name) {
+	return (state) => getMin(state, name)
+}
 
-function getSol(state, k, m, c, x0, dx0) {
+function getMaxff(name) {
+	return (state) => getMax(state, name)
+}
+
+const getSol = createSelector(
+	[
+		getValueff('k'),
+		getValueff('m'),
+		getValueff('c'),
+		getValueff('y0'),
+		getValueff('dy0'),
+		getMinff('t'),
+		getMaxff('t')
+	],
+	getSolNoMem
+)
+
+function getSolNoMem(k, m, c, y0, dy0, min, max) {
 	//right now only works for y(t) and y'(t)
-	var tData = getQuantityData(state, 't')
-
-	var f = function (t, x) {
-		k = getValue('k');
-		m = getValue('m');
-		c = getValue('c');
+	var f = function (t, y) {
 		return [
-			x[1],
-			-k / m * x[0] - c / m * x[1]
+			y[1],
+			-k / m * (y[0] - x(t)) - c / m * y[1]
 		];
 	};
-	var sol = dopri(tData.min, tData.max, [10, 10], f, 1e-6, 2000);
+	var sol = dopri(min, max, [y0, dy0], f, 1e-6, 2000);
+	return sol
 }
 
 export const getAbsValues = function (state, name, absName) {
@@ -131,6 +152,7 @@ export const getAbsValues = function (state, name, absName) {
 			[absName]: val
 		})
 	})
+
 	return values
 }
 

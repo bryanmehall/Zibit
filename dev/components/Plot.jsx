@@ -47,16 +47,16 @@ class Plot extends React.Component {
 			props.key = props.id
 			props.coordSys = coordSys
 			props.boundingRect = {xMin:pos.x,xMax:pos.x+width,yMin:pos.y,yMax:pos.y-height}
-			props.clipPath = plotId
+			props.mask = plotId
 			return React.createElement(type, props)
 		}
 		var children = this.props.childData.map(createChild)
 		return (
 			<g>
 				<defs>
-					<clipPath id={plotId}>
-						<rect x={pos.x} y={pos.y-height} width={width} height={height} />
-					</clipPath>
+					<mask id={plotId}>
+						<rect x={pos.x} y={pos.y-height} width={width} height={height} fill="white" opacity="1" />
+					</mask>
 				</defs>
 				{children}
 				<Axis scale={xScale} pos={pos.y}></Axis>

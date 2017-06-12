@@ -32,19 +32,19 @@ var _Draggable = require("./Draggable");
 
 var _Draggable2 = _interopRequireDefault(_Draggable);
 
-var Mass = (function (_React$Component) {
-   _inherits(Mass, _React$Component);
+var Anchor = (function (_React$Component) {
+   _inherits(Anchor, _React$Component);
 
-   function Mass(props) {
-      _classCallCheck(this, Mass);
+   function Anchor(props) {
+      _classCallCheck(this, Anchor);
 
-      _get(Object.getPrototypeOf(Mass.prototype), "constructor", this).call(this, props);
+      _get(Object.getPrototypeOf(Anchor.prototype), "constructor", this).call(this, props);
       this.dragStart = this.dragStart.bind(this);
       this.dragMove = this.dragMove.bind(this);
       this.dragEnd = this.dragEnd.bind(this);
    }
 
-   _createClass(Mass, [{
+   _createClass(Anchor, [{
       key: "dragStart",
       value: function dragStart(initPos) {
          this.props.setPlay('t', false);
@@ -83,14 +83,13 @@ var Mass = (function (_React$Component) {
       }
    }]);
 
-   return Mass;
+   return Anchor;
 })(_react2["default"].Component);
 
 function mapStateToProps(state, props) {
    var br = props.boundingRect;
    var coordSys = (0, _ducksQuantitySelectors.getCoordSys)(state, props.xVar, props.yVar, br);
    return {
-      mass: (0, _ducksQuantitySelectors.getValue)(state, 'm'),
       pos: {
          x: (0, _ducksQuantitySelectors.getTransformedValue)(state, props.xVar, coordSys.xScale),
          y: (0, _ducksQuantitySelectors.getTransformedValue)(state, props.yVar, coordSys.yScale)
@@ -101,8 +100,8 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
    return {
-      setY0: function setY0(value, scale) {
-         dispatch(_ducksQuantityActions2["default"].setValueFromCoords('y0', value, scale));
+      setX0: function setX0(value, scale) {
+         dispatch(_ducksQuantityActions2["default"].setValueFromCoords('x', value, scale));
       },
       setValue: function setValue(name, value) {
          dispatch(_ducksQuantityActions2["default"].setValue(name, value));
@@ -113,5 +112,5 @@ function mapDispatchToProps(dispatch) {
    };
 }
 
-exports["default"] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Mass);
+exports["default"] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Anchor);
 module.exports = exports["default"];

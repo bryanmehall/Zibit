@@ -12,12 +12,14 @@ class Spring extends React.Component {
 		var p1 = this.props.p1
 		var p2 = this.props.p2
 		var path = springPath(p1, p2);
+
 		return (
 			<Path
 				fill="transparent"
 				stroke="black"
 				strokeWidth = {Math.log10(this.props.k+1.1)}
 				points={path}
+				mask={this.props.mask}
 			/>
 		)
 	}

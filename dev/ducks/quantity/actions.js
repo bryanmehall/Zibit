@@ -56,14 +56,12 @@ const setPlay = (name, value) => {
 
 }
 
-const animStep = (name, initTime, initValue) => {
-	return {
-		type: 'ANIM_STEP',
-		payload: {
-			name, initValue, initTime
-		}
+const animStep = (name, initTime, initValue) => ({
+	type: 'ANIM_STEP',
+	payload: {
+		name, initValue, initTime
 	}
-}
+})
 
 function invert(tValue, scale) {
 	var range = scale.max - scale.min;
