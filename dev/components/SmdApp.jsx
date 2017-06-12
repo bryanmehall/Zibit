@@ -10,6 +10,7 @@ import Plot from './Plot'
 import Abstraction from './Abstraction'
 import Expression from './Expression'
 import Value from './Value'
+import SideBar from './SideBar'
 
 class SmdApp extends React.Component {
 	constructor(props){
@@ -31,6 +32,7 @@ class SmdApp extends React.Component {
 		var children = this.props.childData.map(createChild)
 		var app = this
 		return (
+            <SideBar></SideBar>
 			<svg width={700} height={600}>
 			<defs>
 				<filter id="highlight" primitiveUnits="userSpaceOnUse">
