@@ -65,7 +65,7 @@ var Mass = (function (_React$Component) {
    }, {
       key: "dragEnd",
       value: function dragEnd(endPos) {
-         this.props.setActive('t', true);
+         this.props.setHighlight('t', true);
          this.props.setPlay('t', true);
       }
    }, {
@@ -111,6 +111,9 @@ function mapDispatchToProps(dispatch) {
       },
       setValue: function setValue(name, value) {
          dispatch(_ducksQuantityActions2["default"].setValue(name, value));
+      },
+      setHighlight: function setHighlight(name, value) {
+         dispatch(_ducksQuantityActions2["default"].setHighlight(name, value));
       },
       setActive: function setActive(name, value) {
          dispatch(_ducksWidgetActions2["default"].setActive(name, value));

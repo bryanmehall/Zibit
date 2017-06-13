@@ -2,6 +2,7 @@ import React, { PropTypes } from "react";
 import ReactDOM from "react-dom";
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider, connect} from 'react-redux';
+import {getActiveTweens, tween} from "./anim"
 import {createLogger} from "redux-logger";
 import SmdApp from "./components/SmdApp"
 import QuantityActions from './ducks/quantity/actions'
@@ -17,22 +18,28 @@ const animMiddleware = store => next => action => {
 			var name = action.payload.name
 			var state = store.getState()
 			var initValue = getValue(state, name)
-			store.dispatch(QuantityActions.animStep(name, t, initValue))
+			store.dispatch(QuantityActions.animStep(name, t, initValue, initValue))
 		}
 		requestAnimationFrame(animStart);
 	} else if (action.type === 'ANIM_STEP') {
 		requestAnimationFrame(animStep)
 		function animStep(){
 			var t0 = action.payload.initTime
+			var prevTime = action.payload.prevTime
 			var v0 = action.payload.initValue
 			var t = Date.now()
 			var value = (t-t0)/1000 + v0
 			var name = action.payload.name
 			var state = store.getState()
 			var isPlaying = getPlaying(state, name)
+			if (name === 'animTime'){
+				var activeTweens = getActiveTweens(prevTime, value)
+				tween(activeTweens, value)
+			}
+
 			if (isPlaying){//only update and continue if quantity is still playing
 				store.dispatch(QuantityActions.setValue(name, value))
-				store.dispatch(QuantityActions.animStep(name, t0, v0))
+				store.dispatch(QuantityActions.animStep(name, t0, v0, value))
 			}
 
 		}

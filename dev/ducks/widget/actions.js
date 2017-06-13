@@ -5,9 +5,11 @@ const setActive = (id, active) => ({
 		active: active
 	}
 })
-const addWidget = (parent, id, type, props) => ({
+const addWidget = (parent, name, type, props, children) => ({
 	type: "ADD_WIDGET",
-	payload: 'change here'
+	payload: {
+		name, parent, type, props, children
+	}
 });
 
 

@@ -24,14 +24,19 @@ function animate(quantity) {
 	}
 	window.requestAnimationFrame(step)
 }
-
-const setValue = (name, value) => ({
-	type: "SET_VALUE",
-	payload: {
-		name: name,
-		value: value
+/*if (name === 'animTime'){
+				var activeTweens = getActiveTweens(prevTime, t)
+				tween(activeTweens, t)
+			}*/
+const setValue = (name, value) => {
+	return {
+		type: "SET_VALUE",
+		payload: {
+			name: name,
+			value: value
+		}
 	}
-})
+}
 
 const setPlay = (name, value) => {
 	if (value === true) {
@@ -56,10 +61,10 @@ const setPlay = (name, value) => {
 
 }
 
-const animStep = (name, initTime, initValue) => ({
+const animStep = (name, initTime, initValue, prevTime) => ({
 	type: 'ANIM_STEP',
 	payload: {
-		name, initValue, initTime
+		name, initValue, initTime, prevTime
 	}
 })
 

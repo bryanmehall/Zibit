@@ -24,7 +24,8 @@ class SideBar extends React.Component {
 		var sideBarStyle = {
 			width:width+'px',
 			fontFamily:"helvetica",
-			fontSize: 15
+			fontSize: 15,
+
 		}
 		return (
 			<div style={sideBarStyle}>

@@ -37,12 +37,14 @@ class Plot extends React.Component {
 		  	tMax:pos.y-height
 		})
 		var coordSys = new CoordSys(xScale, yScale)
+
 		var childTypes = {
 			Abstraction: Abstraction,
 			Mass:Mass,
 			Spring: Spring,
 			Anchor: Anchor
 		}
+
 		function createChild(childData){
 			var type = childTypes[childData.type]
 			var props = childData.props

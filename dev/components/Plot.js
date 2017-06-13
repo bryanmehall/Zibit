@@ -90,12 +90,14 @@ var Plot = (function (_React$Component) {
             tMax: pos.y - height
          });
          var coordSys = new _Scale.CoordSys(xScale, yScale);
+
          var childTypes = {
             Abstraction: _Abstraction2["default"],
             Mass: _Mass2["default"],
             Spring: _Spring2["default"],
             Anchor: _Anchor2["default"]
          };
+
          function createChild(childData) {
             var type = childTypes[childData.type];
             var props = childData.props;

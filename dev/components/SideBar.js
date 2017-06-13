@@ -69,6 +69,7 @@ var SideBar = (function (_React$Component) {
             width: width + 'px',
             fontFamily: "helvetica",
             fontSize: 15
+
          };
          return _react2["default"].createElement(
             "div",

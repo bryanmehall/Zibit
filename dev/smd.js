@@ -16,6 +16,8 @@ var _redux = require('redux');
 
 var _reactRedux = require('react-redux');
 
+var _anim = require("./anim");
+
 var _reduxLogger = require("redux-logger");
 
 var _componentsSmdApp = require("./components/SmdApp");
@@ -43,23 +45,29 @@ var animMiddleware = function animMiddleware(store) {
                var name = action.payload.name;
                var state = store.getState();
                var initValue = (0, _ducksQuantitySelectors.getValue)(state, name);
-               store.dispatch(_ducksQuantityActions2["default"].animStep(name, t, initValue));
+               store.dispatch(_ducksQuantityActions2["default"].animStep(name, t, initValue, initValue));
             };
 
             requestAnimationFrame(animStart);
          } else if (action.type === 'ANIM_STEP') {
             var animStep = function animStep() {
                var t0 = action.payload.initTime;
+               var prevTime = action.payload.prevTime;
                var v0 = action.payload.initValue;
                var t = Date.now();
                var value = (t - t0) / 1000 + v0;
                var name = action.payload.name;
                var state = store.getState();
                var isPlaying = (0, _ducksQuantitySelectors.getPlaying)(state, name);
+               if (name === 'animTime') {
+                  var activeTweens = (0, _anim.getActiveTweens)(prevTime, value);
+                  (0, _anim.tween)(activeTweens, value);
+               }
+
                if (isPlaying) {
                   //only update and continue if quantity is still playing
                   store.dispatch(_ducksQuantityActions2["default"].setValue(name, value));
-                  store.dispatch(_ducksQuantityActions2["default"].animStep(name, t0, v0));
+                  store.dispatch(_ducksQuantityActions2["default"].animStep(name, t0, v0, value));
                }
             };
 

@@ -25,7 +25,7 @@ class Mass extends React.Component {
 		this.props.setY0(newYPos, this.props.coordSys.yScale)
 	}
 	dragEnd(endPos){
-		this.props.setActive('t', true)
+		this.props.setHighlight('t', true)
 		this.props.setPlay('t', true)
 	}
 	render(){
@@ -65,6 +65,9 @@ function mapDispatchToProps(dispatch) {
 		},
 		setValue:(name, value) => {
 			dispatch(QuantityActions.setValue(name, value))
+		},
+		setHighlight:(name, value) => {
+			dispatch(QuantityActions.setHighlight(name, value))
 		},
 		setActive:(name, value) => {
 			dispatch(WidgetActions.setActive(name, value))
