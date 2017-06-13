@@ -26,6 +26,10 @@ var _ducksQuantityActions = require('../ducks/quantity/actions');
 
 var _ducksQuantityActions2 = _interopRequireDefault(_ducksQuantityActions);
 
+var _ducksWidgetActions = require('../ducks/widget/actions');
+
+var _ducksWidgetActions2 = _interopRequireDefault(_ducksWidgetActions);
+
 var _ducksQuantitySelectors = require('../ducks/quantity/selectors');
 
 var _Draggable = require("./Draggable");
@@ -61,6 +65,7 @@ var Mass = (function (_React$Component) {
    }, {
       key: "dragEnd",
       value: function dragEnd(endPos) {
+         this.props.setActive('t', true);
          this.props.setPlay('t', true);
       }
    }, {
@@ -106,6 +111,9 @@ function mapDispatchToProps(dispatch) {
       },
       setValue: function setValue(name, value) {
          dispatch(_ducksQuantityActions2["default"].setValue(name, value));
+      },
+      setActive: function setActive(name, value) {
+         dispatch(_ducksWidgetActions2["default"].setActive(name, value));
       },
       setPlay: function setPlay(name, value) {
          dispatch(_ducksQuantityActions2["default"].setPlay(name, value));

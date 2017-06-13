@@ -50,12 +50,20 @@ export const getAnimatable = (state, name) => (getQuantityData(state, name).hasO
 
 export const getPlaying = (state, name) => {
 	var animatable = getAnimatable(state, name)
+
 	if (animatable) {
 		return getQuantityData(state, name).animation.playing
 	} else {
 		return false
 	}
 }
+
+export const getScale = (state, quantity, min, max) => ({
+	min: getMin(state, quantity),
+	max: getMax(state, quantity),
+	tMin: min,
+	tMax: max
+})
 
 export const getCoordSys = (state, xVar, yVar, parentBB) => ({
 	xScale: {

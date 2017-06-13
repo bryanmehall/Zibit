@@ -45,6 +45,7 @@ var Draggable = (function (_React$Component) {
          };
          var mouseUp = function mouseUp(e) {
             document.removeEventListener('mousemove', mouseMove);
+            document.removeEventListener('mouseup', mouseUp);
             if (draggable.props.hasOwnProperty('dragEnd')) {
                draggable.props.dragEnd({ x: e.clientX, y: e.clientY });
             }

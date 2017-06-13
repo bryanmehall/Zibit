@@ -36,7 +36,7 @@ class SmdApp extends React.Component {
 		}
 		return (
 			<div >
-				<div style={{backgroundColor:"#666", height:40}}></div>
+				<div style={{backgroundColor:"#666", height:40, borderBottom:"3px solid #ccc"}}></div>
 				<div style={appStyle}>
 					<SideBar></SideBar>
 					<div style={{flexGrow: 1}}>

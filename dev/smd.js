@@ -40,7 +40,7 @@ var animMiddleware = function animMiddleware(store) {
          if (action.type === 'ANIM_PLAY') {
             var animStart = function animStart() {
                var t = Date.now();
-               var name = 't';
+               var name = action.payload.name;
                var state = store.getState();
                var initValue = (0, _ducksQuantitySelectors.getValue)(state, name);
                store.dispatch(_ducksQuantityActions2["default"].animStep(name, t, initValue));
@@ -77,7 +77,7 @@ var initialAppState = {
       app: {
          type: 'SmdApp',
          props: {},
-         children: ['massPlot', 'forcingPlot', 'posPlot', 'eq']
+         children: ['massPlot', 'forcingPlot', 'posPlot', 'eq', 'forcingEq']
       },
       eq: {
          type: 'Expression',
@@ -85,6 +85,13 @@ var initialAppState = {
             pos: { x: 50, y: 50 }
          },
          children: ['xVal', 'tVal', 'yVal']
+      },
+      forcingEq: {
+         type: 'Expression',
+         props: {
+            pos: { x: 200, y: 500 }
+         },
+         children: ['xVal', 'tVal', 'yVal', 'animVal']
       },
       xVal: {
          type: 'Value',
@@ -104,6 +111,13 @@ var initialAppState = {
          type: 'Value',
          props: {
             quantity: 't',
+            active: false
+         }
+      },
+      animVal: {
+         type: 'Value',
+         props: {
+            quantity: 'animTime',
             active: false
          }
       },
@@ -184,7 +198,7 @@ var initialAppState = {
    },
    quantities: {
       animTime: {
-         value: 0, min: 0, max: 100, symbol: 'dispT', abstractions: 10, animation: { playing: false }, independent: true
+         value: 0, min: 0, max: 100, symbol: 'dispT', independent: true, abstractions: 10, animation: { playing: false }
       },
       t: { //time
          value: 0,
@@ -197,8 +211,8 @@ var initialAppState = {
          animation: { playing: false }
       },
       imx: { value: 0, min: -10, max: 10, abstractions: 0, independent: false, symbol: 'im(x)', highlighted: false }, //imaginary component of x
-      x: { value: 0, min: -10, max: 40, abstractions: 0, symbol: 'x', prevPoints: [], highlighted: false }, //real component of x
-      y: { value: 0, min: -30, max: 20, symbol: 'y', highlighted: false }, //position of mass
+      x: { value: 0, min: -10, max: 40, abstractions: 0, symbol: 'x(t)', prevPoints: [], highlighted: false }, //real component of x
+      y: { value: 0, min: -30, max: 20, symbol: 'y(0)', highlighted: false }, //position of mass
       k: { value: 50, min: 0, max: 100, symbol: 'k', abstractions: 10, independent: true, highlighted: false }, //spring constant
       m: { value: 1, min: 0, max: 30, symbol: 'm', independent: true, highlighted: false }, //mass
       c: { value: 0, min: 0, max: 30, symbol: 'c', independent: true, highlighted: false },

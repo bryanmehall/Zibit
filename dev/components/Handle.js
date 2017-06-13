@@ -26,90 +26,87 @@ var _ducksQuantityActions = require('../ducks/quantity/actions');
 
 var _ducksQuantityActions2 = _interopRequireDefault(_ducksQuantityActions);
 
+var _ducksWidgetActions = require('../ducks/widget/actions');
+
+var _ducksWidgetActions2 = _interopRequireDefault(_ducksWidgetActions);
+
 var _ducksQuantitySelectors = require('../ducks/quantity/selectors');
 
 var _Draggable = require("./Draggable");
 
 var _Draggable2 = _interopRequireDefault(_Draggable);
 
-var Anchor = (function (_React$Component) {
-   _inherits(Anchor, _React$Component);
+var Handle = (function (_React$Component) {
+   _inherits(Handle, _React$Component);
 
-   function Anchor(props) {
-      _classCallCheck(this, Anchor);
+   function Handle(props) {
+      _classCallCheck(this, Handle);
 
-      _get(Object.getPrototypeOf(Anchor.prototype), "constructor", this).call(this, props);
+      _get(Object.getPrototypeOf(Handle.prototype), "constructor", this).call(this, props);
       this.dragStart = this.dragStart.bind(this);
       this.dragMove = this.dragMove.bind(this);
       this.dragEnd = this.dragEnd.bind(this);
    }
 
-   _createClass(Anchor, [{
+   _createClass(Handle, [{
       key: "dragStart",
       value: function dragStart(initPos) {
-         this.startOffset = this.props.pos.y - initPos.y; //offset in px
-         this.props.setX0(this.startOffset, this.props.coordSys.yScale);
+         this.isPlaying = this.props.playing;
+         this.props.setPlay(this.props.quantity, false);
+         this.startOffset = this.props.pos.x - initPos.x; //offset in px
       }
    }, {
       key: "dragMove",
       value: function dragMove(newPos) {
-         var newYPos = newPos.y + this.startOffset;
-         this.props.setX0(newYPos, this.props.coordSys.yScale);
+         var newPos = newPos.x + this.startOffset;
+         this.props.setTransformedValue(this.props.quantity, newPos, this.props.scale);
       }
    }, {
       key: "dragEnd",
       value: function dragEnd(endPos) {
-         this.props.setPlay('t', true);
+         console.log('end');
+         this.props.setPlay('animTime', this.isPlaying);
       }
    }, {
       key: "render",
       value: function render() {
          var pos = this.props.pos;
-         var width = 80;
-         var height = 15;
-         var maskString = 'url(#' + this.props.mask + ')';
+         var color = this.props.color || "#ddd";
          return _react2["default"].createElement(
             _Draggable2["default"],
             { dragStart: this.dragStart, dragMove: this.dragMove, dragEnd: this.dragEnd },
-            _react2["default"].createElement(
-               "g",
-               null,
-               _react2["default"].createElement("rect", { x: pos.x, y: 0, width: width, height: pos.y + height, mask: maskString, fill: "none", cursor: "grab" }),
-               _react2["default"].createElement(
-                  "pattern",
-                  { id: "diagonalHatch", patternUnits: "userSpaceOnUse", viewBox: "0 0 8 8", width: "8", height: "8" },
-                  _react2["default"].createElement("path", { d: "M-2,2 l4,-4 M0,8 l8,-8 M6,10 l4,-4",
-                     style: { stroke: 'black', strokeWidth: 1 } })
-               ),
-               _react2["default"].createElement("rect", { x: pos.x, y: pos.y, width: width, height: height, mask: maskString, fill: "url(#diagonalHatch)" }),
-               _react2["default"].createElement("line", { x1: pos.x, x2: pos.x + width, y1: pos.y, y2: pos.y, stroke: "black", strokeWidth: 1.5 })
-            )
+            _react2["default"].createElement("circle", { cx: pos.x, cy: pos.y, r: 7, fill: color, stroke: "#666" })
          );
       }
    }]);
 
-   return Anchor;
+   return Handle;
 })(_react2["default"].Component);
 
 function mapStateToProps(state, props) {
    var br = props.boundingRect;
-   var coordSys = (0, _ducksQuantitySelectors.getCoordSys)(state, props.xVar, props.yVar, br);
+   var scale = (0, _ducksQuantitySelectors.getScale)(state, props.quantity, props.min, props.max);
    return {
       pos: {
-         x: (0, _ducksQuantitySelectors.getTransformedValue)(state, props.xVar, coordSys.xScale),
-         y: (0, _ducksQuantitySelectors.getTransformedValue)(state, props.yVar, coordSys.yScale)
-      }
+         x: (0, _ducksQuantitySelectors.getTransformedValue)(state, props.quantity, scale),
+         y: props.y
+      },
+      scale: scale,
+      playing: (0, _ducksQuantitySelectors.getPlaying)(state, props.quantity)
 
    };
 }
 
 function mapDispatchToProps(dispatch) {
    return {
-      setX0: function setX0(value, scale) {
-         dispatch(_ducksQuantityActions2["default"].setValueFromCoords('x', value, scale));
+      setTransformedValue: function setTransformedValue(quantity, value, scale) {
+         dispatch(_ducksQuantityActions2["default"].setValueFromCoords(quantity, value, scale));
       },
       setValue: function setValue(name, value) {
          dispatch(_ducksQuantityActions2["default"].setValue(name, value));
+      },
+      setActive: function setActive(name, value) {
+         dispatch(_ducksWidgetActions2["default"].setActive(name, value));
       },
       setPlay: function setPlay(name, value) {
          dispatch(_ducksQuantityActions2["default"].setPlay(name, value));
@@ -117,5 +114,5 @@ function mapDispatchToProps(dispatch) {
    };
 }
 
-exports["default"] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Anchor);
+exports["default"] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Handle);
 module.exports = exports["default"];

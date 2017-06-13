@@ -5,6 +5,7 @@ import QuantityActions from '../ducks/quantity/actions';
 import {getValue, getTransformedValue, getCoordSys, getQuantityData} from '../ducks/quantity/selectors'
 import Animation from "./Animation";
 import InfoBar from "./InfoBar"
+import Handle from "./Handle"
 
 class SideBar extends React.Component {
 
@@ -12,16 +13,18 @@ class SideBar extends React.Component {
 		var width = 300
 		var height = 80
 		var titleFontSize = 15
-		var color = '#ddd'
+		var color = '#eee'
 		var textStyle = {
 			fontSize:titleFontSize,
 			textAnchor:"middle",
 			x:(width+50)/2,
 			fill:color,
-			fontFamily:"helvetica"
+
 		}
 		var sideBarStyle = {
-			width:width+'px'
+			width:width+'px',
+			fontFamily:"helvetica",
+			fontSize: 15
 		}
 		return (
 			<div style={sideBarStyle}>
@@ -31,9 +34,10 @@ class SideBar extends React.Component {
 					<text {...textStyle} y={20+titleFontSize+5}>Simple Harmonic Oscillator</text>
 					<text > </text>
 					<Animation pos={{x:10, y:9}} quantity='animTime' scale={1.6} color={color}></Animation>
-					<line x1={10} x2={width-10} y1={height-15} y2={height-15} stroke={color} strokeWidth={3} strokeLinecap='round'></line>
+					<line x1={15} x2={width-15} y1={height-15} y2={height-15} stroke={color} strokeWidth={3} strokeLinecap='round'></line>
+					<Handle quantity="animTime" y={height-15} min={15} max={width-15}></Handle>
 				</svg>
-				<div style={{overflow:"auto",backgroundColor:color,height:1000}}>
+				<div style={{overflow:"auto",backgroundColor:color,height:1000, margin:"0px"}}>
 					<InfoBar></InfoBar>
 				</div>
             </div>

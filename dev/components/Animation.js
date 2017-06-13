@@ -48,6 +48,8 @@ var Animation = (function (_React$Component) {
          var play = "M0,0 L7,0 7,20 0,20 M11,0 L18,0 18,20 11,20";
          var fromPath = this.props.playing ? pause : play;
          var toPath = this.props.playing ? play : pause;
+         //why does the button not change when paused externally?
+         //We'll call it a feature...
          return _react2["default"].createElement(
             "path",
             {

@@ -8,9 +8,13 @@ import Animation from "./Animation";
 class InfoBar extends React.Component {
 
 	render() {
+		var headerStyle = {
+			backgroundColor:"#ccc",
+			height:"30px",
+		}
 		return (
 			<div >
-                <div>
+                <div style={headerStyle}>
 					header
 				</div>
 				<div>

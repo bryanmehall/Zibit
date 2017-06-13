@@ -26,13 +26,20 @@ class Anchor extends React.Component {
 	render(){
 		var pos = this.props.pos
 		var width = 80
-		var height = 20
+		var height = 15
 		var maskString = 'url(#'+this.props.mask+')'
 		return(
 			<Draggable dragStart={this.dragStart} dragMove={this.dragMove} dragEnd={this.dragEnd}>
 				<g >
 					<rect x={pos.x} y={0} width={width} height={pos.y+height} mask={maskString} fill='none' cursor='grab'></rect>
-					<rect x={pos.x} y={pos.y} width={width} height={height} mask={maskString} fill='rgba(0, 0, 0, 0.5)'></rect>
+					<pattern id="diagonalHatch" patternUnits="userSpaceOnUse" viewBox="0 0 8 8" width="8" height="8">
+  						<path d="M-2,2 l4,-4
+          					 M0,8 l8,-8
+							M6,10 l4,-4"
+        					style={{stroke:'black', strokeWidth:1}} />
+					</pattern>
+					<rect x={pos.x} y={pos.y} width={width} height={height} mask={maskString} fill='url(#diagonalHatch)'></rect>
+					<line x1={pos.x} x2={pos.x+width} y1={pos.y} y2={pos.y} stroke='black' strokeWidth={1.5}></line>
 				</g>
 
 			</Draggable>

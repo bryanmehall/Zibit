@@ -9,8 +9,6 @@ class Animation extends React.Component {
 		super(props)
 	}
 
-
-
 	render() {
 		var pos = this.props.pos
 		var scale = this.props.scale || 0.8
@@ -20,6 +18,8 @@ class Animation extends React.Component {
 		var play = "M0,0 L7,0 7,20 0,20 M11,0 L18,0 18,20 11,20"
 		var fromPath = this.props.playing ? pause : play
 		var toPath = this.props.playing ? play : pause
+		//why does the button not change when paused externally?
+		//We'll call it a feature...
 		return (
 			<path
 				transform = {'matrix('+scale+' 0 0 '+scale +' '+ pos.x+' '+pos.y+')'}

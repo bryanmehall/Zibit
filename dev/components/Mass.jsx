@@ -2,6 +2,7 @@ import React from "react";
 import {connect} from "react-redux"
 import { bindActionCreators } from 'redux';
 import QuantityActions from '../ducks/quantity/actions';
+import WidgetActions from '../ducks/widget/actions'
 import {getTransformedValue, getValue, getCoordSys, getQuantityData} from '../ducks/quantity/selectors'
 import Draggable from "./Draggable"
 
@@ -24,6 +25,7 @@ class Mass extends React.Component {
 		this.props.setY0(newYPos, this.props.coordSys.yScale)
 	}
 	dragEnd(endPos){
+		this.props.setActive('t', true)
 		this.props.setPlay('t', true)
 	}
 	render(){
@@ -63,6 +65,9 @@ function mapDispatchToProps(dispatch) {
 		},
 		setValue:(name, value) => {
 			dispatch(QuantityActions.setValue(name, value))
+		},
+		setActive:(name, value) => {
+			dispatch(WidgetActions.setActive(name, value))
 		},
 		setPlay:(name, value) => {
 			dispatch(QuantityActions.setPlay(name, value))

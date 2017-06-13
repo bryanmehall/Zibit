@@ -93,7 +93,7 @@ var SmdApp = (function (_React$Component) {
          return _react2["default"].createElement(
             "div",
             null,
-            _react2["default"].createElement("div", { style: { backgroundColor: "#666", height: 40 } }),
+            _react2["default"].createElement("div", { style: { backgroundColor: "#666", height: 40, borderBottom: "3px solid #ccc" } }),
             _react2["default"].createElement(
                "div",
                { style: appStyle },

@@ -38,6 +38,10 @@ var _InfoBar = require("./InfoBar");
 
 var _InfoBar2 = _interopRequireDefault(_InfoBar);
 
+var _Handle = require("./Handle");
+
+var _Handle2 = _interopRequireDefault(_Handle);
+
 var SideBar = (function (_React$Component) {
    _inherits(SideBar, _React$Component);
 
@@ -53,16 +57,18 @@ var SideBar = (function (_React$Component) {
          var width = 300;
          var height = 80;
          var titleFontSize = 15;
-         var color = '#ddd';
+         var color = '#eee';
          var textStyle = {
             fontSize: titleFontSize,
             textAnchor: "middle",
             x: (width + 50) / 2,
-            fill: color,
-            fontFamily: "helvetica"
+            fill: color
+
          };
          var sideBarStyle = {
-            width: width + 'px'
+            width: width + 'px',
+            fontFamily: "helvetica",
+            fontSize: 15
          };
          return _react2["default"].createElement(
             "div",
@@ -87,11 +93,12 @@ var SideBar = (function (_React$Component) {
                   " "
                ),
                _react2["default"].createElement(_Animation2["default"], { pos: { x: 10, y: 9 }, quantity: "animTime", scale: 1.6, color: color }),
-               _react2["default"].createElement("line", { x1: 10, x2: width - 10, y1: height - 15, y2: height - 15, stroke: color, strokeWidth: 3, strokeLinecap: "round" })
+               _react2["default"].createElement("line", { x1: 15, x2: width - 15, y1: height - 15, y2: height - 15, stroke: color, strokeWidth: 3, strokeLinecap: "round" }),
+               _react2["default"].createElement(_Handle2["default"], { quantity: "animTime", y: height - 15, min: 15, max: width - 15 })
             ),
             _react2["default"].createElement(
                "div",
-               { style: { overflow: "auto", backgroundColor: color, height: 1000 } },
+               { style: { overflow: "auto", backgroundColor: color, height: 1000, margin: "0px" } },
                _react2["default"].createElement(_InfoBar2["default"], null)
             )
          );

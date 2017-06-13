@@ -44,12 +44,16 @@ var InfoBar = (function (_React$Component) {
    _createClass(InfoBar, [{
       key: "render",
       value: function render() {
+         var headerStyle = {
+            backgroundColor: "#ccc",
+            height: "30px"
+         };
          return _react2["default"].createElement(
             "div",
             null,
             _react2["default"].createElement(
                "div",
-               null,
+               { style: headerStyle },
                "header"
             ),
             _react2["default"].createElement(
