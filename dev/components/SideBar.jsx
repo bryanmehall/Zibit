@@ -4,13 +4,38 @@ import { bindActionCreators } from 'redux';
 import QuantityActions from '../ducks/quantity/actions';
 import {getValue, getTransformedValue, getCoordSys, getQuantityData} from '../ducks/quantity/selectors'
 import Animation from "./Animation";
+import InfoBar from "./InfoBar"
 
 class SideBar extends React.Component {
-	render() {
 
+	render() {
+		var width = 300
+		var height = 80
+		var titleFontSize = 15
+		var color = '#ddd'
+		var textStyle = {
+			fontSize:titleFontSize,
+			textAnchor:"middle",
+			x:(width+50)/2,
+			fill:color,
+			fontFamily:"helvetica"
+		}
+		var sideBarStyle = {
+			width:width+'px'
+		}
 		return (
-			<div style="backgroundColor:red">
-                abc
+			<div style={sideBarStyle}>
+                <svg width={width} height={height}>
+					<rect width={width} height={height} fill='#666'/>
+					<text {...textStyle} y={20}>Part 01:</text>
+					<text {...textStyle} y={20+titleFontSize+5}>Simple Harmonic Oscillator</text>
+					<text > </text>
+					<Animation pos={{x:10, y:9}} quantity='animTime' scale={1.6} color={color}></Animation>
+					<line x1={10} x2={width-10} y1={height-15} y2={height-15} stroke={color} strokeWidth={3} strokeLinecap='round'></line>
+				</svg>
+				<div style={{overflow:"auto",backgroundColor:color,height:1000}}>
+					<InfoBar></InfoBar>
+				</div>
             </div>
 
 		)
@@ -21,18 +46,7 @@ class SideBar extends React.Component {
 
 function mapStateToProps(state, props) {
 	var br = props.boundingRect
-	var coordSys = getCoordSys(state, props.xVar1, props.yVar1, br)
-	var coordSys2 = getCoordSys(state, props.xVar2, props.yVar2, br)
 	return {
-		k: getValue(state, 'k'),
-		p2:{
-			x:getTransformedValue(state, props.xVar1, coordSys.xScale),
-			y:getTransformedValue(state, props.yVar1, coordSys.yScale)
-		},
-		p1:{
-			x:getTransformedValue(state,props.xVar2, coordSys2.xScale),
-			y:getTransformedValue(state, props.yVar2, coordSys2.yScale)
-		}
 	};
 }
 

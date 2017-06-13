@@ -41,6 +41,8 @@ var Animation = (function (_React$Component) {
       key: "render",
       value: function render() {
          var pos = this.props.pos;
+         var scale = this.props.scale || 0.8;
+         var color = this.props.color || 'gray';
          var self = this;
          var pause = "M0,0 L9,5 9,15 0,20 M9,5 L18,10 18,10 9,15";
          var play = "M0,0 L7,0 7,20 0,20 M11,0 L18,0 18,20 11,20";
@@ -49,10 +51,10 @@ var Animation = (function (_React$Component) {
          return _react2["default"].createElement(
             "path",
             {
-               transform: 'matrix(0.8 0 0 0.8 ' + pos.x + ' ' + pos.y + ')',
+               transform: 'matrix(' + scale + ' 0 0 ' + scale + ' ' + pos.x + ' ' + pos.y + ')',
                d: toPath,
                pointerEvents: "bounding-box",
-               fill: "gray",
+               fill: color,
                onClick: function () {
                   self.props.setPlay(self.props.quantity, !self.props.playing);
                }

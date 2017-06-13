@@ -31,27 +31,40 @@ class SmdApp extends React.Component {
 		}
 		var children = this.props.childData.map(createChild)
 		var app = this
+		var appStyle = {
+			display: 'flex'
+		}
 		return (
-            <SideBar></SideBar>
-			<svg width={700} height={600}>
-			<defs>
-				<filter id="highlight" primitiveUnits="userSpaceOnUse">
-					<feMorphology operator="dilate" radius="1.5" in="SourceAlpha" result="expanded"/>
-					<feFlood floodColor="#80d8ff" result="highlightColor"/>
-					<feComposite in="highlightColor" in2="expanded" operator="in" result="expandedColored" />
-					<feGaussianBlur stdDeviation="2" in="expandedColored" result="highlight"/>
-				 	<feComposite operator="over" in="SourceGraphic" in2="highlight"/>
-				 </filter>
-				<filter id="textBackground" primitiveUnits="userSpaceOnUse">
-					<feMorphology operator="dilate" radius="100" in="SourceAlpha" result="expanded"/>
-					<feFlood floodColor="white" result="highlightColor"/>
-					<feComposite in="highlightColor" in2="expanded" operator="in" result="expandedColored" />
-					<feGaussianBlur stdDeviation="1" in="expandedColored" result="highlight"/>
-				 	<feComposite operator="over" in="SourceGraphic" in2="highlight"/>
-				 </filter>
-			</defs>
-			{children}
-		</svg>)
+			<div >
+				<div style={{backgroundColor:"#666", height:40}}></div>
+				<div style={appStyle}>
+					<SideBar></SideBar>
+					<div style={{flexGrow: 1}}>
+						<svg width={700} height={600} >
+						<defs>
+							<filter id="highlight" primitiveUnits="userSpaceOnUse">
+								<feMorphology operator="dilate" radius="1.5" in="SourceAlpha" result="expanded"/>
+								<feFlood floodColor="#80d8ff" result="highlightColor"/>
+								<feComposite in="highlightColor" in2="expanded" operator="in" result="expandedColored" />
+								<feGaussianBlur stdDeviation="2" in="expandedColored" result="highlight"/>
+								<feComposite operator="over" in="SourceGraphic" in2="highlight"/>
+							 </filter>
+							<filter id="textBackground" primitiveUnits="userSpaceOnUse">
+								<feMorphology operator="dilate" radius="100" in="SourceAlpha" result="expanded"/>
+								<feFlood floodColor="white" result="highlightColor"/>
+								<feComposite in="highlightColor" in2="expanded" operator="in" result="expandedColored" />
+								<feGaussianBlur stdDeviation="1" in="expandedColored" result="highlight"/>
+								<feComposite operator="over" in="SourceGraphic" in2="highlight"/>
+							 </filter>
+						</defs>
+						{children}
+						</svg>
+					</div>
+				</div>
+
+
+			</div>
+            )
 	}
 }
 SmdApp.PropTypes = {

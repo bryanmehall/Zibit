@@ -8,8 +8,6 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24,53 +22,60 @@ var _reactRedux = require("react-redux");
 
 var _redux = require('redux');
 
-var _Path = require("./Path");
-
-var _Path2 = _interopRequireDefault(_Path);
-
 var _ducksQuantityActions = require('../ducks/quantity/actions');
 
-var QuantityActions = _interopRequireWildcard(_ducksQuantityActions);
+var _ducksQuantityActions2 = _interopRequireDefault(_ducksQuantityActions);
 
 var _ducksQuantitySelectors = require('../ducks/quantity/selectors');
 
-var Abstraction = (function (_React$Component) {
-   _inherits(Abstraction, _React$Component);
+var _Animation = require("./Animation");
 
-   function Abstraction() {
-      _classCallCheck(this, Abstraction);
+var _Animation2 = _interopRequireDefault(_Animation);
 
-      _get(Object.getPrototypeOf(Abstraction.prototype), "constructor", this).apply(this, arguments);
+var InfoBar = (function (_React$Component) {
+   _inherits(InfoBar, _React$Component);
+
+   function InfoBar() {
+      _classCallCheck(this, InfoBar);
+
+      _get(Object.getPrototypeOf(InfoBar.prototype), "constructor", this).apply(this, arguments);
    }
 
-   _createClass(Abstraction, [{
+   _createClass(InfoBar, [{
       key: "render",
       value: function render() {
-
-         var points = this.props.points;
-         return _react2["default"].createElement(_Path2["default"], {
-            points: points,
-            strokeColor: "gray",
-            coordSys: this.props.coordSys,
-            mask: this.props.mask
-         });
+         return _react2["default"].createElement(
+            "div",
+            null,
+            _react2["default"].createElement(
+               "div",
+               null,
+               "header"
+            ),
+            _react2["default"].createElement(
+               "div",
+               null,
+               "body"
+            )
+         );
       }
    }]);
 
-   return Abstraction;
+   return InfoBar;
 })(_react2["default"].Component);
 
 function mapStateToProps(state, props) {
-   return {
-      points: (0, _ducksQuantitySelectors.getAbsPoints)(state, props.indVar, props.xVar, props.yVar)
-   };
+   var br = props.boundingRect;
+   return {};
 }
 
 function mapDispatchToProps(dispatch) {
    return {
-      actions: (0, _redux.bindActionCreators)(QuantityActions, dispatch)
+      setY0: function setY0(value) {
+         dispatch(_ducksQuantityActions2["default"].setValue('y0', value));
+      }
    };
 }
 
-exports["default"] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Abstraction);
+exports["default"] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(InfoBar);
 module.exports = exports["default"];

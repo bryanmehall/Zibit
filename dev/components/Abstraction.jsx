@@ -12,6 +12,7 @@ class Abstraction extends React.Component {
 		return(
 			<Path
 				points={points}
+				strokeColor="gray"
 				coordSys={this.props.coordSys}
 				mask={this.props.mask}
 				></Path>

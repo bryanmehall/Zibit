@@ -56,6 +56,10 @@ var _Value = require('./Value');
 
 var _Value2 = _interopRequireDefault(_Value);
 
+var _SideBar = require('./SideBar');
+
+var _SideBar2 = _interopRequireDefault(_SideBar);
+
 var SmdApp = (function (_React$Component) {
    _inherits(SmdApp, _React$Component);
 
@@ -83,32 +87,49 @@ var SmdApp = (function (_React$Component) {
          }
          var children = this.props.childData.map(createChild);
          var app = this;
+         var appStyle = {
+            display: 'flex'
+         };
          return _react2["default"].createElement(
-            "svg",
-            { width: 700, height: 600 },
+            "div",
+            null,
+            _react2["default"].createElement("div", { style: { backgroundColor: "#666", height: 40 } }),
             _react2["default"].createElement(
-               "defs",
-               null,
+               "div",
+               { style: appStyle },
+               _react2["default"].createElement(_SideBar2["default"], null),
                _react2["default"].createElement(
-                  "filter",
-                  { id: "highlight", primitiveUnits: "userSpaceOnUse" },
-                  _react2["default"].createElement("feMorphology", { operator: "dilate", radius: "1.5", "in": "SourceAlpha", result: "expanded" }),
-                  _react2["default"].createElement("feFlood", { floodColor: "#80d8ff", result: "highlightColor" }),
-                  _react2["default"].createElement("feComposite", { "in": "highlightColor", in2: "expanded", operator: "in", result: "expandedColored" }),
-                  _react2["default"].createElement("feGaussianBlur", { stdDeviation: "2", "in": "expandedColored", result: "highlight" }),
-                  _react2["default"].createElement("feComposite", { operator: "over", "in": "SourceGraphic", in2: "highlight" })
-               ),
-               _react2["default"].createElement(
-                  "filter",
-                  { id: "textBackground", primitiveUnits: "userSpaceOnUse" },
-                  _react2["default"].createElement("feMorphology", { operator: "dilate", radius: "100", "in": "SourceAlpha", result: "expanded" }),
-                  _react2["default"].createElement("feFlood", { floodColor: "white", result: "highlightColor" }),
-                  _react2["default"].createElement("feComposite", { "in": "highlightColor", in2: "expanded", operator: "in", result: "expandedColored" }),
-                  _react2["default"].createElement("feGaussianBlur", { stdDeviation: "1", "in": "expandedColored", result: "highlight" }),
-                  _react2["default"].createElement("feComposite", { operator: "over", "in": "SourceGraphic", in2: "highlight" })
+                  "div",
+                  { style: { flexGrow: 1 } },
+                  _react2["default"].createElement(
+                     "svg",
+                     { width: 700, height: 600 },
+                     _react2["default"].createElement(
+                        "defs",
+                        null,
+                        _react2["default"].createElement(
+                           "filter",
+                           { id: "highlight", primitiveUnits: "userSpaceOnUse" },
+                           _react2["default"].createElement("feMorphology", { operator: "dilate", radius: "1.5", "in": "SourceAlpha", result: "expanded" }),
+                           _react2["default"].createElement("feFlood", { floodColor: "#80d8ff", result: "highlightColor" }),
+                           _react2["default"].createElement("feComposite", { "in": "highlightColor", in2: "expanded", operator: "in", result: "expandedColored" }),
+                           _react2["default"].createElement("feGaussianBlur", { stdDeviation: "2", "in": "expandedColored", result: "highlight" }),
+                           _react2["default"].createElement("feComposite", { operator: "over", "in": "SourceGraphic", in2: "highlight" })
+                        ),
+                        _react2["default"].createElement(
+                           "filter",
+                           { id: "textBackground", primitiveUnits: "userSpaceOnUse" },
+                           _react2["default"].createElement("feMorphology", { operator: "dilate", radius: "100", "in": "SourceAlpha", result: "expanded" }),
+                           _react2["default"].createElement("feFlood", { floodColor: "white", result: "highlightColor" }),
+                           _react2["default"].createElement("feComposite", { "in": "highlightColor", in2: "expanded", operator: "in", result: "expandedColored" }),
+                           _react2["default"].createElement("feGaussianBlur", { stdDeviation: "1", "in": "expandedColored", result: "highlight" }),
+                           _react2["default"].createElement("feComposite", { operator: "over", "in": "SourceGraphic", in2: "highlight" })
+                        )
+                     ),
+                     children
+                  )
                )
-            ),
-            children
+            )
          );
       }
    }]);

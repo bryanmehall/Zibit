@@ -153,6 +153,9 @@ const initialAppState = {
 		}
 	},
 	quantities:{
+		animTime:{
+			value:0, min:0, max:100, symbol:'dispT', abstractions:10, animation:{playing:false}, independent:true
+		},
 		t: { //time
 			value:0,
 			min:0,
