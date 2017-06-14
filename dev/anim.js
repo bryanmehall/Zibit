@@ -1,3 +1,6 @@
+import QuantityActions from './ducks/quantity/actions'
+import WidgetActions from './ducks/widget/actions'
+
 var keyframes = [
 	{
 		time: 1,
@@ -8,8 +11,21 @@ var keyframes = [
 				params: {
 					type: 'Plot',
 					name: 'testPlot',
-					parent: "SmdApp",
-					interp: 'cubic' //make cubic default
+					parent: "app",
+					props: {
+						xVar: 's',
+						yVar: 'y',
+						xVars: ['s', 't'],
+						yVars: ['y', 'x'],
+						width: 200,
+						height: 350,
+						pos: {
+							x: 200,
+							y: 400
+						},
+						visibility: 0.5
+					},
+					interp: 'linear' //make cubic default
 				}
 			}
 		]
@@ -34,35 +50,106 @@ var tweens = keyframes.reduce(keyframesToActions, [])
 
 
 var actions = {
+	//start and inverse.end must be opposites ie enter then exit is noop
 	fadeWidgetIn: {
-		enter: function (t, tweenData) {
-			console.log('fading widget', tweenData)
+		inverse: "fadeWidgetOut",
+		start: function (store, t, tweenData) {
+			var params = tweenData.params
+			store.dispatch(WidgetActions.addWidget(params.name, params.type, params.props))
+			store.dispatch(WidgetActions.addChild(params.name, params.parent))
 		},
-		tween: function () {
+		tween: function (store, t, tweenData) {
+			var alpha = (t - tweenData.start) / (tweenData.dur)
+			store.dispatch(WidgetActions.setProp(tweenData.params.name, 'visibility', alpha))
+		},
+		end: function () {
+			//console.log('end of fade in')
+		}
+	},
+	fadeWidgetOut: {
+		inverse: "fadeWidgetIn",
+		start: function (t, tweenData) {},
+		tween: function (store, t, tweenData) {
+			var alpha = (t - tweenData.start) / (tweenData.end - tweenData.start)
+			store.dispatch(WidgetActions.setProp(tweenData.params.name, 'visibility', alpha))
 			console.log('tweening widget')
 		},
-		exit: function () {}
+		end: function (store, t, tweenData) {
+			console.log('removing widget')
+			var params = tweenData.params
+			store.dispatch(WidgetActions.removeChild(params.name, params.parent))
+				//store.dispatch(WidgetActions.removeWidget(params.name))
+
+		}
 	}
 }
 
-export const getActiveTweens = (prevFrameTime, time) => ({
-	enter: tweens.filter((tween) => (prevFrameTime < tween.start && time >= tween.start)),
-	tween: tweens.filter((tween) => (prevFrameTime > tween.start && time > tween.start && time < tween.end)),
-	exit: tweens.filter((tween) => (prevFrameTime < tween.end && time >= tween.end))
-})
+/* possible frame and start/end time spacing
+  start    end      stages
+1 2 |       |     	none
+  1 |   2   |		start, tween
+  1 |       | 2		start,  end, tween
+    |  1 2  |		tween
+	|   1   | 2		end + tween
+	|       | 1 2   none
+backwards
+2 1 |       |     	none
+  2 |   1   |		end + tween
+  2 |       | 1		start then end
+    |  2 1  |		tween
+	|   2   | 1		start + tween
+	|       | 2 1   none
 
-export const tween = function (activeTweens, t) {
-		activeTweens.enter.forEach(function (tween) {
-			actions[tween.type].enter(t, tween)
-		})
-		activeTweens.tween.forEach(function (tween) {
-			actions[tween.type].tween(t, tween)
-		})
-		activeTweens.exit.forEach(function (tween) {
-			actions[tween.type].exit(t, tween)
+
+
+*/
+export const getActiveTweens = (tp, t) => {
+		//previous time and time
+		var playingForward = t >= tp
+		var activeTweens = tweens.filter((tween) => (!(tp < tween.start && t < tween.start || tp > tween.end && t > tween.end)))
+		return activeTweens.map((tween) => {
+			var stage = 'tween'
+			if (playingForward) { //order is important so it goes start end tween
+				if (t > tween.end) {
+					stage = 'end'
+				}
+				if (tp < tween.start) {
+					stage = 'start'
+				}
+			} else { //handle case for both?
+				if (tp > tween.end) {
+					stage = 'start'
+				}
+				if (t < tween.start) {
+					stage = 'end'
+				}
+			}
+			return Object.assign({}, tween, {
+				playingForward, stage
+			})
 		})
 	}
-	//console.log('0,0', getActiveTweens(0, 0))
-	//console.log('0.5,1.5', getActiveTweens(0.5, 1.5))
-	//console.log('1.5,1.6', getActiveTweens(1.5, 1.6))
-	//console.log('1.6,2.5', getActiveTweens(1.6, 2.5))
+	/*
+	export const getActiveTweens = (prevFrameTime, time) => ({
+		start: tweens.filter((tween) => (prevFrameTime < tween.start && time >= tween.start)),
+		tween: tweens.filter((tween) => (prevFrameTime > tween.start && time > tween.start && time < tween.end)),
+		end: tweens.filter((tween) => (prevFrameTime < tween.end && time >= tween.end))
+	})
+*/
+export const tween = function (store, activeTweens, t) {
+	activeTweens.forEach((tween) => {
+		if (tween.playingForward) {
+			actions[tween.type][tween.stage](store, t, tween)
+			actions[tween.type]['tween'](store, t, tween)
+		} else {
+			var inverseType = actions[tween.type].inverse
+			actions[inverseType][tween.stage](store, t, tween)
+		}
+
+	})
+}
+
+//console.log('0,0', getActiveTweens(0, 0))
+//console.log('0.5,1.5', getActiveTweens(0.5, 1.5))
+//console.log('1.5,1.6', getActiveTweens(1.5, 1.6))
+//console.log('1.6,2.5', getActiveTweens(1.6, 2.5))

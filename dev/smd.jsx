@@ -2,9 +2,10 @@ import React, { PropTypes } from "react";
 import ReactDOM from "react-dom";
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider, connect} from 'react-redux';
-import {getActiveTweens, tween} from "./anim"
+
 import {createLogger} from "redux-logger";
 import SmdApp from "./components/SmdApp"
+import {getActiveTweens, tween} from "./anim"
 import QuantityActions from './ducks/quantity/actions'
 import {getValue, getQuantityData, getAnimatable, getPlaying} from './ducks/quantity/selectors'
 import * as reducers from "./ducks";
@@ -12,34 +13,35 @@ import * as reducers from "./ducks";
 const rootReducer = combineReducers(reducers)
 
 const animMiddleware = store => next => action => {
-	if (action.type === 'ANIM_PLAY') {
+	if (action.type === "SET_VALUE" && action.payload.name === 'animTime'){
+		var state = store.getState()
+		var prevTime = getValue(state, 'animTime')
+		var t = action.payload.value
+		var activeTweens = getActiveTweens(prevTime, t)
+		tween(store, activeTweens, t)
+	} else if (action.type === 'ANIM_PLAY') {
 		function animStart(){
 			var t = Date.now()
 			var name = action.payload.name
 			var state = store.getState()
 			var initValue = getValue(state, name)
-			store.dispatch(QuantityActions.animStep(name, t, initValue, initValue))
+			store.dispatch(QuantityActions.animStep(name, t, initValue))
 		}
 		requestAnimationFrame(animStart);
 	} else if (action.type === 'ANIM_STEP') {
 		requestAnimationFrame(animStep)
 		function animStep(){
 			var t0 = action.payload.initTime
-			var prevTime = action.payload.prevTime
 			var v0 = action.payload.initValue
 			var t = Date.now()
 			var value = (t-t0)/1000 + v0
 			var name = action.payload.name
 			var state = store.getState()
 			var isPlaying = getPlaying(state, name)
-			if (name === 'animTime'){
-				var activeTweens = getActiveTweens(prevTime, value)
-				tween(activeTweens, value)
-			}
 
 			if (isPlaying){//only update and continue if quantity is still playing
 				store.dispatch(QuantityActions.setValue(name, value))
-				store.dispatch(QuantityActions.animStep(name, t0, v0, value))
+				store.dispatch(QuantityActions.animStep(name, t0, v0))
 			}
 
 		}
@@ -107,7 +109,8 @@ const initialAppState = {
 				yVars:['y','x'],
 				width:200,
 				height:350,
-				pos:{x:250,y:400}
+				pos:{x:250,y:400},
+				visibility:0.5
 			},
 			children:['anchor', 'mass', 'spring']
 		},
@@ -175,7 +178,7 @@ const initialAppState = {
 	},
 	quantities:{
 		animTime:{
-			value:0, min:0, max:100, symbol:'dispT', independent:true, abstractions:10, animation:{playing:false}
+			value:0, min:0, max:10, symbol:'dispT', independent:true, abstractions:10, animation:{playing:false}
 		},
 		t: { //time
 			value:0,

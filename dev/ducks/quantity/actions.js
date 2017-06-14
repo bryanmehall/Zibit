@@ -1,42 +1,20 @@
 import types from "./types";
+
 import {
 	bindActionCreators
 }
 from 'redux'
 
-import {
-	getValue
-}
-from './selectors'
 
-function animate(quantity) {
-	var t0 = new Date()
-	var v0 = getValue()
-	var step = function () {
-		var globalT = new Date()
-		var t = (globalT - t0) / 1000
-		var value = t + v0
-		self.props.setValue(self.props.quantity, value)
-		console.log('updating', value)
-		if (self.props.playing) {
-			window.requestAnimationFrame(step)
-		}
+
+
+const setValue = (name, value) => ({
+	type: "SET_VALUE",
+	payload: {
+		name: name,
+		value: value
 	}
-	window.requestAnimationFrame(step)
-}
-/*if (name === 'animTime'){
-				var activeTweens = getActiveTweens(prevTime, t)
-				tween(activeTweens, t)
-			}*/
-const setValue = (name, value) => {
-	return {
-		type: "SET_VALUE",
-		payload: {
-			name: name,
-			value: value
-		}
-	}
-}
+})
 
 const setPlay = (name, value) => {
 	if (value === true) {
@@ -61,10 +39,10 @@ const setPlay = (name, value) => {
 
 }
 
-const animStep = (name, initTime, initValue, prevTime) => ({
+const animStep = (name, initTime, initValue) => ({
 	type: 'ANIM_STEP',
 	payload: {
-		name, initValue, initTime, prevTime
+		name, initValue, initTime
 	}
 })
 

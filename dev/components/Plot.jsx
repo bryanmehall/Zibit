@@ -19,6 +19,7 @@ class Plot extends React.Component {
 			width = this.props.width,//width in px from axis min
 		 	height = this.props.height,//height in px from axis min
 			pos = this.props.pos,
+			visibility = this.props.visibility || 1,
 			xQuantities = this.props.xQuantities,
 			yQuantities = this.props.yQuantities,
 			xQuantity = xQuantities[this.props.xActive],
@@ -56,7 +57,7 @@ class Plot extends React.Component {
 		}
 		var children = this.props.childData.map(createChild)
 		return (
-			<g>
+			<g opacity={visibility}>
 				<defs>
 					<mask id={plotId}>
 						<rect x={pos.x} y={pos.y-height} width={width} height={height} fill="white" opacity="1" />

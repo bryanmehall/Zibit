@@ -72,6 +72,7 @@ var Plot = (function (_React$Component) {
          height = this.props.height,
              //height in px from axis min
          pos = this.props.pos,
+             visibility = this.props.visibility || 1,
              xQuantities = this.props.xQuantities,
              yQuantities = this.props.yQuantities,
              xQuantity = xQuantities[this.props.xActive],
@@ -110,7 +111,7 @@ var Plot = (function (_React$Component) {
          var children = this.props.childData.map(createChild);
          return _react2["default"].createElement(
             "g",
-            null,
+            { opacity: visibility },
             _react2["default"].createElement(
                "defs",
                null,

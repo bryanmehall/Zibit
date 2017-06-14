@@ -16,13 +16,13 @@ var _redux = require('redux');
 
 var _reactRedux = require('react-redux');
 
-var _anim = require("./anim");
-
 var _reduxLogger = require("redux-logger");
 
 var _componentsSmdApp = require("./components/SmdApp");
 
 var _componentsSmdApp2 = _interopRequireDefault(_componentsSmdApp);
+
+var _anim = require("./anim");
 
 var _ducksQuantityActions = require('./ducks/quantity/actions');
 
@@ -39,35 +39,36 @@ var rootReducer = (0, _redux.combineReducers)(reducers);
 var animMiddleware = function animMiddleware(store) {
    return function (next) {
       return function (action) {
-         if (action.type === 'ANIM_PLAY') {
+         if (action.type === "SET_VALUE" && action.payload.name === 'animTime') {
+            var state = store.getState();
+            var prevTime = (0, _ducksQuantitySelectors.getValue)(state, 'animTime');
+            var t = action.payload.value;
+            var activeTweens = (0, _anim.getActiveTweens)(prevTime, t);
+            (0, _anim.tween)(store, activeTweens, t);
+         } else if (action.type === 'ANIM_PLAY') {
             var animStart = function animStart() {
                var t = Date.now();
                var name = action.payload.name;
                var state = store.getState();
                var initValue = (0, _ducksQuantitySelectors.getValue)(state, name);
-               store.dispatch(_ducksQuantityActions2["default"].animStep(name, t, initValue, initValue));
+               store.dispatch(_ducksQuantityActions2["default"].animStep(name, t, initValue));
             };
 
             requestAnimationFrame(animStart);
          } else if (action.type === 'ANIM_STEP') {
             var animStep = function animStep() {
                var t0 = action.payload.initTime;
-               var prevTime = action.payload.prevTime;
                var v0 = action.payload.initValue;
                var t = Date.now();
                var value = (t - t0) / 1000 + v0;
                var name = action.payload.name;
                var state = store.getState();
                var isPlaying = (0, _ducksQuantitySelectors.getPlaying)(state, name);
-               if (name === 'animTime') {
-                  var activeTweens = (0, _anim.getActiveTweens)(prevTime, value);
-                  (0, _anim.tween)(activeTweens, value);
-               }
 
                if (isPlaying) {
                   //only update and continue if quantity is still playing
                   store.dispatch(_ducksQuantityActions2["default"].setValue(name, value));
-                  store.dispatch(_ducksQuantityActions2["default"].animStep(name, t0, v0, value));
+                  store.dispatch(_ducksQuantityActions2["default"].animStep(name, t0, v0));
                }
             };
 
@@ -138,7 +139,8 @@ var initialAppState = {
             yVars: ['y', 'x'],
             width: 200,
             height: 350,
-            pos: { x: 250, y: 400 }
+            pos: { x: 250, y: 400 },
+            visibility: 0.5
          },
          children: ['anchor', 'mass', 'spring']
       },
@@ -206,7 +208,7 @@ var initialAppState = {
    },
    quantities: {
       animTime: {
-         value: 0, min: 0, max: 100, symbol: 'dispT', independent: true, abstractions: 10, animation: { playing: false }
+         value: 0, min: 0, max: 10, symbol: 'dispT', independent: true, abstractions: 10, animation: { playing: false }
       },
       t: { //time
          value: 0,
