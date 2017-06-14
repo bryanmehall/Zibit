@@ -45,6 +45,9 @@ var animMiddleware = function animMiddleware(store) {
             var t = action.payload.value;
             var activeTweens = (0, _anim.getActiveTweens)(prevTime, t);
             (0, _anim.tween)(store, activeTweens, t);
+            if (_anim.audio.paused) {
+               _anim.audio.currentTime = t;
+            }
          } else if (action.type === 'ANIM_PLAY') {
             var animStart = function animStart() {
                var t = Date.now();

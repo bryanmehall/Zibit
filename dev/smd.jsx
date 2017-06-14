@@ -2,10 +2,9 @@ import React, { PropTypes } from "react";
 import ReactDOM from "react-dom";
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider, connect} from 'react-redux';
-
 import {createLogger} from "redux-logger";
 import SmdApp from "./components/SmdApp"
-import {getActiveTweens, tween} from "./anim"
+import {getActiveTweens, tween, audio} from "./anim"
 import QuantityActions from './ducks/quantity/actions'
 import {getValue, getQuantityData, getAnimatable, getPlaying} from './ducks/quantity/selectors'
 import * as reducers from "./ducks";
@@ -19,6 +18,9 @@ const animMiddleware = store => next => action => {
 		var t = action.payload.value
 		var activeTweens = getActiveTweens(prevTime, t)
 		tween(store, activeTweens, t)
+		if (audio.paused){
+			audio.currentTime = t
+		}
 	} else if (action.type === 'ANIM_PLAY') {
 		function animStart(){
 			var t = Date.now()
@@ -210,3 +212,4 @@ ReactDOM.render(
 	</Provider>,
 	document.getElementById('container')
 )
+

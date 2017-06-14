@@ -28,6 +28,8 @@ var _ducksQuantityActions = require('../ducks/quantity/actions');
 
 var _ducksQuantityActions2 = _interopRequireDefault(_ducksQuantityActions);
 
+var _anim = require('../anim');
+
 var _ducksQuantitySelectors = require('../ducks/quantity/selectors');
 
 var _Animation = require("./Animation");
@@ -45,13 +47,43 @@ var _Handle2 = _interopRequireDefault(_Handle);
 var SideBar = (function (_React$Component) {
    _inherits(SideBar, _React$Component);
 
-   function SideBar() {
+   function SideBar(props) {
       _classCallCheck(this, SideBar);
 
-      _get(Object.getPrototypeOf(SideBar.prototype), "constructor", this).apply(this, arguments);
+      _get(Object.getPrototypeOf(SideBar.prototype), "constructor", this).call(this, props);
+      this.onDragStart = this.onDragStart.bind(this);
+      //this.onDragMove = this.dragMove.bind(this)
+      this.onDragEnd = this.onDragEnd.bind(this);
    }
 
    _createClass(SideBar, [{
+      key: "onDragStart",
+      value: function onDragStart(props, initVal) {
+         this.isPlaying = this.props.playing;
+         console.log(this.isPlaying);
+         this.props.setPlay('animTime', false);
+         _anim.audio.pause();
+      }
+   }, {
+      key: "onDragEnd",
+      value: function onDragEnd(props, endVal) {
+         if (this.isPlaying) {
+            _anim.audio.play();
+         }
+         console.log(this.isPlaying);
+         this.props.setPlay('animTime', this.isPlaying);
+      }
+   }, {
+      key: "onPlay",
+      value: function onPlay() {
+         _anim.audio.play();
+      }
+   }, {
+      key: "onPause",
+      value: function onPause() {
+         _anim.audio.pause();
+      }
+   }, {
       key: "render",
       value: function render() {
          var width = 300;
@@ -71,31 +103,57 @@ var SideBar = (function (_React$Component) {
             fontSize: 15
 
          };
+
          return _react2["default"].createElement(
             "div",
             { style: sideBarStyle },
             _react2["default"].createElement(
                "svg",
-               { width: width, height: height },
-               _react2["default"].createElement("rect", { width: width, height: height, fill: "#666" }),
+               {
+                  width: width,
+                  height: height
+               },
+               _react2["default"].createElement("rect", {
+                  width: width,
+                  height: height,
+                  fill: "#666" }),
                _react2["default"].createElement(
                   "text",
-                  _extends({}, textStyle, { y: 20 }),
+                  _extends({}, textStyle, {
+                     y: 20 }),
                   "Part 01:"
                ),
                _react2["default"].createElement(
                   "text",
-                  _extends({}, textStyle, { y: 20 + titleFontSize + 5 }),
+                  _extends({}, textStyle, {
+                     y: 20 + titleFontSize + 5 }),
                   "Simple Harmonic Oscillator"
                ),
-               _react2["default"].createElement(
-                  "text",
-                  null,
-                  " "
-               ),
-               _react2["default"].createElement(_Animation2["default"], { pos: { x: 10, y: 9 }, quantity: "animTime", scale: 1.6, color: color }),
-               _react2["default"].createElement("line", { x1: 15, x2: width - 15, y1: height - 15, y2: height - 15, stroke: color, strokeWidth: 3, strokeLinecap: "round" }),
-               _react2["default"].createElement(_Handle2["default"], { quantity: "animTime", y: height - 15, min: 15, max: width - 15 })
+               _react2["default"].createElement(_Animation2["default"], {
+                  pos: { x: 10, y: 9 },
+                  quantity: "animTime",
+                  scale: 1.6,
+                  color: color,
+                  onPlay: this.onPlay,
+                  onPause: this.onPause
+               }),
+               _react2["default"].createElement("line", {
+                  x1: 15,
+                  x2: width - 15,
+                  y1: height - 15,
+                  y2: height - 15,
+                  stroke: color,
+                  strokeWidth: 3,
+                  strokeLinecap: "round"
+               }),
+               _react2["default"].createElement(_Handle2["default"], {
+                  quantity: "animTime",
+                  y: height - 15,
+                  min: 15,
+                  max: width - 15,
+                  onDragEnd: this.onDragEnd,
+                  onDragStart: this.onDragStart
+               })
             ),
             _react2["default"].createElement(
                "div",
@@ -111,13 +169,18 @@ var SideBar = (function (_React$Component) {
 
 function mapStateToProps(state, props) {
    var br = props.boundingRect;
-   return {};
+   return {
+      playing: (0, _ducksQuantitySelectors.getPlaying)(state, 'animTime')
+   };
 }
 
 function mapDispatchToProps(dispatch) {
    return {
       setY0: function setY0(value) {
          dispatch(_ducksQuantityActions2["default"].setValue('y0', value));
+      },
+      setPlay: function setPlay(name, value) {
+         dispatch(_ducksQuantityActions2["default"].setPlay(name, value));
       }
    };
 }

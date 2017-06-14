@@ -51,8 +51,7 @@ var Handle = (function (_React$Component) {
    _createClass(Handle, [{
       key: "dragStart",
       value: function dragStart(initPos) {
-         this.isPlaying = this.props.playing;
-         this.props.setPlay(this.props.quantity, false);
+         this.props.onDragStart(this.props, initPos);
          this.startOffset = this.props.pos.x - initPos.x; //offset in px
       }
    }, {
@@ -64,8 +63,7 @@ var Handle = (function (_React$Component) {
    }, {
       key: "dragEnd",
       value: function dragEnd(endPos) {
-         console.log('end');
-         this.props.setPlay('animTime', this.isPlaying);
+         this.props.onDragEnd(this.props, endPos);
       }
    }, {
       key: "render",

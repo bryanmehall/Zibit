@@ -1,5 +1,6 @@
 import QuantityActions from './ducks/quantity/actions'
 import WidgetActions from './ducks/widget/actions'
+export const audio = new Audio("http://www.sousound.com/music/healing/healing_01.mp3");
 
 var keyframes = [
 	{
@@ -18,12 +19,12 @@ var keyframes = [
 						xVars: ['s', 't'],
 						yVars: ['y', 'x'],
 						width: 200,
-						height: 350,
+						height: 150,
 						pos: {
 							x: 200,
-							y: 400
+							y: 500
 						},
-						visibility: 0.5
+						visibility: 1
 					},
 					interp: 'linear' //make cubic default
 				}
@@ -72,10 +73,8 @@ var actions = {
 		tween: function (store, t, tweenData) {
 			var alpha = (t - tweenData.start) / (tweenData.end - tweenData.start)
 			store.dispatch(WidgetActions.setProp(tweenData.params.name, 'visibility', alpha))
-			console.log('tweening widget')
 		},
 		end: function (store, t, tweenData) {
-			console.log('removing widget')
 			var params = tweenData.params
 			store.dispatch(WidgetActions.removeChild(params.name, params.parent))
 				//store.dispatch(WidgetActions.removeWidget(params.name))
@@ -104,38 +103,32 @@ backwards
 
 */
 export const getActiveTweens = (tp, t) => {
-		//previous time and time
-		var playingForward = t >= tp
-		var activeTweens = tweens.filter((tween) => (!(tp < tween.start && t < tween.start || tp > tween.end && t > tween.end)))
-		return activeTweens.map((tween) => {
-			var stage = 'tween'
-			if (playingForward) { //order is important so it goes start end tween
-				if (t > tween.end) {
-					stage = 'end'
-				}
-				if (tp < tween.start) {
-					stage = 'start'
-				}
-			} else { //handle case for both?
-				if (tp > tween.end) {
-					stage = 'start'
-				}
-				if (t < tween.start) {
-					stage = 'end'
-				}
+	//previous time and time
+	var playingForward = t >= tp
+	var activeTweens = tweens.filter((tween) => (!(tp < tween.start && t < tween.start || tp > tween.end && t > tween.end)))
+	return activeTweens.map((tween) => {
+		var stage = 'tween'
+		if (playingForward) { //order is important so it goes start end tween
+			if (t > tween.end) {
+				stage = 'end'
 			}
-			return Object.assign({}, tween, {
-				playingForward, stage
-			})
+			if (tp < tween.start) {
+				stage = 'start'
+			}
+		} else { //handle case for both?
+			if (tp > tween.end) {
+				stage = 'start'
+			}
+			if (t < tween.start) {
+				stage = 'end'
+			}
+		}
+		return Object.assign({}, tween, {
+			playingForward, stage
 		})
-	}
-	/*
-	export const getActiveTweens = (prevFrameTime, time) => ({
-		start: tweens.filter((tween) => (prevFrameTime < tween.start && time >= tween.start)),
-		tween: tweens.filter((tween) => (prevFrameTime > tween.start && time > tween.start && time < tween.end)),
-		end: tweens.filter((tween) => (prevFrameTime < tween.end && time >= tween.end))
 	})
-*/
+}
+
 export const tween = function (store, activeTweens, t) {
 	activeTweens.forEach((tween) => {
 		if (tween.playingForward) {
@@ -148,8 +141,3 @@ export const tween = function (store, activeTweens, t) {
 
 	})
 }
-
-//console.log('0,0', getActiveTweens(0, 0))
-//console.log('0.5,1.5', getActiveTweens(0.5, 1.5))
-//console.log('1.5,1.6', getActiveTweens(1.5, 1.6))
-//console.log('1.6,2.5', getActiveTweens(1.6, 2.5))

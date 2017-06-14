@@ -5,19 +5,17 @@ import QuantityActions from '../ducks/quantity/actions'
 import {getValue, getQuantityData, getAnimatable, getPlaying} from '../ducks/quantity/selectors'
 
 class Animation extends React.Component {
-	constructor(props){
-		super(props)
-	}
-
 	render() {
+		var onPlay = this.props.onPlay
+		var onPause = this.props.onPause
 		var pos = this.props.pos
 		var scale = this.props.scale || 0.8
 		var color = this.props.color || 'gray'
 		var self = this
 		var pause = "M0,0 L9,5 9,15 0,20 M9,5 L18,10 18,10 9,15"
 		var play = "M0,0 L7,0 7,20 0,20 M11,0 L18,0 18,20 11,20"
-		var fromPath = this.props.playing ? pause : play
-		var toPath = this.props.playing ? play : pause
+		var fromPath = this.props.wasPlaying ? pause : play
+		var toPath = this.props.wasPlaying ? play : pause
 		//why does the button not change when paused externally?
 		//We'll call it a feature...
 		return (
@@ -27,7 +25,12 @@ class Animation extends React.Component {
 				pointerEvents="bounding-box"
 				fill={color}
 				onClick={function(){
-					self.props.setPlay(self.props.quantity, !self.props.playing)
+					if (!self.props.wasPlaying){
+						if (typeof onPlay === 'function'){onPlay()}
+					} else {
+						if (typeof onPause === 'function'){onPause()}
+					}
+					self.props.setPlay(self.props.quantity, !self.props.wasPlaying)
 				}}
 				>
 
@@ -50,7 +53,7 @@ class Animation extends React.Component {
 function mapStateToProps(state, props) {
 	var quantityData = getQuantityData(state, props.quantity)
 	return {
-		playing: getPlaying(state, props.quantity),
+		wasPlaying: getPlaying(state, props.quantity),
 		value: getValue(state, props.quantity)
 
 	};

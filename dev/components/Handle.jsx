@@ -6,6 +6,7 @@ import WidgetActions from '../ducks/widget/actions'
 import {getTransformedValue, getValue, getScale, getPlaying, getQuantityData} from '../ducks/quantity/selectors'
 import Draggable from "./Draggable"
 
+
 class Handle extends React.Component {
 	constructor(props){
 		super(props)
@@ -14,17 +15,17 @@ class Handle extends React.Component {
 		this.dragEnd = this.dragEnd.bind(this)
 	}
 	dragStart(initPos){
-		this.isPlaying = this.props.playing
-		this.props.setPlay(this.props.quantity, false)
+		this.props.onDragStart(this.props, initPos)
 		this.startOffset = this.props.pos.x-initPos.x //offset in px
+
 	}
 	dragMove(newPos){
 		var newPos = newPos.x+this.startOffset
 		this.props.setTransformedValue(this.props.quantity, newPos, this.props.scale)
 	}
 	dragEnd(endPos){
-		console.log('end')
-		this.props.setPlay('animTime', this.isPlaying)
+		this.props.onDragEnd(this.props, endPos)
+
 	}
 	render(){
 		var pos = this.props.pos
