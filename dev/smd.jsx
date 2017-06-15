@@ -180,7 +180,7 @@ const initialAppState = {
 	},
 	quantities:{
 		animTime:{
-			value:0, min:0, max:10, symbol:'dispT', independent:true, abstractions:10, animation:{playing:false}
+			value:0, min:0, max:28, symbol:'dispT', independent:true, abstractions:10, animation:{playing:false}
 		},
 		t: { //time
 			value:0,

@@ -188,7 +188,7 @@ function mapStateToProps(state, props) {
    var quantityData = (0, _ducksQuantitySelectors.getQuantityData)(state, props.quantity);
    return {
       symbol: quantityData.symbol,
-      //independent:quantityData.independent,
+      independent: quantityData.independent,
       highlighted: quantityData.highlighted,
       quantityValue: (0, _ducksQuantitySelectors.getValue)(state, props.quantity),
       //animatable:getAnimatable(state, props.quantity),

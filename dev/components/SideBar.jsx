@@ -17,7 +17,7 @@ class SideBar extends React.Component {
 	}
 	onDragStart(props, initVal){
 		this.isPlaying = this.props.playing
-		console.log(this.isPlaying)
+
 		this.props.setPlay('animTime', false)
 		audio.pause()
 	}

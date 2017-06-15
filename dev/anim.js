@@ -1,10 +1,12 @@
 import QuantityActions from './ducks/quantity/actions'
 import WidgetActions from './ducks/widget/actions'
-export const audio = new Audio("http://www.sousound.com/music/healing/healing_01.mp3");
+export const audio = new Audio("./audio/dho1.mp3");
+
 
 var keyframes = [
-	{
+	{ //make keyframes relative to each other to that a change in one shifts all--maybe also have a time so that it can be set absolutely
 		time: 1,
+		dt: 0, //time overrides dt
 		actions: [
 			{
 				type: "fadeWidgetIn",

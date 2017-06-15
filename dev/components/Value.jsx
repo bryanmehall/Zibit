@@ -129,7 +129,7 @@ function mapStateToProps(state, props) {
 	var quantityData = getQuantityData(state, props.quantity)
 	return {
 		symbol: quantityData.symbol,
-		//independent:quantityData.independent,
+		independent:quantityData.independent,
 		highlighted:quantityData.highlighted,
 		quantityValue: getValue(state, props.quantity),
 		//animatable:getAnimatable(state, props.quantity),
