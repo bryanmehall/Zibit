@@ -6,7 +6,7 @@ import {createLogger} from "redux-logger";
 import SmdApp from "./components/SmdApp"
 import {getActiveTweens, tween, audio} from "./anim"
 import QuantityActions from './ducks/quantity/actions'
-import {getValue, getQuantityData, getAnimatable, getPlaying} from './ducks/quantity/selectors'
+import {getValue, getQuantityData, getAnimatable, getMax, getPlaying} from './ducks/quantity/selectors'
 import * as reducers from "./ducks";
 
 const rootReducer = combineReducers(reducers)
@@ -39,11 +39,16 @@ const animMiddleware = store => next => action => {
 			var value = (t-t0)/1000 + v0
 			var name = action.payload.name
 			var state = store.getState()
-			var isPlaying = getPlaying(state, name)
+            var max = getMax(state, name)
+            var isPlaying = getPlaying(state, name)
 
 			if (isPlaying){//only update and continue if quantity is still playing
-				store.dispatch(QuantityActions.setValue(name, value))
-				store.dispatch(QuantityActions.animStep(name, t0, v0))
+               if (value > max){
+                    store.dispatch(QuantityActions.setValue(name, max))
+                } else {
+                    store.dispatch(QuantityActions.setValue(name, value))
+                    store.dispatch(QuantityActions.animStep(name, t0, v0))
+                }
 			}
 
 		}
@@ -51,7 +56,7 @@ const animMiddleware = store => next => action => {
 	next(action)
 };
 
-const middleware = applyMiddleware(animMiddleware)//, createLogger())
+const middleware = applyMiddleware(animMiddleware)
 
 const initialAppState = {
 	widgets:{

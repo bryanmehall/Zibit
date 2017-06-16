@@ -7,6 +7,7 @@ import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
 import {getValue, getQuantityData, getAnimatable, getPlaying} from '../ducks/quantity/selectors'
 import Animation from './Animation'
+import ReactEditableSvgLabel from 'react-editable-svg-label'
 
 class Value extends React.Component {
 	constructor(props){
@@ -55,56 +56,56 @@ class Value extends React.Component {
 	render(){
 		var self = this
 		var pos = this.props.pos || {x:200, y:200}
+        var translation = 'translate('+pos.x+','+pos.y+')'
 		var bbox = this.props.bbox || {width:0}
-
+        var independent = this.props.independent
 		var filter = (this.props.highlighted) ? "url(#highlight)": null
 
 		var text = (
 			<text
 				style={this.textStyle}
 				filter={filter}
-				x={pos.x}
-				y={pos.y}
+
 				onMouseEnter={this.mouseOver}
 			>
 				{this.props.symbol}
 			</text>
 		)
-
-    	var overlay = (
+        /*<ReactEditableSvgLabel x={bbox.width+20} y={0} focusOnOpen={true}>
+                    {(Math.round(this.props.quantityValue*100)/100)}
+                </ReactEditableSvgLabel>*/
+        var number = (
+            <g>
+                <rect x={-20} y={-bbox.height} width={80+bbox.width} height={bbox.height+40} fill="#eee"/>
+                <text x={bbox.width} y={0} style={this.numberStyle}>= {(Math.round(this.props.quantityValue*100)/100)}</text>
+            </g>
+        )
+    	var overlay = (//transform is relative to lower left corner of value text
 			<g
-				transform = {'translate('+pos.x+','+pos.y+')'}
-				>
-				<g>
-					<text
-						x={bbox.width+5}
-						y={0}
-						style={this.numberStyle}
-						filter="url(#textBackground)">
-						{'= '+(Math.round(this.props.quantityValue*100)/100)}
-					</text>
-				</g>
 
-				<Animation
-					pos={{x:0, y:10}}
-					quantity = {this.props.quantity}
-					playing={this.props.playing}
-				></Animation>
+				>
+                    <Animation
+                        pos={{x:0, y:10}}
+                        quantity = {this.props.quantity}
+                        playing={this.props.playing}
+                    ></Animation>
 				<path fill='gray' d={this.arrow} />
         	</g>
 		)
     
     if (this.props.highlighted){
-		return <g
-				   onMouseLeave={this.mouseOut}
-				   >
-			{overlay}
+		return <g onMouseLeave={this.mouseOut} transform = {translation}>
+            {number}
+            {independent ? overlay : null}
 			{text}
-
 		</g>
 	} else {
-		return text
-	}
+		return (
+            <g transform = {translation}>
+                {text}
+            </g>
+        )
+    }
   }
 }
 
