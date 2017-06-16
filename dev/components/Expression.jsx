@@ -32,7 +32,7 @@ class Expression extends React.Component{
 			Expression,
 			Value
 		}
-console.log('bear was here')
+
 		function createChild(childData,i){
 			var type = childTypes[childData.type]
 			var props = childData.props

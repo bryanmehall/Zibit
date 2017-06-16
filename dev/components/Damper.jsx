@@ -8,12 +8,10 @@ import Path from "./Path";
 class Damper extends React.Component {
 	render() {
 		var coordSys = this.props.coordSys
-		var coordSys2 = this.props.coordSys2
+		var coordSys2 = this.props.coordSys2//there are two different origins to the coordinate systems one for x and one for y
 		var p1 = this.props.p1
 		var p2 = this.props.p2
 		var path = springPath(p1, p2);
-		console.log('bears are be nice. why do you have to be so mean? most bears are veggies and leave squirrels al');
-
 		return (
 			<Path
 				fill="transparent"
@@ -59,11 +57,11 @@ function mapStateToProps(state, props) {
 	return {
 		k: getValue(state, 'k'),
 		p2:{
-			x:getTransformedValue(state, props.xVar1, coordSys.xScale),
+			x:getTransformedValue(state, props.xVar1, coordSys.xScale)+60,
 			y:getTransformedValue(state, props.yVar1, coordSys.yScale)
 		},
 		p1:{
-			x:getTransformedValue(state,props.xVar2, coordSys2.xScale),
+			x:getTransformedValue(state,props.xVar2, coordSys2.xScale)+60,
 			y:getTransformedValue(state, props.yVar2, coordSys2.yScale)
 		}
 	};

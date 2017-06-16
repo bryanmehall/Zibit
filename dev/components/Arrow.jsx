@@ -26,36 +26,32 @@ class Arrow extends React.Component {
 
 	}
 	render(){
-		var magnitude = this.props.magnitude || 10
+		var magnitude = this.props.magnitude
 		var angle = this.props.angle || 90
 		var dx = this.props.dx || Math.cos(angle)*magnitude
 		var dy = this.props.dy || Math.sin(angle)*magnitude
-		var tail = {x:100, y:100}
-		console.log(this.props.tail, tail)
+		var tail = this.props.tail || {x:100, y:100}
 		var tip = this.props.tip || {x:tail.x+dx, y:tail.y+dy}
 		var maskString = 'url(#'+this.props.mask+')'
-		var arrowPath = calcArrow(tail, tip, 10)
-		var transform = 'translate('+tail.x+','+tail.y+') rotate('+angle+','+tail.x+','+tail.y+')'
+		var arrowPath = calcArrow(magnitude, 10)
+		var transform = 'translate('+tail.x+','+tail.y+') rotate('+angle+')'//','+tail.x+','+tail.y+')'
 
 		return(
-			<Path points={arrowPath} transform={transform} fill="rgba(255,0,0,0.6)" strokeWidth="0"></Path>
+			<Path points={arrowPath} transform={transform} fill="rgba(255,0,0,0.3)" strokeWidth="0"></Path>
     	)
   }
 }
 
 
-function calcArrow(tail, tip, w, tw, ar){
+function calcArrow(l, w, tw, ar){
 	//tailPosition, tipPosition, width of arrow,width of tip, tipWidth/tipLength
-	var dx = tip.x-tail.x
-	var dy = tip.y-tail.y
-	var l = Math.sqrt(dx*dx+dy*dy)
 	ar = ar || Math.sqrt(3)
 	tw = tw || 2*w
-	if (l<tw/ar){
-		tw = l*ar
-	}
-	var tipL = tw/ar
 
+	if (Math.abs(l)<tw/ar){
+		tw = Math.abs(l)*ar
+	}
+	var tipL = tw/ar*Math.sign(l)
 	return [
 		{x:0, y:-w/2},
 		{x:l-tipL, y:-w/2},
@@ -68,10 +64,11 @@ function calcArrow(tail, tip, w, tw, ar){
 }
 
 function mapStateToProps(state, props) {
-	var br = props.boundingRect
+	var br = {xMin:0, xMax:10, yMin:100, yMax:-100}
 	var quantity = props.quantity//defaults to y
 	var xQuantity = props.xQuantity || quantity
 	var coordSys = getCoordSys(state, xQuantity, quantity, br)
+
 	return {
 		/*pos:{
 			x:getTransformedValue(state, props.xVar, coordSys.xScale),

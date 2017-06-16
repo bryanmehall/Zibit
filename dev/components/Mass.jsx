@@ -48,7 +48,7 @@ class Mass extends React.Component {
 					{rect}
 					<Arrow
 						boundingRect={this.props.boundingRect}
-						tail={{x:pos.x+10, y:pos.y+height}}
+						tail={{x:pos.x+20, y:pos.y}}
 						quantity='fs'></Arrow>
 				</g>
 			)

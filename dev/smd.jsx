@@ -72,7 +72,7 @@ const initialAppState = {
 			props:{
 				pos:{x:200,y:500}
 			},
-			children:['xVal', 'tVal', 'yVal', 'animVal']
+			children:['xVal','dampCoef', 'tVal', 'yVal', 'animVal']
 		},
 		xVal:{
 			type:'Value',
@@ -85,6 +85,13 @@ const initialAppState = {
 			type:'Value',
 			props:{
 				quantity:'y0',
+				active:false
+			}
+		},
+		dampCoef:{
+			type: 'Value',
+			props:{
+				quantity:'c',
 				active:false
 			}
 		},
@@ -206,7 +213,7 @@ const initialAppState = {
 		x: {value:0, min:-10, max:40, abstractions:0, symbol:'x(t)', prevPoints:[], highlighted:false}, //real component of x
 		y: {value:0, min:-30, max:20, symbol:'y(0)', highlighted:false},//position of mass
 		k: {value:5, min:0, max:100, symbol:'k', abstractions:10, independent:true, highlighted:false},//spring constant
-		fs:{value:10, min:-300, max:300, symbol:<tspan>F<tspan dx="-2" fontSize="0.5em" dy="8">s</tspan></tspan>, independent:false, highlighted:false},
+		fs:{value:100, min:-100, max:100, symbol:<tspan>F<tspan dx="-2" fontSize="0.5em" dy="8">s</tspan></tspan>, independent:false, highlighted:false},
 		dl:{value:10, min:-10, max:10, symbol:"displacement", independent:false, highlighted:false},
 		m: {value:1, min:0, max:30, symbol:'m', independent:true, highlighted: false},//mass
 		c: {value:0, min:0, max:30, symbol:'c', independent:true, highlighted: false },

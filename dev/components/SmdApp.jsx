@@ -39,7 +39,7 @@ class SmdApp extends React.Component {
 				<div style={appStyle}>
 					<SideBar></SideBar>
 					<div style={{flexGrow: 1}}>
-						<svg width={700} height={600} >
+						<svg width={1200} height={800} >
 						<defs>
 							<filter id="highlight" primitiveUnits="userSpaceOnUse">
 								<feMorphology operator="dilate" radius="1.5" in="SourceAlpha" result="expanded"/>
