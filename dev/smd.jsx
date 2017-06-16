@@ -114,7 +114,7 @@ const initialAppState = {
 				pos:{x:250,y:400},
 				visibility:1
 			},
-			children:['anchor', 'mass', 'spring']
+			children:['anchor', 'mass', 'spring', 'damper']
 		},
 		anchor:{
 			type:'Anchor',
@@ -134,6 +134,16 @@ const initialAppState = {
 		},
 		spring:{
 			type:'Spring',
+			props:{
+				xVar1:'s',
+				yVar1:'x',
+				xVar2:'s',
+				yVar2:'y'
+			},
+			children:[]
+		},
+		damper:{
+			type:'Damper',
 			props:{
 				xVar1:'s',
 				yVar1:'x',

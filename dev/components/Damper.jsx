@@ -12,7 +12,7 @@ class Damper extends React.Component {
 		var p1 = this.props.p1
 		var p2 = this.props.p2
 		var path = springPath(p1, p2);
-		console.log('bear was here too!');
+		console.log('bears are be nice. why do you have to be so mean? most bears are veggies and leave squirrels al');
 
 		return (
 			<Path
