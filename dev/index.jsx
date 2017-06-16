@@ -1,8 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-
 import Axis from './components/Axis'
-import Scale from './components/Scale'
 import Slider from './components/Slider'
 import Spring from './components/Spring'
 import Value from './components/Value'

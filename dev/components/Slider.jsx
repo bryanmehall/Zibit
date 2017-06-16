@@ -1,6 +1,5 @@
 import React from 'react';
 import Axis from './Axis';
-import Scale from './Scale';
 
 class Slider extends React.Component {
 	//properties

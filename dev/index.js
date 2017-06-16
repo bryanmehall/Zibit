@@ -22,10 +22,6 @@ var _componentsAxis = require('./components/Axis');
 
 var _componentsAxis2 = _interopRequireDefault(_componentsAxis);
 
-var _componentsScale = require('./components/Scale');
-
-var _componentsScale2 = _interopRequireDefault(_componentsScale);
-
 var _componentsSlider = require('./components/Slider');
 
 var _componentsSlider2 = _interopRequireDefault(_componentsSlider);
@@ -50,7 +46,7 @@ var App = (function (_React$Component) {
    _createClass(App, [{
       key: "render",
       value: function render() {
-         var scale = new _componentsScale2["default"]({ min: -100, max: 500, tMin: 100, tMax: 300 });
+         var scale = new Scale({ min: -100, max: 500, tMin: 100, tMax: 300 });
          var app = this;
          var valueChange = function valueChange(value) {
             app.setState({ t: value.value });

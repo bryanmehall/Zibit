@@ -15,12 +15,16 @@ var config = {
   },
 	devtool: 'source-map',
   module: {
-    loaders: [{
+    loaders: [
+		{
         include: DEV,
 		exclude: "/node_modules/",
         loader: "babel-loader",
     }]
   },
+	resolve: {
+        extensions: ['.js', '.jsx']
+    },
 	watch: true
 };
  
