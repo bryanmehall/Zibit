@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import * as QuantityActions from '../ducks/quantity/actions';
 import {getValue} from '../ducks/quantity/selectors'
 import {getChildren} from '../ducks/widget/selectors'
-import Scale from './Scale'
 import Slider from './Slider'
 import Plot from './Plot'
 import Abstraction from './Abstraction'
