@@ -54,6 +54,10 @@ var _Anchor = require('./Anchor');
 
 var _Anchor2 = _interopRequireDefault(_Anchor);
 
+var _Arrow = require('./Arrow');
+
+var _Arrow2 = _interopRequireDefault(_Arrow);
+
 var Plot = (function (_React$Component) {
    _inherits(Plot, _React$Component);
 

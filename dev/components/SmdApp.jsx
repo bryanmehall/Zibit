@@ -67,9 +67,7 @@ class SmdApp extends React.Component {
             )
 	}
 }
-SmdApp.PropTypes = {
-	actions: PropTypes.object.isRequired
-};
+
 
 function mapStateToProps(state, props) {
 	return {

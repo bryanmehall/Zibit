@@ -137,10 +137,6 @@ var SmdApp = (function (_React$Component) {
    return SmdApp;
 })(_react2["default"].Component);
 
-SmdApp.PropTypes = {
-   actions: _react.PropTypes.object.isRequired
-};
-
 function mapStateToProps(state, props) {
    return {
       childData: (0, _ducksWidgetSelectors.getChildren)(state, 'app')

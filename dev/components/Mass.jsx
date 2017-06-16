@@ -4,7 +4,9 @@ import { bindActionCreators } from 'redux';
 import QuantityActions from '../ducks/quantity/actions';
 import WidgetActions from '../ducks/widget/actions'
 import {getTransformedValue, getValue, getCoordSys, getQuantityData} from '../ducks/quantity/selectors'
+import {getActive} from  '../ducks/widget/selectors'
 import Draggable from "./Draggable"
+import Arrow from './Arrow'
 
 class Mass extends React.Component {
 	constructor(props){
@@ -30,18 +32,31 @@ class Mass extends React.Component {
 	}
 	render(){
 		var pos = this.props.pos
+		var active = this.props.active
 		var width = 80
 		var height = 50
 		var maskString = 'url(#'+this.props.mask+')'
-		return(
-			<Draggable dragStart={this.dragStart} dragMove={this.dragMove} dragEnd={this.dragEnd}>
+		var rect = <Draggable dragStart={this.dragStart} dragMove={this.dragMove} dragEnd={this.dragEnd}>
 				<g >
 					<rect x={pos.x} y={0} width={width} height={pos.y+height} mask={maskString} fill='none' cursor='grab'></rect>
 					<rect x={pos.x} y={pos.y-height} width={width} height={height} mask={maskString} fill='none' strokeWidth='2'stroke='black'></rect>
 				</g>
-
 			</Draggable>
-    )
+		if (active){
+			return (
+				<g>
+					{rect}
+					<Arrow
+						boundingRect={this.props.boundingRect}
+						tail={{x:pos.x+10, y:pos.y+height}}
+						quantity='fs'></Arrow>
+				</g>
+			)
+		} else {
+			return rect
+		}
+
+
   }
 }
 
@@ -50,6 +65,7 @@ function mapStateToProps(state, props) {
 	var coordSys = getCoordSys(state, props.xVar, props.yVar, br)
 	return {
 		mass: getValue(state, 'm'),
+		active:getActive(state, 'mass'),
 		pos:{
 			x:getTransformedValue(state, props.xVar, coordSys.xScale),
 			y:getTransformedValue(state, props.yVar, coordSys.yScale)

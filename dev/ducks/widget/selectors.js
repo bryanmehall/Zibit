@@ -13,6 +13,10 @@ const getWidget = function (state, id) {
 	widgetData.props.id = id
 	return widgetData
 }
+export const getActive = function (state, name) {
+	return true
+}
+
 export const getExpressionChildren = function (state, id) {
 	var widgetData = getWidget(state, id)
 	var type = widgetData.type

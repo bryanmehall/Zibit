@@ -5,6 +5,8 @@ class Path extends React.Component {
 		var points,
 			stroke = this.props.strokeColor || 'black',
 			strokeWidth = this.props.strokeWidth || 1.8,
+			transform= this.props.transform || "",
+			fill =this.props.fill || "transparent",
 			filter = (this.props.highlighted) ? "url(#highlight)": null
 		if (this.props.hasOwnProperty('coordSys')){
 			var coordSys = this.props.coordSys
@@ -16,8 +18,9 @@ class Path extends React.Component {
 		return(
 			<path
 				d={pointsToSVGPath(points)}
-				fill="transparent"
+				fill={fill}
 				stroke={stroke}
+				transform={transform}
 				strokeWidth={strokeWidth}
 				mask={maskString}
 				filter={filter}

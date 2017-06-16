@@ -143,7 +143,7 @@ var initialAppState = {
             width: 200,
             height: 350,
             pos: { x: 250, y: 400 },
-            visibility: 0.5
+            visibility: 1
          },
          children: ['anchor', 'mass', 'spring']
       },
@@ -226,7 +226,18 @@ var initialAppState = {
       imx: { value: 0, min: -10, max: 10, abstractions: 0, independent: false, symbol: 'im(x)', highlighted: false }, //imaginary component of x
       x: { value: 0, min: -10, max: 40, abstractions: 0, symbol: 'x(t)', prevPoints: [], highlighted: false }, //real component of x
       y: { value: 0, min: -30, max: 20, symbol: 'y(0)', highlighted: false }, //position of mass
-      k: { value: 50, min: 0, max: 100, symbol: 'k', abstractions: 10, independent: true, highlighted: false }, //spring constant
+      k: { value: 5, min: 0, max: 100, symbol: 'k', abstractions: 10, independent: true, highlighted: false }, //spring constant
+      fs: { value: 10, min: -300, max: 300, symbol: _react2["default"].createElement(
+            "tspan",
+            null,
+            "F",
+            _react2["default"].createElement(
+               "tspan",
+               { dx: "-2", fontSize: "0.5em", dy: "8" },
+               "s"
+            )
+         ), independent: false, highlighted: false },
+      dl: { value: 10, min: -10, max: 10, symbol: "displacement", independent: false, highlighted: false },
       m: { value: 1, min: 0, max: 30, symbol: 'm', independent: true, highlighted: false }, //mass
       c: { value: 0, min: 0, max: 30, symbol: 'c', independent: true, highlighted: false },
       y0: { value: 0, min: -20, max: 20, symbol: _react2["default"].createElement(

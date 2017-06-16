@@ -8,8 +8,17 @@ import {
 from 'numeric'
 
 //define dependent variables --should be pure functions
+
 function x(t) { //could depend on numeric spline
-	return 4 * Math.cos(t)
+	return 0//4 * Math.cos(t)
+}
+
+function dl(x, y) {
+	return y - x
+}
+
+function fs(dl, k) {
+	return -dl * k
 }
 
 function s(t) {
@@ -96,12 +105,24 @@ export const getValue = function (state, name, given) {
 	case 's':
 		var t = (given.t === undefined) ? getValue(state, 't') : given.t
 		return s(t)
+		break;
 	case "y":
 		var t = (given.t === undefined) ? getValue(state, 't') : given.t
 		var sol = getSol(state)
 		var y = sol.at(t)[0]
 		return y
+		break;
+	case "dl":
+		let xVal = getValue(state, 'x')
+		let yVal = getValue(state, 'y')
+		return dl(xVal, yVal)
+		break;
+	case "fs":
+		let dlVal = getValue(state, 'dl')
+		let k = getValue(state, 'k')
 
+		return fs(dlVal, k)
+		break;
 	default:
 		throw "make sure that " + name + " is labeled as independent"
 	}

@@ -32,9 +32,15 @@ var _ducksWidgetActions2 = _interopRequireDefault(_ducksWidgetActions);
 
 var _ducksQuantitySelectors = require('../ducks/quantity/selectors');
 
+var _ducksWidgetSelectors = require('../ducks/widget/selectors');
+
 var _Draggable = require("./Draggable");
 
 var _Draggable2 = _interopRequireDefault(_Draggable);
+
+var _Arrow = require('./Arrow');
+
+var _Arrow2 = _interopRequireDefault(_Arrow);
 
 var Mass = (function (_React$Component) {
    _inherits(Mass, _React$Component);
@@ -72,10 +78,11 @@ var Mass = (function (_React$Component) {
       key: "render",
       value: function render() {
          var pos = this.props.pos;
+         var active = this.props.active;
          var width = 80;
          var height = 50;
          var maskString = 'url(#' + this.props.mask + ')';
-         return _react2["default"].createElement(
+         var rect = _react2["default"].createElement(
             _Draggable2["default"],
             { dragStart: this.dragStart, dragMove: this.dragMove, dragEnd: this.dragEnd },
             _react2["default"].createElement(
@@ -85,6 +92,19 @@ var Mass = (function (_React$Component) {
                _react2["default"].createElement("rect", { x: pos.x, y: pos.y - height, width: width, height: height, mask: maskString, fill: "none", strokeWidth: "2", stroke: "black" })
             )
          );
+         if (active) {
+            return _react2["default"].createElement(
+               "g",
+               null,
+               rect,
+               _react2["default"].createElement(_Arrow2["default"], {
+                  boundingRect: this.props.boundingRect,
+                  tail: { x: pos.x + 10, y: pos.y + height },
+                  quantity: "fs" })
+            );
+         } else {
+            return rect;
+         }
       }
    }]);
 
@@ -96,6 +116,7 @@ function mapStateToProps(state, props) {
    var coordSys = (0, _ducksQuantitySelectors.getCoordSys)(state, props.xVar, props.yVar, br);
    return {
       mass: (0, _ducksQuantitySelectors.getValue)(state, 'm'),
+      active: (0, _ducksWidgetSelectors.getActive)(state, 'mass'),
       pos: {
          x: (0, _ducksQuantitySelectors.getTransformedValue)(state, props.xVar, coordSys.xScale),
          y: (0, _ducksQuantitySelectors.getTransformedValue)(state, props.yVar, coordSys.yScale)

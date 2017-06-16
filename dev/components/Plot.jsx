@@ -10,6 +10,7 @@ import Abstraction from './Abstraction'
 import Mass from './Mass'
 import Spring from './Spring'
 import Anchor from './Anchor'
+import Arrow from './Arrow'
 
 
 

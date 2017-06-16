@@ -33,6 +33,8 @@ var Path = (function (_React$Component) {
          var points,
              stroke = this.props.strokeColor || 'black',
              strokeWidth = this.props.strokeWidth || 1.8,
+             transform = this.props.transform || "",
+             fill = this.props.fill || "transparent",
              filter = this.props.highlighted ? "url(#highlight)" : null;
          if (this.props.hasOwnProperty('coordSys')) {
             var coordSys = this.props.coordSys;
@@ -43,8 +45,9 @@ var Path = (function (_React$Component) {
          var maskString = 'url(#' + this.props.mask + ')';
          return _react2["default"].createElement("path", {
             d: pointsToSVGPath(points),
-            fill: "transparent",
+            fill: fill,
             stroke: stroke,
+            transform: transform,
             strokeWidth: strokeWidth,
             mask: maskString,
             filter: filter,
