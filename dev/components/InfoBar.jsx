@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import QuantityActions from '../ducks/quantity/actions';
 import {getValue, getTransformedValue, getCoordSys, getQuantityData} from '../ducks/quantity/selectors'
 import Animation from "./Animation";
+import ConceptCheck from "./ConceptCheck"
 
 class InfoBar extends React.Component {
 
@@ -11,14 +12,19 @@ class InfoBar extends React.Component {
 		var headerStyle = {
 			backgroundColor:"#ccc",
 			height:"30px",
+
 		}
 		return (
 			<div >
                 <div style={headerStyle}>
-					header
+					<div style={{ margin: 5 }}>Concept Check</div>
 				</div>
-				<div>
-					body
+				<div style={{ fontSize: 13 }}>
+					<ConceptCheck questionState={"completed"}>
+						Adjust the damping coefficient so the oscillations don't decrease over time
+					</ConceptCheck>
+					<ConceptCheck questionState={"active"}> Adjust the damping coefficient so the system never oscillates</ConceptCheck>
+					<ConceptCheck questionState={"inactive"}>Explore the relationship between the damping ratio and spring constant</ConceptCheck>
 				</div>
             </div>
 

@@ -51,7 +51,6 @@ class SideBar extends React.Component {
 			width: width+'px',
 			fontFamily: "helvetica",
 			fontSize: 15,
-
 		}
 
 		return (

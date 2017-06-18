@@ -109,7 +109,6 @@ class Value extends React.Component {
 					quantity = {this.props.quantity}
 					playing={this.props.playing}
 				></Animation>
-				<path fill='gray' d={this.arrow} />
         	</g>
 		)
     
@@ -128,7 +127,7 @@ class Value extends React.Component {
 }
 
 var pointToString = function(string, point){
-	return string + point.x+','+point.y+' '
+	return string + point.x+', '+point.y+' '
 }
 var scalePoint = function(point, xScale, yScale){
 	return {x:point.x*xScale, y:point.y*yScale}

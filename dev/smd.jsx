@@ -61,33 +61,26 @@ const initialAppState = {
 		app: {
 			type: 'SmdApp',
 			props: {},
-			children: ['massPlot','forcingPlot', 'posPlot','eq', 'forcingEq']
-		},
-		eq: {
-			type: 'Expression',
-			props: {
-				pos: { x: 50, y: 50 }
-			},
-			children: ['xVal', 'tVal', 'yVal']
+			children: ['massPlot', 'forcingEq']
 		},
 		forcingEq: {
 			type: 'Expression',
 			props: {
-				pos: { x: 400, y: 500 }
+				pos: { x: 150, y: 500 }
 			},
-			children: ['xVal','dampCoef', 'springCoef', 'tVal', 'yVal', 'animVal']
+			children: ['fExt', 'springCoef', 'yVal','tVal' , 'dampCoef', 'dydtVal','t1Val']
 		},
-		xVal: {
+		fExt: {
 			type: 'Value',
 			props: {
-				quantity: 'x',
+				quantity: 'fext',
 				active: true
 			}
 		},
 		yVal: {
 			type: 'Value',
 			props: {
-				quantity: 'y0',
+				quantity: 'y',
 				active: false
 			}
 		},
@@ -112,6 +105,20 @@ const initialAppState = {
 				active: false
 			}
 		},
+		t1Val: {
+			type: 'Value',
+			props: {
+				quantity: 't',
+				active: false
+			}
+		},
+		dydtVal: {
+			type: 'Value',
+			props: {
+				quantity: 'dydt',
+				active: false
+			}
+		},
 		animVal: {
 			type: 'Value',
 			props: {
@@ -128,7 +135,7 @@ const initialAppState = {
 				yVars: ['y','x'],
 				width: 200,
 				height: 350,
-				pos: {x: 250,y: 400},
+				pos: {x: 100,y: 400},
 				visibility: 1
 			},
 			children: ['anchor', 'mass', 'spring', 'damper']
@@ -169,32 +176,6 @@ const initialAppState = {
 			},
 			children: []
 		},
-		posPlot: {
-			type: 'Plot',
-			props: {
-				xVar: 't',
-				yVar: 'y',
-				xVars: ['t'],
-				yVars: ['y'],
-				width: 300,
-				height: 350,
-				pos: { x: 500, y: 400 }
-			},
-			children: ['abstraction1']
-		},
-		forcingPlot: {
-			type: 'Plot',
-			props: {
-				xVar: 'x',
-				yVar: 'imx',
-				xVars: ['x'],
-				yVars: ['imx'],
-				width: 150,
-				height: 150,
-				pos: { x: 100, y: 500 }
-			},
-			children: []
-		},
 		abstraction1: {
 			type: "Abstraction",
 			props: {
@@ -215,18 +196,19 @@ const initialAppState = {
 			max: 20,
 			abstractions: 300,
 			independent: true,
-			symbol: 't',
+			symbol: 't)',
 			highlighted: false,
 			animation: { playing: false }
 		},
 		imx: { value: 0, min: -10, max: 10, abstractions: 0, independent: false, symbol: 'im(x)', highlighted: false },//imaginary component of x
 		x: { value: 0, min: -10, max: 40, abstractions: 0, symbol: 'x(t)', prevPoints: [], highlighted: false }, //real component of x
-		y: { value: 0, min: -25, max: 20, symbol: 'y(0)', highlighted: false },//position of mass
-		k: { value: 5, min: 0, max: 100, symbol: 'k', abstractions: 10, independent: true, highlighted: false },//spring constant
+		y: { value: 0, min: -25, max: 20, symbol: 'y(', highlighted: false },//position of mass
+		dydt: { value: 0, min: -25, max: 20, symbol: "y'(", highlighted: false },
+		k: { value: 5, min: 0, max: 100, symbol: ' = k', abstractions: 10, independent: true, highlighted: false },//spring constant
 		fs: { value: 100, min: -100, max: 100, symbol: <tspan>F<tspan dx="-2" fontSize="0.5em" dy="8">s</tspan></tspan>, independent: false, highlighted: false },
 		dl: { value: 10, min: -10, max: 10, symbol: "displacement", independent: false, highlighted: false },
 		m: { value: 1, min: 0, max: 30, symbol: 'm', independent: true, highlighted: false },//mass
-		c: { value: 0, min: 0, max: 5, symbol: 'c', independent: true, highlighted: false },
+		c: { value: 0, min: 0, max: 5, symbol: ' + c', independent: true, highlighted: false },
 		fext: { value: 10, min: -100, max: 100, symbol: <tspan>F<tspan dx="-2" fontSize="0.5em" dy="8">ext</tspan></tspan>, independent: false, highlighted: false },
 		y0: { value: 0, min: -20, max: 20, symbol: <tspan>y<tspan dx="-2" fontSize="0.5em" dy="8">0</tspan></tspan>, independent: true, highlighted: false },//initial mass position
 		dy0: { value: 0, min: -20, max: 20, symbol: 'dy0', independent: true, highlighted: false },
