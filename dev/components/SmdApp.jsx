@@ -35,7 +35,9 @@ class SmdApp extends React.Component {
 		}
 		return (
 			<div >
-				<div style={{backgroundColor:"#666", height:40, borderBottom:"3px solid #ccc"}}></div>
+				<div style={{backgroundColor:"#666", height:40, borderBottom:"3px solid #ccc"}}>
+					Zibit > Control Systems > Part 02: Damped Harmonic Oscillator > Question Here
+				</div>
 				<div style={appStyle}>
 					<SideBar></SideBar>
 					<div style={{flexGrow: 1}}>

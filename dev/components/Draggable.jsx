@@ -1,11 +1,13 @@
 import React from "react";
+
+
 class Draggable extends React.Component {
 	constructor(props){
 		super(props)
 		this.mouseDown = this.mouseDown.bind(this)
 	}
 	mouseDown(e){
-		var initPos = {x:e.clientX, y:e.clientY}
+		var initPos = { x:e.clientX, y: e.clientY }
 		var draggable = this
 		if (this.props.hasOwnProperty('dragStart')){
 			this.props.dragStart(initPos)
@@ -13,6 +15,7 @@ class Draggable extends React.Component {
 
 		var mouseMove = function(e){
 			e.preventDefault();
+			e.stopPropagation();
 			if (draggable.props.hasOwnProperty('dragMove')){
 				draggable.props.dragMove({x:e.clientX, y:e.clientY})
 			}

@@ -18,15 +18,20 @@ class Mass extends React.Component {
 	dragStart(initPos){
 		this.props.setPlay('t', false)
 		this.props.setValue('t', 0)
-		this.startOffset = this.props.pos.y-initPos.y //offset in px
+		this.startOffset = initPos.y-this.props.pos.y //offset in px
+		var xOffset = initPos.x-this.props.pos.x
+		this.dragging = true
+		this.initMousePos = {x:xOffset, y:this.startOffset}
 		this.props.setY0(this.startOffset, this.props.coordSys.yScale)
 
 	}
 	dragMove(newPos){
-		var newYPos = newPos.y+this.startOffset
+		this.mousePos = this.initMousePos
+		var newYPos = newPos.y-this.startOffset
 		this.props.setY0(newYPos, this.props.coordSys.yScale)
 	}
 	dragEnd(endPos){
+		this.dragging=false
 		this.props.setHighlight('t', true)
 		this.props.setPlay('t', true)
 	}
@@ -36,20 +41,25 @@ class Mass extends React.Component {
 		var width = 80
 		var height = 50
 		var maskString = 'url(#'+this.props.mask+')'
+		var mouseForce = <Arrow
+						boundingRect={this.props.boundingRect}
+						tail={{x:pos.x, y:pos.y-height/2}}
+						quantity='fext'/>
 		var rect = <Draggable dragStart={this.dragStart} dragMove={this.dragMove} dragEnd={this.dragEnd}>
 				<g >
-					<rect x={pos.x} y={0} width={width} height={pos.y+height} mask={maskString} fill='none' cursor='grab'></rect>
-					<rect x={pos.x} y={pos.y-height} width={width} height={height} mask={maskString} fill='none' strokeWidth='2'stroke='black'></rect>
+					<rect x={pos.x-width/2} y={0} width={width} height={pos.y+height} mask={maskString} fill='none' cursor='grab'></rect>
+					<rect x={pos.x-width/2} y={pos.y-height} width={width} height={height} mask={maskString} fill='none' strokeWidth='2'stroke='black'></rect>
 				</g>
 			</Draggable>
 		if (active){
 			return (
 				<g>
 					{rect}
+					{this.dragging ? mouseForce : null}
 					<Arrow
 						boundingRect={this.props.boundingRect}
-						tail={{x:pos.x+20, y:pos.y}}
-						quantity='fs'></Arrow>
+						tail={{x:pos.x-20, y:pos.y}}
+						quantity='fs'/>
 				</g>
 			)
 		} else {

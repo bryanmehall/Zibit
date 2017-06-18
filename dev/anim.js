@@ -2,6 +2,15 @@ import QuantityActions from './ducks/quantity/actions'
 import WidgetActions from './ducks/widget/actions'
 export const audio = new Audio("./audio/dho1.mp3");
 
+var contentBlock = {
+	id: "exampleBlock",
+	title: "Part 02: Damped Harmonic Oscilator",
+	initialState: {},//initial state of store goes here
+	panelText: "long string?",
+	subContentBlocks: [],//subContent block or keyframes + audio
+	keyframes: keyframes,
+	audio: audio
+}
 
 var keyframes = [
 	{ //make keyframes relative to each other to that a change in one shifts all--maybe also have a time so that it can be set absolutely
@@ -10,7 +19,7 @@ var keyframes = [
 		actions: [
 			{
 				type: "fadeWidgetIn",
-				dur: 1,
+				dur: 10,
 				params: {
 					type: 'Plot',
 					name: 'testPlot',
@@ -32,10 +41,25 @@ var keyframes = [
 				}
 			}
 		]
+	},
+	{
+		time: 5,
+		actions: [
+			{
+				type: "askQuestion",
+				params: {
+					tests: [
+						{ test: "isEqual", params:{quantity:'c', value:0}, contentBlock:contentBlock }
+					]
+				}
+			}
+		]
 	}
 ]
 
-
+const tests = {
+	isEqual: (state, quantity, value) => (true)
+}
 //transform keyframes into a list of actions and their start-end times --could be part of the build process
 function keyframesToActions(actions, keyframe) {
 	function addStartEnd(action) {
@@ -82,6 +106,9 @@ var actions = {
 				//store.dispatch(WidgetActions.removeWidget(params.name))
 
 		}
+	},
+	askQuestion:{
+
 	}
 }
 
@@ -134,6 +161,7 @@ export const getActiveTweens = (tp, t) => {
 export const tween = function (store, activeTweens, t) {
 	activeTweens.forEach((tween) => {
 		if (tween.playingForward) {
+			console.log(actions)
 			actions[tween.type][tween.stage](store, t, tween)
 			actions[tween.type]['tween'](store, t, tween)
 		} else {

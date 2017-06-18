@@ -20,13 +20,17 @@ class Axis extends React.Component {
 			var y = vertical ? loc : textPos+textOffs;
 
 			return (
-				<text 
-					key={i} 
-					x={x}
-					y={y}
-					textAnchor='middle'
-					alignmentBaseline='middle'
-					>{value}</text>)
+				<g key={i}>
+					<text
+						x={x}
+						y={y}
+						fontFamily= "helvetica"
+						fontSize={12}
+						textAnchor="middle"
+						alignmentBaseline="middle"
+					>{value}</text>
+				</g>
+				)
 		}
 				//define base line
 		var lineStyle = {
@@ -78,16 +82,16 @@ class Axis extends React.Component {
 			}
 			return values
 			
-			function tickSpacing(scale) {
-				var minInt = 5
+			function tickSpacing(scale, minTics=5, maxTics=8, niceValues=[1,2,5]) {
 				var range = scale.max - scale.min
-  				var niceRange = Math.pow(10.0, Math.floor(Math.log10(range)))
-  				if (range / niceRange >= 5){//spacing 10*10^n
-    				return niceRange;
-				} else if (range / (niceRange / 2.0) >= 5) {
-    				return niceRange / 2.0; //spacing 5*10^n
-				} else {
-    				return niceRange / 5.0; //spacing 2*10^n
+				var nearestOrderOfMagnitude = Math.floor(Math.log10(range))
+  				var niceRange = Math.pow(10.0, nearestOrderOfMagnitude)
+  				if (range / (niceRange/1) >= minTics){//spacing 10*10^n less tics
+    				return niceRange/1;
+				} else if (range / (niceRange / 2.0) >= minTics) {
+					return niceRange / 2.0; //spacing 5*10^n
+				} else if (range/ (niceRange/5) >=minTics){
+    				return niceRange / 5.0; //spacing 2*10^n more tics
 				}
 			}	
 		}
