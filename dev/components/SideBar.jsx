@@ -1,12 +1,13 @@
 import React from "react";
 import {connect} from "react-redux"
-import { bindActionCreators } from 'redux';
 import QuantityActions from '../ducks/quantity/actions';
-import {audio} from '../anim'
-import {getValue, getTransformedValue, getCoordSys, getQuantityData, getPlaying} from '../ducks/quantity/selectors'
+import { audio } from '../anim'
+import { getValue, getTransformedValue, getCoordSys, getQuantityData, getPlaying } from '../ducks/quantity/selectors'
 import Animation from "./Animation";
 import InfoBar from "./InfoBar"
 import Handle from "./Handle"
+import Slider from "./Slider"
+
 
 class SideBar extends React.Component {
 	constructor(props){
@@ -21,11 +22,10 @@ class SideBar extends React.Component {
 		this.props.setPlay('animTime', false)
 		audio.pause()
 	}
-	onDragEnd(props, endVal){
+	onDragEnd(props, endVal) {
 		if (this.isPlaying){
 			audio.play()
 		}
-		console.log(this.isPlaying)
 		this.props.setPlay('animTime', this.isPlaying)
 	}
 	onPlay(){
@@ -41,17 +41,16 @@ class SideBar extends React.Component {
 		var titleFontSize = 15
 		var color = '#eee'
 		var textStyle = {
-			fontSize:titleFontSize,
-			textAnchor:"middle",
-			x:(width+50)/2,
-			fill:color,
+			fontSize: titleFontSize,
+			textAnchor: "middle",
+			x: (width+50)/2,
+			fill: color,
 
 		}
 		var sideBarStyle = {
-			width:width+'px',
-			fontFamily:"helvetica",
+			width: width+'px',
+			fontFamily: "helvetica",
 			fontSize: 15,
-
 		}
 
 		return (
@@ -63,7 +62,7 @@ class SideBar extends React.Component {
 					<rect
 						width={width}
 						height={height}
-						fill='#666'/>
+						fill="#666"/>
 					<text
 						{...textStyle}
 						y={20}>
@@ -75,33 +74,24 @@ class SideBar extends React.Component {
 						Simple Harmonic Oscillator
 					</text>
 					<Animation
-						pos={{x:10, y:9}}
-						quantity='animTime'
+						pos={{ x: 10, y: 9 } }
+						quantity="animTime"
 						scale={1.6}
 						color={color}
 						onPlay={this.onPlay}
 						onPause={this.onPause}
 						/>
-
-					<line
-						x1={15}
-						x2={width-15}
-						y1={height-15}
-						y2={height-15}
-						stroke={color}
-						strokeWidth={3}
-						strokeLinecap='round'
-						/>
-					<Handle
+					<Slider
+						constPos={height-15}
 						quantity="animTime"
-						y={height-15}
 						min={15}
 						max={width-15}
+						showAxis={false}
 						onDragEnd={this.onDragEnd}
 						onDragStart={this.onDragStart}
 						/>
 				</svg>
-				<div style={{overflow:"auto",backgroundColor:color,height:1000, margin:"0px"}}>
+				<div style={{ overflow: "auto", backgroundColor: color, height: 1000, margin: "0px" }}>
 					<InfoBar></InfoBar>
 				</div>
             </div>

@@ -14,14 +14,16 @@ class Value extends React.Component {
 		super(props)
 		this.mouseOver = this.mouseOver.bind(this)
 		this.mouseOut = this.mouseOut.bind(this)
-		this.arrow = calcArrow({x:100, y:100}, 100)
+		this.onDragStart = this.onDragStart.bind(this)
+		this.onDragEnd = this.onDragEnd.bind(this)
+		this.arrow = calcArrow({ x:100, y:100 }, 100)
 		this.textStyle = {
-      		fontStyle: "italic",
-			fontFamily:'MathJax_Main,"Times New Roman",Times,serif',
-      		fontSize:"1.6em",
-      		WebkitTouchCallout: "none",
-      		WebkitUserSelect: "none",
-      		MozUserSelect: "none"
+			fontStyle: "italic",
+			fontFamily: 'MathJax_Main,"Times New Roman",Times,serif',
+			fontSize: "1.6em",
+			WebkitTouchCallout: "none",
+			WebkitUserSelect: "none",
+			MozUserSelect: "none"
     	}
 		this.numberStyle = {
 			fontFamily:'MathJax_Main,"Times New Roman",Times,serif',
@@ -52,6 +54,13 @@ class Value extends React.Component {
 			this.props.getWidth(bBox, this.props.id)
 		}
 	}
+	onDragStart() {
+		this.isPlaying = this.props.playing
+		this.props.setPlay(this.props.quantity, false)
+	}
+	onDragEnd() {
+		this.props.setPlay(this.props.quantity, this.isPlaying)
+	}
 
 	render(){
 		var self = this
@@ -81,15 +90,36 @@ class Value extends React.Component {
             </g>
         )
     	var overlay = (//transform is relative to lower left corner of value text
-			<g
-
-				>
+			<g transform = {'translate('+pos.x+','+pos.y+')'}>
                     <Animation
                         pos={{x:0, y:10}}
                         quantity = {this.props.quantity}
                         playing={this.props.playing}
                     ></Animation>
-				<path fill='gray' d={this.arrow} />
+				<g>
+					<text
+						x={bbox.width+5}
+						y={0}
+						style={this.numberStyle}
+						filter="url(#textBackground)">
+						{'= '+(Math.round(this.props.quantityValue*100)/100)}
+					</text>
+				</g>
+				<rect x={-100} y={5} height={50} width={175} fill="#eee"></rect>
+				<Slider
+					constPos={20}
+					quantity={this.props.quantity}
+					min={-75}
+					max={75}
+					showAxis={true}
+					onDragStart={this.onDragStart}
+					onDragEnd={this.onDragEnd}
+					/>
+				<Animation
+					pos={{x:-100, y:12}}
+					quantity = {this.props.quantity}
+					playing={this.props.playing}
+				></Animation>
         	</g>
 		)
     
@@ -110,7 +140,7 @@ class Value extends React.Component {
 }
 
 var pointToString = function(string, point){
-	return string + point.x+','+point.y+' '
+	return string + point.x+', '+point.y+' '
 }
 var scalePoint = function(point, xScale, yScale){
 	return {x:point.x*xScale, y:point.y*yScale}

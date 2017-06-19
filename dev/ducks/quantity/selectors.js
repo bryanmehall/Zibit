@@ -1,16 +1,10 @@
-import {
-	createSelector
-}
-from 'reselect'
-import {
-	linspace, dopri, at
-}
-from 'numeric'
+import { createSelector } from 'reselect'
+import { linspace, dopri } from 'numeric'
 
 //define dependent variables --should be pure functions
 
 function x(t) { //could depend on numeric spline
-	return 0//4 * Math.cos(t)
+	return 0*t//4 * Math.cos(t)
 }
 
 function dl(x, y) {
@@ -21,12 +15,16 @@ function fs(dl, k) {
 	return -dl * k
 }
 
+function fext(forces){
+	return -1*forces.reduce((sum, force) => (sum+force))
+}
+
 function s(t) {
-	return 0
+	return 0*t
 }
 
 function y(sol, t) {
-	return t
+	return sol.at(t)[0]
 }
 
 //define scales
@@ -34,11 +32,11 @@ function transform(value, scale) {
 	var range = scale.max - scale.min;
 	var tRange = scale.tMax - scale.tMin;
 	return (value - scale.min) / range * tRange + scale.tMin;
-};
+}
 
 
 //define value accessors
-export const getQuantityData = function (state, name) {
+export const getQuantityData = function (state, name) {//make this not avaliable
 	if (name === undefined) {
 		throw 'Selector Error: name is undefined'
 	}
@@ -66,7 +64,6 @@ export const getPlaying = (state, name) => {
 		return false
 	}
 }
-
 export const getScale = (state, quantity, min, max) => ({
 	min: getMin(state, quantity),
 	max: getMax(state, quantity),
@@ -90,51 +87,67 @@ export const getCoordSys = (state, xVar, yVar, parentBB) => ({
 
 })
 
-export const getValue = function (state, name, given) {
-	var given = given || {}
+export const getValue = function (state, name, given={}) {
 		//given is an object of independent variables that replace concrete values
-	var quantityData = getQuantityData(state, name)
+	const quantityData = getQuantityData(state, name)
 	if (quantityData.independent) {
 		return (given[name] === undefined) ? quantityData.value : given[name]
 	}
-	switch (name) {
-	case "x":
-		var t = (given.t === undefined) ? getValue(state, 't') : given.t
-		return x(t)
-		break;
-	case 's':
-		var t = (given.t === undefined) ? getValue(state, 't') : given.t
-		return s(t)
-		break;
-	case "y":
-		var t = (given.t === undefined) ? getValue(state, 't') : given.t
-		var sol = getSol(state)
-		var y = sol.at(t)[0]
-		return y
-		break;
-	case "dl":
-		let xVal = getValue(state, 'x')
-		let yVal = getValue(state, 'y')
-		return dl(xVal, yVal)
-		break;
-	case "fs":
-		let dlVal = getValue(state, 'dl')
-		let k = getValue(state, 'k')
 
-		return fs(dlVal, k)
-		break;
-	default:
-		throw "make sure that " + name + " is labeled as independent"
+	var sol = getSol(state)
+	switch (name) {
+		case "x": {
+			const t = (given.t === undefined) ? getValue(state, 't') : given.t
+			return x(t)
+		}
+
+		case 's': {
+			const t = (given.t === undefined) ? getValue(state, 't') : given.t
+			return s(t)
+		}
+
+		case "y": {
+			const t = (given.t === undefined) ? getValue(state, 't') : given.t
+			const yVal = y(sol, t)
+			return yVal
+		}
+
+		case "dydt": {
+			const t = (given.t === undefined) ? getValue(state, 't') : given.t
+			let dydt = sol.at(t)[1]
+			return dydt
+		}
+
+		case "dl": {
+			var xVal = getValue(state, 'x')
+			var yVal = getValue(state, 'y')
+			return dl(xVal, yVal)
+		}
+
+		case "fs": {
+			var dlVal = getValue(state, 'dl')
+			var k = getValue(state, 'k')
+			return fs(dlVal, k)
+		}
+
+		case "fext": {
+			var fsVal = getValue(state, 'fs')
+			var fdVal = 0//getValue(state, 'fd')
+			return fext([fsVal,fdVal])
+		}
+
+		default:
+			throw "make sure that " + name + " is labeled as independent"
 	}
 }
 
-export const getTransformedValue = function (state, name, scale, given) { //change to scale?
-	var quantityData = getQuantityData(state, name)
+export const getTransformedValue = function (state, name, scale, given) {
 	var value = getValue(state, name, given)
 	var transformedValue = transform(value, scale)
 	return transformedValue
 }
 
+//define factory functions for reselect memoization
 function getValueff(name) {
 	return (state) => getValue(state, name)
 }
@@ -198,5 +211,5 @@ export const getAbsPoints = function (state, indVar, xVar, yVar) {
 }
 
 export const getSecondaryAbsPoints = function (state, name, absName) {
-
+	return { state, name, absName }
 }

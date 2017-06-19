@@ -1,8 +1,24 @@
 import QuantityActions from './ducks/quantity/actions'
 import WidgetActions from './ducks/widget/actions'
+import keyframeActions from './keyframeActions'
+export const audio = new Audio("./content/controlSystems/dho/dho1.mp3")
 
-export const audio = new Audio("./audio/dho1.mp3");
 
+const contentGroup = {
+	id: "dho",
+	title: "Part 02: Damped Harmonic Oscilator",
+	contentBlocks: ["adjustDamping"]
+}
+const contentBlock = {
+	id: "adjustDamping",
+	initialState: {},//initial state of store goes here
+	completed: false,
+	audio: "./audio/dho1.mp3",
+	tests: [
+		{ test: "isEqual", id: "zeroDamping", params: { quantity: 'c', value: 0 }, text: "adjust the damping coefficient so the ", helpBlocks: [] }
+	],
+	onTestsComplete: { action: 'goTo', contentBlock: "zeta" }
+}
 
 var keyframes = [
 	{ //make keyframes relative to each other to that a change in one shifts all--maybe also have a time so that it can be set absolutely
@@ -13,29 +29,35 @@ var keyframes = [
 				type: "fadeWidgetIn",
 				dur: 1,
 				params: {
+					name: 'posPlot',
 					type: 'Plot',
-					name: 'testPlot',
-					parent: "app",
+					parent: 'app',
 					props: {
-						xVar: 's',
+						xVar: 't',
 						yVar: 'y',
-						xVars: ['s', 't'],
-						yVars: ['y', 'x'],
-						width: 200,
-						height: 150,
-						pos: {
-							x: 200,
-							y: 500
-						},
-						visibility: 1
+						xVars: ['t'],
+						yVars: ['y'],
+						width: 300,
+						height: 350,
+						pos: { x: 350, y: 400 }
 					},
-					interp: 'linear' //make cubic default
+					children: ['abstraction1']
+				},
+				interp: 'linear' //make cubic default
+			}
+		]
+	},
+	{
+		time: 5,
+		actions: [
+			{
+				type: "askQuestion",
+				params: {
 				}
 			}
 		]
 	}
 ]
-
 
 //transform keyframes into a list of actions and their start-end times --could be part of the build process
 function keyframesToActions(actions, keyframe) {
@@ -50,41 +72,8 @@ function keyframesToActions(actions, keyframe) {
 	return actions.concat(newActions)
 }
 
-var tweens = keyframes.reduce(keyframesToActions, [])
+const tweens = keyframes.reduce(keyframesToActions, [])//do at compile time
 
-
-var actions = {
-	//start and inverse.end must be opposites ie enter then exit is noop
-	fadeWidgetIn: {
-		inverse: "fadeWidgetOut",
-		start: function (store, t, tweenData) {
-			var params = tweenData.params
-			store.dispatch(WidgetActions.addWidget(params.name, params.type, params.props))
-			store.dispatch(WidgetActions.addChild(params.name, params.parent))
-		},
-		tween: function (store, t, tweenData) {
-			var alpha = (t - tweenData.start) / (tweenData.dur)
-			store.dispatch(WidgetActions.setProp(tweenData.params.name, 'visibility', alpha))
-		},
-		end: function () {
-			//console.log('end of fade in')
-		}
-	},
-	fadeWidgetOut: {
-		inverse: "fadeWidgetIn",
-		start: function (t, tweenData) {},
-		tween: function (store, t, tweenData) {
-			var alpha = (t - tweenData.start) / (tweenData.end - tweenData.start)
-			store.dispatch(WidgetActions.setProp(tweenData.params.name, 'visibility', alpha))
-		},
-		end: function (store, t, tweenData) {
-			var params = tweenData.params
-			store.dispatch(WidgetActions.removeChild(params.name, params.parent))
-				//store.dispatch(WidgetActions.removeWidget(params.name))
-
-		}
-	}
-}
 
 /* possible frame and start/end time spacing
   start    end      stages
@@ -130,15 +119,22 @@ export const getActiveTweens = (tp, t) => {
 	})
 }
 
+
+
 export const tween = function (store, activeTweens, t) {
 	activeTweens.forEach((tween) => {
-		if (tween.playingForward) {
-			actions[tween.type][tween.stage](store, t, tween)
-			actions[tween.type]['tween'](store, t, tween)
+		if (tween.hasOwnProperty('dur')){//if tween has duration
+			if (tween.playingForward) {
+				keyframeActions[tween.type][tween.stage](store, t, tween)
+				keyframeActions[tween.type]['tween'](store, t, tween)
+			} else {
+				var inverseType = keyframeActions[tween.type].inverse
+				keyframeActions[inverseType][tween.stage](store, t, tween)
+			}
 		} else {
-			var inverseType = actions[tween.type].inverse
-			actions[inverseType][tween.stage](store, t, tween)
+			keyframeActions[tween.type](store,t,tween)
 		}
+
 
 	})
 }

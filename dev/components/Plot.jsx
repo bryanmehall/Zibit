@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as QuantityActions from '../ducks/quantity/actions';
 import {getValue, getQuantityData} from '../ducks/quantity/selectors'
 import {getChildren} from '../ducks/widget/selectors'
-import {CoordSys, Scale} from './Scale'
+import {CoordSys, Scale} from '../utils/scale'
 import Axis from './Axis'
 import Abstraction from './Abstraction'
 import Mass from './Mass'
@@ -19,7 +19,7 @@ class Plot extends React.Component {
 	render(){
 		var plotId = this.props.id,
 			width = this.props.width,//width in px from axis min
-		 	height = this.props.height,//height in px from axis min
+			height = this.props.height,//height in px from axis min
 			pos = this.props.pos,
 			visibility = this.props.visibility || 1,
 			xQuantities = this.props.xQuantities,
@@ -27,17 +27,17 @@ class Plot extends React.Component {
 			xQuantity = xQuantities[this.props.xActive],
 			yQuantity = yQuantities[this.props.yActive]
 
-		var xScale = new Scale({
-			min:xQuantity.min,
-			max:xQuantity.max,
-			tMin:pos.x,
-			tMax:pos.x+width
+		var xScale = new Scale({//change to functional version
+			min: xQuantity.min,
+			max: xQuantity.max,
+			tMin: pos.x,
+			tMax: pos.x+width
 		})
 		var yScale = new Scale({
-			min:yQuantity.min,
-			max:yQuantity.max,
-			tMin:pos.y,
-		  	tMax:pos.y-height
+			min: yQuantity.min,
+			max: yQuantity.max,
+			tMin: pos.y,
+		  	tMax: pos.y-height
 		})
 		var coordSys = new CoordSys(xScale, yScale)
 

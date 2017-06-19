@@ -1,96 +1,105 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from "react-redux"
+
+import QuantityActions from '../ducks/quantity/actions';
+import WidgetActions from '../ducks/widget/actions'
+import { getTransformedValue, getValue, getScale, getMin, getMax} from '../ducks/quantity/selectors'
+import Draggable from "./Draggable"
 import Axis from './Axis';
+import Handle from "./Handle"
+import {Scale} from '../utils/scale'
 
 class Slider extends React.Component {
-	//properties
-	constructor(props){
-		super(props);
-		this.width = 150;
-		this.mouseDown = this.mouseDown.bind(this)
-		this.pxPerUnit = this.width/(this.scale.max-this.scale.min)
-	}
-	
-	mouseDown(e){
-		var slider = this
-		var prevVal = this.props.value
-		//mouse difference in units
-		var mouseError = slider.scale.invert(e.clientX)-prevVal
-		
-		var mouseMove = function(e){
-			e.preventDefault();
-			document.addEventListener('mouseup', mouseUp)
-			var newValue = clamp(slider.scale.invert(e.clientX)-mouseError, slider.scale.min, slider.scale.max)
-			slider.props.valueChange(newValue)
-		}
-		var mouseUp = function(e){
-			document.removeEventListener('mousemove', mouseMove)
-		}
-
-		document.addEventListener('mousemove', mouseMove)
-		function clamp(val,min,max){
-			if (val<min){
-				return min
-			} else if (val > max){
-				return max
-			} else {
-				return val
-			}
-		}
-	}
 	render() {
-		var scale = new Scale({
-			min:quantity.min,
-			max:quantity.max,
-			tMin:0,
-			tMax:this.width
+		const constPos = this.props.constPos
+		const min = this.props.min
+		const max = this.props.max
+		const quantity = this.props.quantity
+		const scale = this.props.scale
+
+		const scaleObj = new Scale({//change
+			min: scale.min,
+			max: scale.max,
+			tMin: min,
+			tMax: max
 		})
-		var handleStyle = {
-			"strokeWidth":"2",
-			"stroke":"gray",
-			"fill":"white",
-			"cursor":"move"
-		}
-		var barStyle = {
-			"strokeWidth":"8",
-			"stroke":"white",
+		const barStyle = {
+			"strokeWidth": "3",
+			"stroke": "#eee",
 			"strokeLinecap": "round"
 		}
-		var highlightStyle = {
-			"strokeWidth":"12",
-			"stroke":"gray",
+		const highlightStyle = {
+			"strokeWidth": "5",
+			"stroke": "#666",
 			"strokeLinecap": "round"
 		}
-		var pos = this.props.pos
-		var scale = this.scale
+		var axis = <Axis
+			scale={scaleObj}
+			pos={constPos}
+			showBar={false}
+		/>
 		return (
 			<g>
 				<line 
 					style={highlightStyle} 
-					x1={scale.tMin}
-					x2={scale.tMax} 
-					y1={pos} 
-					y2={pos}
+					x1={min}
+					x2={max}
+					y1={constPos}
+					y2={constPos}
 				/>
 				<line 
 					style={barStyle} 
-					x1={scale.tMin} 
-					x2={scale.tMax}
-					y1={pos} 
-					y2={pos}
+					x1={min}
+					x2={max}
+					y1={constPos}
+					y2={constPos}
 				/>
-				<circle 
-					style={handleStyle} 
-					ref="handle"
-					onMouseDown={this.mouseDown} 
-					cx={this.scale.transform(this.props.value)} 
-					cy={pos} 
-					r={9}
+				<Handle
+					quantity={quantity}
+					y={constPos}
+					min={min}
+					max={max}
+					onDragEnd={this.props.onDragEnd}
+					onDragStart={this.props.onDragStart}
 				/>
-				<Axis scale={scale} pos={pos} showBar={false}/>
+				{
+					this.props.showAxis ? axis : null
+				}
 			</g>
-    	);
+		);
 	}
 }
 
+function mapStateToProps(state, props) {
+	//add support for full coordinate system
+	var scale = getScale(state, props.quantity, props.min, props.max)
+	return {
+		scale: scale,
+	};
+}
 
-export default Slider;
+function mapDispatchToProps(dispatch) {
+	return {
+		setTransformedValue: (quantity, value, scale) => {
+			dispatch(QuantityActions.setValueFromCoords(quantity, value, scale))
+		},
+		setValue: (name, value) => {
+			dispatch(QuantityActions.setValue(name, value))
+		},
+		setActive: (name, value) => {
+			dispatch(WidgetActions.setActive(name, value))
+		},
+		setPlay: (name, value) => {
+			dispatch(QuantityActions.setPlay(name, value))
+		},
+	};
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Slider);
+
+
+

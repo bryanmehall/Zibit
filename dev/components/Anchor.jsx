@@ -1,8 +1,7 @@
 import React from "react";
-import {connect} from "react-redux"
-import { bindActionCreators } from 'redux';
+import { connect } from "react-redux"
 import QuantityActions from '../ducks/quantity/actions';
-import {getTransformedValue, getValue, getCoordSys, getQuantityData} from '../ducks/quantity/selectors'
+import { getTransformedValue, getCoordSys } from '../ducks/quantity/selectors'
 import Draggable from "./Draggable"
 
 class Anchor extends React.Component {
@@ -28,18 +27,41 @@ class Anchor extends React.Component {
 		var width = 80
 		var height = 15
 		var maskString = 'url(#'+this.props.mask+')'
-		return(
+		return (
 			<Draggable dragStart={this.dragStart} dragMove={this.dragMove} dragEnd={this.dragEnd}>
 				<g >
-					<rect x={pos.x} y={0} width={width} height={pos.y+height} mask={maskString} fill='none' cursor='grab'></rect>
-					<pattern id="diagonalHatch" patternUnits="userSpaceOnUse" viewBox="0 0 8 8" width="8" height="8">
-  						<path d="M-2,2 l4,-4
-          					 M0,8 l8,-8
-							M6,10 l4,-4"
-        					style={{stroke:'black', strokeWidth:1}} />
+					<rect
+						x={pos.x}
+						y={0} width={width}
+						height={pos.y+height}
+						mask={maskString} fill="none"
+						cursor="grab"
+					/>
+					<pattern
+						id="diagonalHatch"
+						patternUnits="userSpaceOnUse"
+						viewBox="0 0 8 8"
+						width="8"
+						height="8">
+						<path
+							d="M-2,2 l4,-4 M0,8 l8,-8 M6,10 l4,-4"
+							style={{ stroke: 'black', strokeWidth: 1 }}
+						/>
 					</pattern>
-					<rect x={pos.x} y={pos.y} width={width} height={height} mask={maskString} fill='url(#diagonalHatch)'></rect>
-					<line x1={pos.x} x2={pos.x+width} y1={pos.y} y2={pos.y} stroke='black' strokeWidth={1.5}></line>
+					<rect
+						x={pos.x-width/2}
+						y={pos.y}
+						width={width}
+						height={height}
+						mask={maskString}
+						fill="url(#diagonalHatch)"/>
+					<line
+						x1={pos.x-width/2}
+						x2={pos.x+width/2}
+						y1={pos.y}
+						y2={pos.y}
+						stroke="black"
+						strokeWidth={1.5}/>
 				</g>
 
 			</Draggable>
@@ -51,9 +73,9 @@ function mapStateToProps(state, props) {
 	var br = props.boundingRect
 	var coordSys = getCoordSys(state, props.xVar, props.yVar, br)
 	return {
-		pos:{
-			x:getTransformedValue(state, props.xVar, coordSys.xScale),
-			y:getTransformedValue(state, props.yVar, coordSys.yScale)
+		pos: {
+			x: getTransformedValue(state, props.xVar, coordSys.xScale),
+			y: getTransformedValue(state, props.yVar, coordSys.yScale)
 		}
 
 	};
@@ -61,13 +83,13 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		setX0:(value, scale) => {
+		setX0: (value, scale) => {
 			dispatch(QuantityActions.setValueFromCoords('x', value, scale))
 		},
-		setValue:(name, value) => {
-			dispatch(QuantityActions.setValue(name, value))
+		setValue: (name, value) => {
+			dispatch(QuantityActions.setValue(name, value, true))
 		},
-		setPlay:(name, value) => {
+		setPlay: (name, value) => {
 			dispatch(QuantityActions.setPlay(name, value))
 		},
 	};
