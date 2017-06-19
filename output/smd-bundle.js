@@ -33323,6 +33323,8 @@ var _react = __webpack_require__(7);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _styles = __webpack_require__(264);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33341,7 +33343,7 @@ var ConceptCheck = function (_React$Component) {
 	}
 
 	_createClass(ConceptCheck, [{
-		key: "render",
+		key: 'render',
 		value: function render() {
 			var questionState = this.props.questionState;
 			var text = this.props.children;
@@ -33357,65 +33359,65 @@ var ConceptCheck = function (_React$Component) {
 
 			var icons = {
 				completed: _react2.default.createElement(
-					"g",
-					{ transform: "translate(20,20) scale(2)" },
-					_react2.default.createElement("path", { d: "M-5,0 L-2,3 L5,-4", strokeWidth: 2.5, fill: "none", stroke: "#58de58" })
+					'g',
+					{ transform: 'translate(20,20) scale(2)' },
+					_react2.default.createElement('path', { d: 'M-5,0 L-2,3 L5,-4', strokeWidth: 2.5, fill: 'none', stroke: 'rgb(88, 222, 88)' })
 				),
 
 				active: _react2.default.createElement(
-					"g",
-					{ transform: "translate(20,20) scale(1.1)" },
-					_react2.default.createElement("circle", { cx: 0, cy: 0, r: 10, fill: "rgb(88, 88,222)" }),
+					'g',
+					{ transform: 'translate(20,20) scale(1.1)' },
+					_react2.default.createElement('circle', { cx: 0, cy: 0, r: 10, fill: 'rgb(47, 47, 244)' }),
 					_react2.default.createElement(
-						"text",
+						'text',
 						{
 							x: 0,
 							y: 1,
-							fill: "#fff",
+							fill: '#fff',
 							fontSize: 15,
-							textAnchor: "middle",
-							alignmentBaseline: "middle",
+							textAnchor: 'middle',
+							alignmentBaseline: 'middle',
 							style: textStyle
 						},
-						"?"
+						'?'
 					)
 				),
 
 				inactive: _react2.default.createElement(
-					"g",
-					{ transform: "translate (20,20)" },
-					_react2.default.createElement("circle", { cx: 0, cy: 0, r: 10, stroke: "#ccc", strokeWidth: 2, fill: "none" })
+					'g',
+					{ transform: 'translate (20,20)' },
+					_react2.default.createElement('circle', { cx: 0, cy: 0, r: 10, stroke: 'rgb(244, 47, 47)', strokeWidth: 2, fill: 'none' })
 				)
 			};
 
 			var questionsList = _react2.default.createElement(
-				"ul",
+				'ul',
 				{ style: { listStyle: "none" } },
 				_react2.default.createElement(
-					"li",
+					'li',
 					{ style: { textDecoration: "underline" } },
-					"what makes this happen?"
+					'what makes this happen?'
 				),
 				_react2.default.createElement(
-					"li",
+					'li',
 					{ style: { textDecoration: "underline" } },
-					"+ ask a new question"
+					'+ ask a new question'
 				)
 			);
 			return _react2.default.createElement(
-				"div",
+				'div',
 				{ style: { display: 'flex', marginTop: 10 } },
 				_react2.default.createElement(
-					"div",
+					'div',
 					{ style: { width: 50 } },
 					_react2.default.createElement(
-						"svg",
-						{ width: 40, height: 40, viewBox: "0 0 40 40" },
+						'svg',
+						{ width: 40, height: 40, viewBox: '0 0 40 40' },
 						icons[questionState]
 					)
 				),
 				_react2.default.createElement(
-					"div",
+					'div',
 					{ style: { flexGrow: 1, marginTop: 5, marginLeft: 8 } },
 					text,
 					questionState === "active" ? questionsList : null
@@ -33428,6 +33430,13 @@ var ConceptCheck = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = ConceptCheck;
+
+/***/ }),
+/* 264 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 /***/ })
 /******/ ]);
