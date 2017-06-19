@@ -10,6 +10,8 @@ import Abstraction from './Abstraction'
 import Expression from './Expression'
 import Value from './Value'
 import SideBar from './SideBar'
+import NewExpression from './NewExpression'
+
 
 class SmdApp extends React.Component {
 	constructor(props){
@@ -19,6 +21,7 @@ class SmdApp extends React.Component {
 		const { actions } = this.props;
 		var childTypes = {
 			"Plot": Plot,
+            "NewExpression": NewExpression,
 			"Expression": Expression
 		}
 

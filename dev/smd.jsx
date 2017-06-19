@@ -80,7 +80,7 @@ const initialAppState = {
 		app: {
 			type: 'SmdApp',
 			props: {},
-			children: ['massPlot', 'forcingEq']
+			children: ['massPlot', 'forcingEq', 'expTest']
 		},
 		forcingEq: {
 			type: 'Expression',
@@ -89,6 +89,24 @@ const initialAppState = {
 			},
 			children: ['fExt', 'springCoef', 'yVal','tVal' , 'dampCoef', 'dydtVal','t1Val']
 		},
+        expTest:{
+            type:"NewExpression",
+            props:{pos:{x:400,y:400}},
+            children:["val1Test",'valTest', ]
+        },
+        valTest:{
+            type: "NewValue",
+            props: {
+                quantity: 'fs'
+            },
+            children:[]
+        },
+        val1Test:{
+            type: "NewValue",
+            props: {
+                quantity:'k'
+            }
+        },
 		fExt: {
 			type: 'Value',
 			props: {
@@ -224,7 +242,7 @@ const initialAppState = {
 		y: { value: 0, min: -25, max: 20, symbol: 'y(', highlighted: false },//position of mass
 		dydt: { value: 0, min: -25, max: 20, symbol: "y'(", highlighted: false },
 		k: { value: 5, min: 0, max: 100, symbol: ' = k', abstractions: 10, independent: true, highlighted: false },//spring constant
-		fs: { value: 100, min: -100, max: 100, symbol: <tspan>F<tspan dx="-2" fontSize="0.5em" dy="8">s</tspan></tspan>, independent: false, highlighted: false },
+		fs: { value: 100, min: -100, max: 100, symbol: <tspan dx={3}>F<tspan dx="-3" fontSize="0.5em" y="6">s</tspan></tspan>, independent: false, highlighted: false },
 		dl: { value: 10, min: -10, max: 10, symbol: "displacement", independent: false, highlighted: false },
 		m: { value: 1, min: 0, max: 30, symbol: 'm', independent: true, highlighted: false },//mass
 		c: { value: 0, min: 0, max: 5, symbol: ' + c', independent: true, highlighted: false },

@@ -30777,6 +30777,10 @@ var _SideBar = __webpack_require__(251);
 
 var _SideBar2 = _interopRequireDefault(_SideBar);
 
+var _NewExpression = __webpack_require__(266);
+
+var _NewExpression2 = _interopRequireDefault(_NewExpression);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -30803,6 +30807,7 @@ var SmdApp = function (_React$Component) {
 
 			var childTypes = {
 				"Plot": _Plot2.default,
+				"NewExpression": _NewExpression2.default,
 				"Expression": _Expression2.default
 			};
 
@@ -32686,7 +32691,7 @@ var initialAppState = {
 		app: {
 			type: 'SmdApp',
 			props: {},
-			children: ['massPlot', 'forcingEq']
+			children: ['massPlot', 'forcingEq', 'expTest']
 		},
 		forcingEq: {
 			type: 'Expression',
@@ -32694,6 +32699,24 @@ var initialAppState = {
 				pos: { x: 150, y: 500 }
 			},
 			children: ['fExt', 'springCoef', 'yVal', 'tVal', 'dampCoef', 'dydtVal', 't1Val']
+		},
+		expTest: {
+			type: "NewExpression",
+			props: { pos: { x: 400, y: 400 } },
+			children: ["val1Test", 'valTest']
+		},
+		valTest: {
+			type: "NewValue",
+			props: {
+				quantity: 'fs'
+			},
+			children: []
+		},
+		val1Test: {
+			type: "NewValue",
+			props: {
+				quantity: 'k'
+			}
 		},
 		fExt: {
 			type: 'Value',
@@ -32832,11 +32855,11 @@ var initialAppState = {
 		k: { value: 5, min: 0, max: 100, symbol: ' = k', abstractions: 10, independent: true, highlighted: false }, //spring constant
 		fs: { value: 100, min: -100, max: 100, symbol: _react2.default.createElement(
 				"tspan",
-				null,
+				{ dx: 3 },
 				"F",
 				_react2.default.createElement(
 					"tspan",
-					{ dx: "-2", fontSize: "0.5em", dy: "8" },
+					{ dx: "-3", fontSize: "0.5em", y: "6" },
 					"s"
 				)
 			), independent: false, highlighted: false },
@@ -33299,46 +33322,13 @@ var ConceptCheck = function (_React$Component) {
 			var onAsk = this.props.onAsk;
 			var questions = this.props.questions;
 			var showQuestions = true;
+
 			var textStyle = {
 				cursor: "default",
 				MozUserSelect: "none",
 				WebkitUserSelect: "none",
 				msUserSelect: "none"
 			};
-
-			var icons = {
-				completed: _react2.default.createElement(
-					'g',
-					{ transform: 'translate(20,20) scale(2)' },
-					_react2.default.createElement('path', { d: 'M-5,0 L-2,3 L5,-4', strokeWidth: 2.5, fill: 'none', stroke: 'rgb(88, 222, 88)' })
-				),
-
-				active: _react2.default.createElement(
-					'g',
-					{ transform: 'translate(20,20) scale(1.1)' },
-					_react2.default.createElement('circle', { cx: 0, cy: 0, r: 10, fill: 'rgb(47, 47, 244)' }),
-					_react2.default.createElement(
-						'text',
-						{
-							x: 0,
-							y: 1,
-							fill: '#fff',
-							fontSize: 15,
-							textAnchor: 'middle',
-							alignmentBaseline: 'middle',
-							style: textStyle
-						},
-						'?'
-					)
-				),
-
-				inactive: _react2.default.createElement(
-					'g',
-					{ transform: 'translate (20,20)' },
-					_react2.default.createElement('circle', { cx: 0, cy: 0, r: 10, stroke: 'rgb(244, 47, 47)', strokeWidth: 2, fill: 'none' })
-				)
-			};
-
 			var questionsList = _react2.default.createElement(
 				'ul',
 				{ style: { listStyle: "none" } },
@@ -33362,7 +33352,7 @@ var ConceptCheck = function (_React$Component) {
 					_react2.default.createElement(
 						'svg',
 						{ width: 40, height: 40, viewBox: '0 0 40 40' },
-						icons[questionState]
+						_styles.icons[questionState]
 					)
 				),
 				_react2.default.createElement(
@@ -33386,6 +33376,44 @@ exports.default = ConceptCheck;
 
 "use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.icons = undefined;
+
+var _react = __webpack_require__(7);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var completed = _react2.default.createElement(
+    "g",
+    { transform: "translate(20,20) scale(2)" },
+    _react2.default.createElement("path", { d: "M-5,0 L-2,3 L5,-4", strokeWidth: 2.5, fill: "none", stroke: "rgb(88, 222, 88)" })
+);
+
+var active = _react2.default.createElement(
+    "g",
+    { transform: "translate (11,11)" },
+    _react2.default.createElement("path", {
+        fill: "rgb(47, 47, 244)",
+        d: "m11-0.012817c-6.0751,0-11,4.9249-11,11s4.9249,11,11,11,11-4.9249,11-11c0-6.0749-4.925-11-11-11zm0.0625,3.5625c1.2933,0,2.3204,0.3692,3.0938,1.0625,0.77332,0.6933,1.1562,1.6079,1.1562,2.7812-0.00001,0.6134-0.12168,1.163-0.375,1.6563-0.24001,0.4933-0.52834,0.9167-0.875,1.25-0.34668,0.32-0.70251,0.6308-1.0625,0.9375-0.34667,0.2933-0.65292,0.6446-0.90625,1.0312-0.24001,0.3734-0.34376,0.7609-0.34375,1.1876v0.9374h-1.8125v-1.0937c-0.0000048-0.4933,0.135-0.9662,0.375-1.4063,0.25333-0.4399,0.52833-0.8049,0.875-1.125,0.35999-0.3199,0.71583-0.6487,1.0625-0.9687,0.34666-0.32,0.63499-0.6625,0.875-1.0625,0.25332-0.4133,0.40624-0.8771,0.40625-1.3438-0.000008-0.6799-0.25209-1.2116-0.71875-1.625-0.46667-0.4266-1.0704-0.6562-1.8438-0.6562-0.97334,0-1.6579,0.2971-2.0312,0.8438-0.37334,0.5466-0.5625,1.2945-0.5625,2.2812h-1.6875c-0.0000015-1.5333,0.36041-2.6821,1.0938-3.4688,0.74666-0.7999,1.8412-1.2187,3.2812-1.2187zm-1.125,12.75,1.8125,0,0,2.0937-1.8125,0,0-2.0937z"
+    })
+);
+
+var inactive = _react2.default.createElement(
+    "g",
+    { transform: "translate (20,20)" },
+    _react2.default.createElement("circle", { cx: 0, cy: 0, r: 10, stroke: "rgb(244, 47, 47)", strokeWidth: 2, fill: "none" })
+);
+
+var icons = exports.icons = {
+    completed: completed,
+    active: active,
+    inactive: inactive
+};
 
 /***/ }),
 /* 264 */
@@ -33447,6 +33475,294 @@ exports.default = {
 	fadeWidgetOut: fadeWidgetOut,
 	askQuestion: askQuestion
 };
+
+/***/ }),
+/* 265 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(7);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(39);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _reactPortal = __webpack_require__(260);
+
+var _reactPortal2 = _interopRequireDefault(_reactPortal);
+
+var _Slider = __webpack_require__(61);
+
+var _Slider2 = _interopRequireDefault(_Slider);
+
+var _reactRedux = __webpack_require__(16);
+
+var _redux = __webpack_require__(9);
+
+var _actions = __webpack_require__(12);
+
+var _actions2 = _interopRequireDefault(_actions);
+
+var _actions3 = __webpack_require__(37);
+
+var _actions4 = _interopRequireDefault(_actions3);
+
+var _selectors = __webpack_require__(13);
+
+var _Animation = __webpack_require__(62);
+
+var _Animation2 = _interopRequireDefault(_Animation);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var NewValue = function (_React$Component) {
+	_inherits(NewValue, _React$Component);
+
+	function NewValue(props) {
+		_classCallCheck(this, NewValue);
+
+		var _this = _possibleConstructorReturn(this, (NewValue.__proto__ || Object.getPrototypeOf(NewValue)).call(this, props));
+
+		_this.mouseOver = _this.mouseOver.bind(_this);
+		_this.mouseOut = _this.mouseOut.bind(_this);
+
+		_this.textStyle = {
+			fontStyle: "italic",
+			fontFamily: 'MathJax_Main,"Times New Roman",Times,serif',
+			fontSize: "1.6em",
+			WebkitTouchCallout: "none",
+			WebkitUserSelect: "none",
+			MozUserSelect: "none"
+		};
+
+		return _this;
+	}
+
+	_createClass(NewValue, [{
+		key: "mouseOver",
+		value: function mouseOver() {
+			this.props.setHighlight(this.props.quantity, true);
+		}
+	}, {
+		key: "mouseOut",
+		value: function mouseOut(e) {
+			this.props.setHighlight(this.props.quantity, false);
+		}
+	}, {
+		key: "componentDidMount",
+		value: function componentDidMount() {
+			var domElement = _reactDom2.default.findDOMNode(this);
+			var extent = domElement.getExtentOfChar(0 //use SVG v1.1
+			);var length = domElement.getComputedTextLength();
+			console.log(this.key, extent, length);
+		}
+	}, {
+		key: "render",
+		value: function render() {
+			var _this2 = this;
+
+			var self = this;
+			var pos = this.props.pos || { x: 200, y: 200 };
+			var quantity = this.props.quantity;
+			var bbox = this.props.bbox || { width: 0 };
+			var independent = this.props.independent;
+			var highlighted = this.props.highlighted;
+			var filter = highlighted ? "url(#highlight)" : null; //seei f this works with css filters
+			var mouseOver = function mouseOver() {
+				_this2.props.setHighlight(quantity, true);
+			};
+			var mouseOut = function mouseOut() {
+				_this2.props.setHighlight(quantity, false);
+			};
+			var text = _react2.default.createElement(
+				"tspan",
+				{
+					style: this.textStyle,
+					filter: filter,
+					fontWeight: highlighted ? "bold" : "normal",
+					onMouseEnter: mouseOver,
+					onMouseLeave: mouseOut
+				},
+				this.props.symbol
+			);
+			return text;
+		}
+	}]);
+
+	return NewValue;
+}(_react2.default.Component);
+
+function mapStateToProps(state, props) {
+	var quantityData = (0, _selectors.getQuantityData)(state, props.quantity);
+	return {
+		symbol: quantityData.symbol,
+		independent: quantityData.independent,
+		highlighted: quantityData.highlighted,
+		quantityValue: (0, _selectors.getValue)(state, props.quantity),
+		playing: (0, _selectors.getPlaying)(state, props.quantity)
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		setHighlight: function setHighlight(name, value) {
+			dispatch(_actions2.default.setHighlight(name, value));
+		},
+		setActive: function setActive(name, value) {
+			dispatch(_actions4.default.setActive(name, value));
+		},
+		setPlay: function setPlay(name, value) {
+			dispatch(_actions2.default.setPlay(name, value));
+		}
+	};
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NewValue);
+
+/***/ }),
+/* 266 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(7);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Value = __webpack_require__(107);
+
+var _Value2 = _interopRequireDefault(_Value);
+
+var _ValueOverlay = __webpack_require__(252);
+
+var _ValueOverlay2 = _interopRequireDefault(_ValueOverlay);
+
+var _reactDom = __webpack_require__(39);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _reactRedux = __webpack_require__(16);
+
+var _redux = __webpack_require__(9);
+
+var _actions = __webpack_require__(12);
+
+var _actions2 = _interopRequireDefault(_actions);
+
+var _selectors = __webpack_require__(66);
+
+var _NewValue = __webpack_require__(265);
+
+var _NewValue2 = _interopRequireDefault(_NewValue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var NewExpression = function (_React$Component) {
+	_inherits(NewExpression, _React$Component);
+
+	function NewExpression(props) {
+		_classCallCheck(this, NewExpression);
+
+		return _possibleConstructorReturn(this, (NewExpression.__proto__ || Object.getPrototypeOf(NewExpression)).call(this, props));
+	}
+
+	_createClass(NewExpression, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {}
+	}, {
+		key: 'render',
+		value: function render() {
+			var self = this;
+
+			var childTypes = {
+				NewExpression: NewExpression,
+				NewValue: _NewValue2.default
+			};
+
+			function createChild(childData, i) {
+				var type = childTypes[childData.type];
+				var props = childData.props;
+				props.key = props.id;
+				props.isSubExpression = true;
+				return _react2.default.createElement(type, props);
+			}
+			//define children in order to get widths and in reverse order for rendering
+
+			this.children = this.props.childData.map(createChild);
+
+			var pos = this.props.pos;
+			//if (this.props.isSubExpression){
+			//	return (
+			//		<tspan>
+			//			{children}
+			//		</tspan>
+			//	)
+			//} else {
+			return (//render children with refs first
+				_react2.default.createElement(
+					'g',
+					null,
+					_react2.default.createElement(
+						'text',
+						{ transform: 'translate(' + pos.x + ',' + pos.y + ')' },
+						this.children
+					)
+				)
+			);
+			//}
+		}
+	}]);
+
+	return NewExpression;
+}(_react2.default.Component);
+
+function mapStateToProps(state, props) {
+	return {
+		childData: (0, _selectors.getChildren)(state, props.id)
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		/*setHighlight:(name, value) => {
+  	dispatch(QuantityActions.setHighlight(name, value))
+  },
+  setPlay:(name, value) => {
+  	dispatch(QuantityActions.setPlay(name, value))
+  }*/
+	};
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NewExpression);
 
 /***/ })
 /******/ ]);
