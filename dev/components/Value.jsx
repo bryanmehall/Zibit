@@ -7,7 +7,6 @@ import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
 import {getValue, getQuantityData, getAnimatable, getPlaying} from '../ducks/quantity/selectors'
 import Animation from './Animation'
-import ReactEditableSvgLabel from 'react-editable-svg-label'
 
 class Value extends React.Component {
 	constructor(props){

@@ -1,13 +1,9 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import Portal from 'react-portal';
-import Slider from './Slider'
 import {connect} from "react-redux"
-import { bindActionCreators } from 'redux'
 import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
 import {getValue, getQuantityData, getAnimatable, getPlaying} from '../ducks/quantity/selectors'
-import Animation from './Animation'
 
 
 class NewValue extends React.Component {
