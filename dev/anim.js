@@ -1,8 +1,5 @@
-import QuantityActions from './ducks/quantity/actions'
-import WidgetActions from './ducks/widget/actions'
 import keyframeActions from './keyframeActions'
 export const audio = new Audio("./content/controlSystems/dho/dho1.mp3")
-
 
 const contentGroup = {
 	id: "dho",
@@ -53,6 +50,7 @@ var keyframes = [
 			{
 				type: "askQuestion",
 				params: {
+					testId: "zeroDamping"
 				}
 			}
 		]
