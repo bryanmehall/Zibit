@@ -12281,10 +12281,6 @@ var _Animation = __webpack_require__(61);
 
 var _Animation2 = _interopRequireDefault(_Animation);
 
-var _reactEditableSvgLabel = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"react-editable-svg-label\""); e.code = 'MODULE_NOT_FOUND';; throw e; }()));
-
-var _reactEditableSvgLabel2 = _interopRequireDefault(_reactEditableSvgLabel);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -32551,52 +32547,37 @@ var ValueOverlay = function (_React$Component) {
 	}
 
 	_createClass(ValueOverlay, [{
-		key: "mouseOver",
-		value: function mouseOver() {
-			this.props.setHighlight(this.props.quantity, true);
-		}
-	}, {
-		key: "mouseOut",
-		value: function mouseOut(e) {
-			e.preventDefault();
-			e.stopPropagation();
-			this.props.setHighlight(this.props.quantity, false);
-		}
-
-		/*componentWillMount(){
-  	var dummyElement = document.createElementNS( 'http://www.w3.org/2000/svg','text')
-  		dummyElement.textContent = this.props.symbol
-  		dummyElement.style = "font-style: italic; font-family:'MathJax_Main,Times,serif'; font-size:1.6em;"
-  		document.getElementById('hiddenSvg').appendChild(dummyElement)
-  		this.width = dummyElement.getBBox().width
-  		console.log('value will mount', this.props.index, this.width)
-  		this.props.getWidth(this.width, this.props.index)
-  }*/
-
-	}, {
 		key: "render",
 		value: function render() {
-			console.log('rendering overlay', this.props);
+			var bbox = this.props.bbox;
+			console.log(this.props);
 			var overlay = _react2.default.createElement(
 				"g",
 				null,
 				_react2.default.createElement(
 					"text",
 					{
-						x: this.props.x,
-						y: this.props.y,
+						x: bbox.width + 5,
+						y: 0,
 						style: this.numberStyle,
-						filter: "url(#textBackground)"
-					},
-					' = ' + Math.round(this.props.quantityValue * 100) / 100
+						filter: "url(#textBackground)" },
+					'= ' + Math.round(this.props.quantityValue * 100) / 100
 				),
-				_react2.default.createElement(_Animation2.default, {
-					onClick: function onClick(playing) {
-						self.props.setPlay(self.props.quantity, playing);
-					},
-					playing: this.props.playing
+				_react2.default.createElement("rect", { x: -100, y: 5, height: 50, width: 175, fill: "#eee" }),
+				_react2.default.createElement(_Slider2.default, {
+					constPos: 20,
+					quantity: this.props.quantity,
+					min: -75,
+					max: 75,
+					showAxis: true,
+					onDragStart: this.onDragStart,
+					onDragEnd: this.onDragEnd
 				}),
-				_react2.default.createElement("polygon", { fill: "gray", points: this.arrow })
+				_react2.default.createElement(_Animation2.default, {
+					pos: { x: -100, y: 12 },
+					quantity: this.props.quantity,
+					playing: this.props.playing
+				})
 			);
 			return overlay;
 		}
@@ -32629,16 +32610,16 @@ function calcArrow(pos, scale) {
 	return points.reduce(pointToString, "");
 }
 function mapStateToProps(state, props) {
+	console.log(props.quantity);
 	var quantityData = (0, _selectors.getQuantityData)(state, props.quantity);
-	console.log('props', props.valueBBox);
 	return {
-		valueBBox: props.valueBBox,
+		bbox: props.valueBBox,
 		symbol: quantityData.symbol,
 		//independent:quantityData.independent,
 		highlighted: quantityData.highlighted,
-		quantityValue: (0, _selectors.getValue)(state, props.quantity)
+		quantityValue: (0, _selectors.getValue)(state, props.quantity),
 		//animatable:getAnimatable(state, props.quantity),
-		//playing: getPlaying(state, props.quantity)
+		playing: (0, _selectors.getPlaying)(state, props.quantity)
 	};
 }
 
@@ -33073,14 +33054,16 @@ var initialAppState = {
 		valTest: {
 			type: "NewValue",
 			props: {
-				quantity: 'fs'
+				quantity: 'fs',
+				active: true
 			},
 			children: []
 		},
 		val1Test: {
 			type: "NewValue",
 			props: {
-				quantity: 'k'
+				quantity: 'k',
+				active: false
 			}
 		},
 		fExt: {
@@ -33570,16 +33553,37 @@ var NewExpression = function (_React$Component) {
 	function NewExpression(props) {
 		_classCallCheck(this, NewExpression);
 
-		return _possibleConstructorReturn(this, (NewExpression.__proto__ || Object.getPrototypeOf(NewExpression)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (NewExpression.__proto__ || Object.getPrototypeOf(NewExpression)).call(this, props));
+
+		_this.getBBox = _this.getBBox.bind(_this);
+		_this.bboxes = {};
+		return _this;
 	}
 
 	_createClass(NewExpression, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {}
 	}, {
+		key: 'getBBox',
+		value: function getBBox(bbox, key) {
+
+			this.bboxes[key] = bbox;
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var self = this;
+			var childData = this.props.childData;
+			var pos = this.props.pos;
+			var activeElements = this.props.childData.filter(function (child) {
+				return child.props.active;
+			});
+			var active = activeElements[0];
+			var activeQuantity = active.props.quantity;
+			var activeBbox = activeElements.length === 0 ? null : this.bboxes[active.props.id]; //active bbox
+			var renderActiveChild = typeof activeBbox !== "undefined";
+
+			//console.log(renderActiveChild, activeElements.length, bbox)
 
 			var childTypes = {
 				NewExpression: NewExpression,
@@ -33590,14 +33594,14 @@ var NewExpression = function (_React$Component) {
 				var type = childTypes[childData.type];
 				var props = childData.props;
 				props.key = props.id;
+				props.index = i;
+				props.getBBox = self.getBBox;
 				props.isSubExpression = true;
 				return _react2.default.createElement(type, props);
 			}
-			//define children in order to get widths and in reverse order for rendering
 
-			this.children = this.props.childData.map(createChild);
+			this.children = this.props.childData.map(createChild
 
-			var pos = this.props.pos;
 			//if (this.props.isSubExpression){
 			//	return (
 			//		<tspan>
@@ -33605,15 +33609,16 @@ var NewExpression = function (_React$Component) {
 			//		</tspan>
 			//	)
 			//} else {
-			return (//render children with refs first
+			);return (//render children with refs first
 				_react2.default.createElement(
 					'g',
-					null,
+					{ transform: 'translate(' + pos.x + ',' + pos.y + ')' },
 					_react2.default.createElement(
 						'text',
-						{ transform: 'translate(' + pos.x + ',' + pos.y + ')' },
+						null,
 						this.children
-					)
+					),
+					renderActiveChild ? _react2.default.createElement(_ValueOverlay2.default, { quantity: activeQuantity, bbox: activeBbox }) : null
 				)
 			);
 			//}
@@ -33663,17 +33668,7 @@ var _reactDom = __webpack_require__(39);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactPortal = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"react-portal\""); e.code = 'MODULE_NOT_FOUND';; throw e; }()));
-
-var _reactPortal2 = _interopRequireDefault(_reactPortal);
-
-var _Slider = __webpack_require__(60);
-
-var _Slider2 = _interopRequireDefault(_Slider);
-
 var _reactRedux = __webpack_require__(16);
-
-var _redux = __webpack_require__(9);
 
 var _actions = __webpack_require__(12);
 
@@ -33684,10 +33679,6 @@ var _actions3 = __webpack_require__(37);
 var _actions4 = _interopRequireDefault(_actions3);
 
 var _selectors = __webpack_require__(13);
-
-var _Animation = __webpack_require__(61);
-
-var _Animation2 = _interopRequireDefault(_Animation);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33727,7 +33718,7 @@ var NewValue = function (_React$Component) {
 		}
 	}, {
 		key: "mouseOut",
-		value: function mouseOut(e) {
+		value: function mouseOut() {
 			this.props.setHighlight(this.props.quantity, false);
 		}
 	}, {
@@ -33736,7 +33727,8 @@ var NewValue = function (_React$Component) {
 			var domElement = _reactDom2.default.findDOMNode(this);
 			var extent = domElement.getExtentOfChar(0 //use SVG v1.1
 			);var length = domElement.getComputedTextLength();
-			console.log(this.key, extent, length);
+			var bbox = { x: extent.x, y: extent.y, height: extent.height, width: length };
+			this.props.getBBox(bbox, this.props.id);
 		}
 	}, {
 		key: "render",
@@ -33775,6 +33767,7 @@ var NewValue = function (_React$Component) {
 }(_react2.default.Component);
 
 function mapStateToProps(state, props) {
+
 	var quantityData = (0, _selectors.getQuantityData)(state, props.quantity);
 	return {
 		symbol: quantityData.symbol,

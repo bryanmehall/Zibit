@@ -94,17 +94,19 @@ const initialAppState = {
             props:{pos:{x:400,y:400}},
             children:["val1Test",'valTest', ]
         },
-        valTest:{
+        valTest: {
             type: "NewValue",
             props: {
-                quantity: 'fs'
+                quantity: 'fs',
+				active: true
             },
-            children:[]
+            children: []
         },
-        val1Test:{
+        val1Test: {
             type: "NewValue",
             props: {
-                quantity:'k'
+                quantity: 'k',
+				active: false
             }
         },
 		fExt: {

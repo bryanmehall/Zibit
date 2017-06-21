@@ -20,46 +20,33 @@ class ValueOverlay extends React.Component {
 
 		}
 	}
-	mouseOver(){
-		this.props.setHighlight(this.props.quantity, true)
-	}
-	mouseOut(e){
-		e.preventDefault()
-		e.stopPropagation()
-		this.props.setHighlight(this.props.quantity, false)
-	}
-
-	/*componentWillMount(){
-		var dummyElement = document.createElementNS( 'http://www.w3.org/2000/svg','text')
-			dummyElement.textContent = this.props.symbol
-			dummyElement.style = "font-style: italic; font-family:'MathJax_Main,Times,serif'; font-size:1.6em;"
-			document.getElementById('hiddenSvg').appendChild(dummyElement)
-			this.width = dummyElement.getBBox().width
-			console.log('value will mount', this.props.index, this.width)
-			this.props.getWidth(this.width, this.props.index)
-	}*/
-
 	render(){
-		console.log('rendering overlay', this.props)
+		const bbox = this.props.bbox
+		console.log(this.props)
     	var overlay = (
 			<g>
 				<text
-					x={this.props.x}
-					y={this.props.y}
-					style={this.numberStyle}
-					filter="url(#textBackground)"
-				>
-					{' = '+(Math.round(this.props.quantityValue*100)/100)}
-				</text>
-
+						x={bbox.width+5}
+						y={0}
+						style={this.numberStyle}
+						filter="url(#textBackground)">
+						{'= '+(Math.round(this.props.quantityValue*100)/100)}
+					</text>
+				<rect x={-100} y={5} height={50} width={175} fill="#eee"></rect>
+				<Slider
+					constPos={20}
+					quantity={this.props.quantity}
+					min={-75}
+					max={75}
+					showAxis={true}
+					onDragStart={this.onDragStart}
+					onDragEnd={this.onDragEnd}
+					/>
 				<Animation
-						onClick={function(playing){
-							self.props.setPlay(self.props.quantity, playing)
-						}}
-						playing={this.props.playing}
-						>
-				</Animation>
-				<polygon fill='gray' points={this.arrow} />
+					pos={{x:-100, y:12}}
+					quantity = {this.props.quantity}
+					playing={this.props.playing}
+				></Animation>
         	</g>
 		)
 		return overlay
@@ -84,16 +71,16 @@ function calcArrow(pos, scale){
 	return points.reduce(pointToString,"")
 }
 function mapStateToProps(state, props) {
+	console.log(props.quantity)
 	var quantityData = getQuantityData(state, props.quantity)
-	console.log('props', props.valueBBox)
 	return {
-		valueBBox:props.valueBBox,
+		bbox:props.valueBBox,
 		symbol: quantityData.symbol,
 		//independent:quantityData.independent,
 		highlighted:quantityData.highlighted,
 		quantityValue: getValue(state, props.quantity),
 		//animatable:getAnimatable(state, props.quantity),
-		//playing: getPlaying(state, props.quantity)
+		playing: getPlaying(state, props.quantity)
 	};
 }
 

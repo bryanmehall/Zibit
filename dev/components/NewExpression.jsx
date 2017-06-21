@@ -9,17 +9,34 @@ import {getChildren} from '../ducks/widget/selectors'
 import NewValue from './NewValue'
 
 
+
 class NewExpression extends React.Component{
 	constructor(props){
 		super(props)
+		this.getBBox = this.getBBox.bind(this)
+		this.bboxes = {}
 	}
 
     componentDidMount(){
 
 	}
 
+	getBBox(bbox, key) {
+
+		this.bboxes[key] = bbox
+	}
+
 	render(){
-		var self = this
+		const self = this
+		const childData = this.props.childData
+		const pos = this.props.pos
+		const activeElements = this.props.childData.filter((child) => (child.props.active))
+		const active = activeElements[0]
+		const activeQuantity = active.props.quantity
+		const activeBbox = activeElements.length === 0 ? null : this.bboxes[active.props.id]//active bbox
+		const renderActiveChild = typeof activeBbox !== "undefined"
+
+		//console.log(renderActiveChild, activeElements.length, bbox)
 
 		var childTypes = {
 			NewExpression,
@@ -30,15 +47,15 @@ class NewExpression extends React.Component{
 			var type = childTypes[childData.type]
 			var props = childData.props
 			props.key = props.id
+			props.index = i
+			props.getBBox = self.getBBox
 			props.isSubExpression = true
 			return React.createElement(type, props)
 		}
-		//define children in order to get widths and in reverse order for rendering
+
 
         this.children = this.props.childData.map(createChild)
 
-
-		var pos = this.props.pos
 		//if (this.props.isSubExpression){
 		//	return (
 		//		<tspan>
@@ -47,16 +64,16 @@ class NewExpression extends React.Component{
 		//	)
 		//} else {
 			return (//render children with refs first
-                <g>
-                    <text transform={'translate('+pos.x+','+pos.y+')'} >
+                <g transform={'translate('+pos.x+','+pos.y+')'}>
+                    <text>
                         {this.children}
                     </text>
+					{renderActiveChild ? <ValueOverlay quantity={activeQuantity} bbox={activeBbox}/> : null}
                 </g>
 
 			)
 		//}
-
-	  }
+	}
 }
 
 

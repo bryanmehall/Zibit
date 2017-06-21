@@ -1,9 +1,9 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import {connect} from "react-redux"
+import { connect } from "react-redux"
 import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
-import {getValue, getQuantityData, getAnimatable, getPlaying} from '../ducks/quantity/selectors'
+import { getValue, getQuantityData, getAnimatable, getPlaying } from '../ducks/quantity/selectors'
 
 
 class NewValue extends React.Component {
@@ -19,13 +19,13 @@ class NewValue extends React.Component {
 			WebkitTouchCallout: "none",
 			WebkitUserSelect: "none",
 			MozUserSelect: "none"
-    	}
+		}
 
 	}
 	mouseOver(){
 		this.props.setHighlight(this.props.quantity, true)
 	}
-	mouseOut(e){
+	mouseOut(){
 		this.props.setHighlight(this.props.quantity, false)
 	}
 
@@ -33,7 +33,8 @@ class NewValue extends React.Component {
         const domElement = ReactDOM.findDOMNode(this)
         const extent = domElement.getExtentOfChar(0)//use SVG v1.1
         const length = domElement.getComputedTextLength()
-        console.log(this.key, extent, length)
+		const bbox = { x: extent.x, y: extent.y, height: extent.height, width: length }
+        this.props.getBBox(bbox, this.props.id)
 	}
 
 	render(){
@@ -62,11 +63,12 @@ class NewValue extends React.Component {
 }
 
 function mapStateToProps(state, props) {
+
 	var quantityData = getQuantityData(state, props.quantity)
 	return {
 		symbol: quantityData.symbol,
-		independent:quantityData.independent,
-		highlighted:quantityData.highlighted,
+		independent: quantityData.independent,
+		highlighted: quantityData.highlighted,
 		quantityValue: getValue(state, props.quantity),
 		playing: getPlaying(state, props.quantity)
 	};
