@@ -34,7 +34,7 @@ class NewExpression extends React.Component{
 		const active = activeElements[0]
 		const activeQuantity = active.props.quantity
 		const activeBbox = activeElements.length === 0 ? null : this.bboxes[active.props.id]//active bbox
-		const renderActiveChild = typeof activeBbox !== "undefined"
+		const renderActiveChild = activeBbox !== undefined
 
 		//console.log(renderActiveChild, activeElements.length, bbox)
 
@@ -53,8 +53,9 @@ class NewExpression extends React.Component{
 			return React.createElement(type, props)
 		}
 
-
         this.children = this.props.childData.map(createChild)
+        const overlay = renderActiveChild ? <ValueOverlay quantity={activeQuantity} bbox={activeBbox}/> : null
+        const blurmask = null
 
 		//if (this.props.isSubExpression){
 		//	return (
@@ -68,7 +69,8 @@ class NewExpression extends React.Component{
                     <text>
                         {this.children}
                     </text>
-					{renderActiveChild ? <ValueOverlay quantity={activeQuantity} bbox={activeBbox}/> : null}
+                    {blurmask}
+					{overlay}
                 </g>
 
 			)

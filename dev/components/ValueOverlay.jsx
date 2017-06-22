@@ -22,11 +22,12 @@ class ValueOverlay extends React.Component {
 	}
 	render(){
 		const bbox = this.props.bbox
-		console.log(this.props)
+        console.log('props', this.props)
     	var overlay = (
 			<g>
+
 				<text
-						x={bbox.width+5}
+						x={bbox.width+bbox.x}
 						y={0}
 						style={this.numberStyle}
 						filter="url(#textBackground)">
@@ -47,6 +48,12 @@ class ValueOverlay extends React.Component {
 					quantity = {this.props.quantity}
 					playing={this.props.playing}
 				></Animation>
+                <rect
+                    x={bbox.x}
+                    y={bbox.y}
+                    width={bbox.width}
+                    height={bbox.height}
+                    />
         	</g>
 		)
 		return overlay
@@ -71,12 +78,10 @@ function calcArrow(pos, scale){
 	return points.reduce(pointToString,"")
 }
 function mapStateToProps(state, props) {
-	console.log(props.quantity)
 	var quantityData = getQuantityData(state, props.quantity)
 	return {
-		bbox:props.valueBBox,
 		symbol: quantityData.symbol,
-		//independent:quantityData.independent,
+		independent:quantityData.independent,
 		highlighted:quantityData.highlighted,
 		quantityValue: getValue(state, props.quantity),
 		//animatable:getAnimatable(state, props.quantity),

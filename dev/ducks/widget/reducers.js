@@ -62,6 +62,7 @@ const widgetReducer = (state = {}, action) => {
 		return newState
 		break;
 	case "SET_PROP":
+            console.log('setting prop')
 		var name = action.payload.name
 		var propName = action.payload.propName
 		var value = action.payload.value

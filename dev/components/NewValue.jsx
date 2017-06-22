@@ -9,8 +9,6 @@ import { getValue, getQuantityData, getAnimatable, getPlaying } from '../ducks/q
 class NewValue extends React.Component {
 	constructor(props){
 		super(props)
-		this.mouseOver = this.mouseOver.bind(this)
-		this.mouseOut = this.mouseOut.bind(this)
 
 		this.textStyle = {
 			fontStyle: "italic",
@@ -21,12 +19,6 @@ class NewValue extends React.Component {
 			MozUserSelect: "none"
 		}
 
-	}
-	mouseOver(){
-		this.props.setHighlight(this.props.quantity, true)
-	}
-	mouseOut(){
-		this.props.setHighlight(this.props.quantity, false)
 	}
 
 	componentDidMount(){
@@ -45,8 +37,9 @@ class NewValue extends React.Component {
         var independent = this.props.independent
         const highlighted = this.props.highlighted
 		var filter = highlighted ? "url(#highlight)" : null//seei f this works with css filters
-        var mouseOver = () =>{this.props.setHighlight(quantity,true)}
+        var mouseOver = () => {this.props.setHighlight(quantity,true)}
         var mouseOut = () => {this.props.setHighlight(quantity, false)}
+        const mouseClick = () => {this.props.setActive(this.props.quantity, true)}
 		var text = (
                 <tspan
                     style={this.textStyle}
@@ -54,6 +47,7 @@ class NewValue extends React.Component {
                     fontWeight= {highlighted ? "bold" : "normal"}
                     onMouseEnter={mouseOver}
                     onMouseLeave={mouseOut}
+                    onClick={mouseClick}
                 >
                     {this.props.symbol}
                 </tspan>
