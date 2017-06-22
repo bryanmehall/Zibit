@@ -21,9 +21,10 @@ class ValueOverlay extends React.Component {
 		}
 	}
 	render(){
+        const independent = this.props.independent
 		const bbox = this.props.bbox
-        console.log('props', this.props)
-    	var overlay = (
+        const activityLevel = 0 //0 displays as inactive 1 as active
+    	const activeOverlay = (
 			<g>
 
 				<text
@@ -53,9 +54,11 @@ class ValueOverlay extends React.Component {
                     y={bbox.y}
                     width={bbox.width}
                     height={bbox.height}
+                    fill={'rgba(204, 204, 204, 0.35)'}
                     />
         	</g>
 		)
+        const inactiveOvarlay
 		return overlay
 	}
 }

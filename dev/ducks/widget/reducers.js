@@ -23,6 +23,7 @@ const widgetsReducer = (state = {}, action) => {
 		var name = action
 		break;
 	case 'SET_PROP':
+            console.log('setting prop',action )
 		var name = action.payload.name
 		return Object.assign({}, state, {
 				[name]: widgetReducer(state[name], action)

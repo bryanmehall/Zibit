@@ -18,11 +18,13 @@ class NewExpression extends React.Component{
 	}
 
     componentDidMount(){
-
+        if (Object.keys(this.bboxes).length !== 0){
+            console.log('forcing update')
+            this.forceUpdate()
+        }
 	}
 
 	getBBox(bbox, key) {
-
 		this.bboxes[key] = bbox
 	}
 
@@ -31,12 +33,6 @@ class NewExpression extends React.Component{
 		const childData = this.props.childData
 		const pos = this.props.pos
 		const activeElements = this.props.childData.filter((child) => (child.props.active))
-		const active = activeElements[0]
-		const activeQuantity = active.props.quantity
-		const activeBbox = activeElements.length === 0 ? null : this.bboxes[active.props.id]//active bbox
-		const renderActiveChild = activeBbox !== undefined
-
-		//console.log(renderActiveChild, activeElements.length, bbox)
 
 		var childTypes = {
 			NewExpression,
@@ -52,9 +48,16 @@ class NewExpression extends React.Component{
 			props.isSubExpression = true
 			return React.createElement(type, props)
 		}
+        function createOverlays(childData){
+            const active = childData.props.active
+            const id = childData.props.id
+            const bbox = self.bboxes[id]
+            const quantity = childData.props.quantity
+            return (bbox === undefined) ? null : <ValueOverlay quantity={quantity} active={active} key={id} bbox={bbox}/>
+        }
 
-        this.children = this.props.childData.map(createChild)
-        const overlay = renderActiveChild ? <ValueOverlay quantity={activeQuantity} bbox={activeBbox}/> : null
+        const children = this.props.childData.map(createChild)
+        const overlays = this.props.childData.map(createOverlays)
         const blurmask = null
 
 		//if (this.props.isSubExpression){
@@ -67,10 +70,10 @@ class NewExpression extends React.Component{
 			return (//render children with refs first
                 <g transform={'translate('+pos.x+','+pos.y+')'}>
                     <text>
-                        {this.children}
+                        {children}
                     </text>
                     {blurmask}
-					{overlay}
+					{overlays}
                 </g>
 
 			)

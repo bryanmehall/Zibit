@@ -19,7 +19,8 @@ const getWidget = function (state, id) {
 	return widgetData
 }
 export const getActive = function (state, name) {
-	return true
+    const widgetData = getWidget(state, name)
+	return widgetData.props.active
 }
 
 export const getExpressionChildren = function (state, id) {

@@ -7848,7 +7848,8 @@ var getWidget = function getWidget(state, id) {
 	return widgetData;
 };
 var getActive = exports.getActive = function getActive(state, name) {
-	return true;
+	var widgetData = getWidget(state, name);
+	return widgetData.props.active;
 };
 
 var getExpressionChildren = exports.getExpressionChildren = function getExpressionChildren(state, id) {
@@ -32109,170 +32110,10 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 
 /***/ }),
 /* 252 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(7);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = __webpack_require__(39);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _Slider = __webpack_require__(61);
-
-var _Slider2 = _interopRequireDefault(_Slider);
-
-var _reactRedux = __webpack_require__(16);
-
-var _redux = __webpack_require__(9);
-
-var _actions = __webpack_require__(12);
-
-var _actions2 = _interopRequireDefault(_actions);
-
-var _actions3 = __webpack_require__(37);
-
-var _actions4 = _interopRequireDefault(_actions3);
-
-var _selectors = __webpack_require__(13);
-
-var _Animation = __webpack_require__(62);
-
-var _Animation2 = _interopRequireDefault(_Animation);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ValueOverlay = function (_React$Component) {
-	_inherits(ValueOverlay, _React$Component);
-
-	function ValueOverlay(props) {
-		_classCallCheck(this, ValueOverlay);
-
-		var _this = _possibleConstructorReturn(this, (ValueOverlay.__proto__ || Object.getPrototypeOf(ValueOverlay)).call(this, props));
-
-		_this.numberStyle = {
-			fontFamily: 'MathJax_Main,"Times New Roman",Times,serif',
-			fontSize: "1.6em",
-			WebkitTouchCallout: "none",
-			WebkitUserSelect: "none",
-			MozUserSelect: "none"
-
-		};
-		return _this;
-	}
-
-	_createClass(ValueOverlay, [{
-		key: "render",
-		value: function render() {
-			var bbox = this.props.bbox;
-			console.log('props', this.props);
-			var overlay = _react2.default.createElement(
-				"g",
-				null,
-				_react2.default.createElement(
-					"text",
-					{
-						x: bbox.width + bbox.x,
-						y: 0,
-						style: this.numberStyle,
-						filter: "url(#textBackground)" },
-					'= ' + Math.round(this.props.quantityValue * 100) / 100
-				),
-				_react2.default.createElement("rect", { x: -100, y: 5, height: 50, width: 175, fill: "#eee" }),
-				_react2.default.createElement(_Slider2.default, {
-					constPos: 20,
-					quantity: this.props.quantity,
-					min: -75,
-					max: 75,
-					showAxis: true,
-					onDragStart: this.onDragStart,
-					onDragEnd: this.onDragEnd
-				}),
-				_react2.default.createElement(_Animation2.default, {
-					pos: { x: -100, y: 12 },
-					quantity: this.props.quantity,
-					playing: this.props.playing
-				}),
-				_react2.default.createElement("rect", {
-					x: bbox.x,
-					y: bbox.y,
-					width: bbox.width,
-					height: bbox.height
-				})
-			);
-			return overlay;
-		}
-	}]);
-
-	return ValueOverlay;
-}(_react2.default.Component);
-
-var pointToString = function pointToString(string, point) {
-	return string + point.x + ',' + point.y + ' ';
-};
-var scalePoint = function scalePoint(point, xScale, yScale) {
-	return { x: point.x * xScale, y: point.y * yScale };
-};
-var translatePoint = function translatePoint(p, t) {
-	return { x: p.x + t.x, y: p.y + t.y };
-};
-function calcArrow(pos, scale) {
-	var unscaledPoints = [{ x: 0, y: 10 }, { x: 10, y: 10 }, { x: 10, y: 0 }, { x: 30, y: 15 }, { x: 10, y: 30 }, { x: 10, y: 20 }, { x: 0, y: 20 }];
-	var rightPoints = unscaledPoints.map(function (point) {
-		return scalePoint(point, scale, scale);
-	});
-	var leftPoints = rightPoints.map(function (point) {
-		return scalePoint(point, -1, 1);
-	});
-	var untranslatedPoints = rightPoints.concat(leftPoints);
-	var points = untranslatedPoints.map(function (point) {
-		return translatePoint(point, pos);
-	});
-	return points.reduce(pointToString, "");
-}
-function mapStateToProps(state, props) {
-	var quantityData = (0, _selectors.getQuantityData)(state, props.quantity);
-	return {
-		symbol: quantityData.symbol,
-		independent: quantityData.independent,
-		highlighted: quantityData.highlighted,
-		quantityValue: (0, _selectors.getValue)(state, props.quantity),
-		//animatable:getAnimatable(state, props.quantity),
-		playing: (0, _selectors.getPlaying)(state, props.quantity)
-	};
-}
-
-function mapDispatchToProps(dispatch) {
-	return {
-		setHighlight: function setHighlight(name, value) {
-			dispatch(_actions2.default.setHighlight(name, value));
-		},
-		setActive: function setActive(name, value) {
-			dispatch(_actions4.default.setActive(name, value));
-		},
-		setPlay: function setPlay(name, value) {
-			dispatch(_actions2.default.setPlay(name, value));
-		}
-	};
-}
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ValueOverlay);
+throw new Error("Module build failed: SyntaxError: Unexpected token (62:2)\n\n\u001b[0m \u001b[90m 60 | \u001b[39m\t\t)\n \u001b[90m 61 | \u001b[39m        \u001b[36mconst\u001b[39m inactiveOvarlay\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 62 | \u001b[39m\t\t\u001b[36mreturn\u001b[39m overlay\n \u001b[90m    | \u001b[39m\t\t\u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 63 | \u001b[39m\t}\n \u001b[90m 64 | \u001b[39m}\n \u001b[90m 65 | \u001b[39m\u001b[0m\n");
 
 /***/ }),
 /* 253 */
@@ -32502,6 +32343,7 @@ var widgetsReducer = function widgetsReducer() {
 			var name = action;
 			break;
 		case 'SET_PROP':
+			console.log('setting prop', action);
 			var name = action.payload.name;
 			return Object.assign({}, state, _defineProperty({}, name, widgetReducer(state[name], action)));
 			break;
@@ -32691,7 +32533,7 @@ var initialAppState = {
 			type: "NewValue",
 			props: {
 				quantity: 'fs',
-				active: true
+				active: false
 			},
 			children: []
 		},
@@ -32706,7 +32548,7 @@ var initialAppState = {
 			type: 'Value',
 			props: {
 				quantity: 'fext',
-				active: true
+				active: false
 			}
 		},
 		yVal: {
@@ -33338,11 +33180,15 @@ var NewExpression = function (_React$Component) {
 
 	_createClass(NewExpression, [{
 		key: 'componentDidMount',
-		value: function componentDidMount() {}
+		value: function componentDidMount() {
+			if (Object.keys(this.bboxes).length !== 0) {
+				console.log('forcing update');
+				this.forceUpdate();
+			}
+		}
 	}, {
 		key: 'getBBox',
 		value: function getBBox(bbox, key) {
-
 			this.bboxes[key] = bbox;
 		}
 	}, {
@@ -33354,12 +33200,6 @@ var NewExpression = function (_React$Component) {
 			var activeElements = this.props.childData.filter(function (child) {
 				return child.props.active;
 			});
-			var active = activeElements[0];
-			var activeQuantity = active.props.quantity;
-			var activeBbox = activeElements.length === 0 ? null : this.bboxes[active.props.id]; //active bbox
-			var renderActiveChild = activeBbox !== undefined;
-
-			//console.log(renderActiveChild, activeElements.length, bbox)
 
 			var childTypes = {
 				NewExpression: NewExpression,
@@ -33375,9 +33215,16 @@ var NewExpression = function (_React$Component) {
 				props.isSubExpression = true;
 				return _react2.default.createElement(type, props);
 			}
+			function createOverlays(childData) {
+				var active = childData.props.active;
+				var id = childData.props.id;
+				var bbox = self.bboxes[id];
+				var quantity = childData.props.quantity;
+				return bbox === undefined ? null : _react2.default.createElement(_ValueOverlay2.default, { quantity: quantity, active: active, key: id, bbox: bbox });
+			}
 
-			this.children = this.props.childData.map(createChild);
-			var overlay = renderActiveChild ? _react2.default.createElement(_ValueOverlay2.default, { quantity: activeQuantity, bbox: activeBbox }) : null;
+			var children = this.props.childData.map(createChild);
+			var overlays = this.props.childData.map(createOverlays);
 			var blurmask = null;
 
 			//if (this.props.isSubExpression){
@@ -33394,10 +33241,10 @@ var NewExpression = function (_React$Component) {
 					_react2.default.createElement(
 						'text',
 						null,
-						this.children
+						children
 					),
 					blurmask,
-					overlay
+					overlays
 				)
 			);
 			//}

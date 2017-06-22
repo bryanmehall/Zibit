@@ -98,7 +98,7 @@ const initialAppState = {
             type: "NewValue",
             props: {
                 quantity: 'fs',
-				active: true
+				active: false
             },
             children: []
         },
@@ -113,7 +113,7 @@ const initialAppState = {
 			type: 'Value',
 			props: {
 				quantity: 'fext',
-				active: true
+				active: false
 			}
 		},
 		yVal: {
