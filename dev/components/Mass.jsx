@@ -6,7 +6,7 @@ import WidgetActions from '../ducks/widget/actions'
 import {getTransformedValue, getValue, getCoordSys, getQuantityData} from '../ducks/quantity/selectors'
 import {getActive} from  '../ducks/widget/selectors'
 import Draggable from "./Draggable"
-import Arrow from './Arrow'
+import Vector from './Vector'
 
 class Mass extends React.Component {
 	constructor(props){
@@ -41,7 +41,7 @@ class Mass extends React.Component {
 		var width = 80
 		var height = 50
 		var maskString = 'url(#'+this.props.mask+')'
-		var mouseForce = <Arrow
+		var mouseForce = <Vector
 						boundingRect={this.props.boundingRect}
 						tail={{x:pos.x, y:pos.y-height/2}}
 						quantity='fext'/>
@@ -56,7 +56,7 @@ class Mass extends React.Component {
 				<g>
 					{rect}
 					{this.dragging ? mouseForce : null}
-					<Arrow
+					<Vector
 						boundingRect={this.props.boundingRect}
 						tail={{x:pos.x-20, y:pos.y}}
 						quantity='fs'/>

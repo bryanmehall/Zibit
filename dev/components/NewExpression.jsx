@@ -7,8 +7,7 @@ import { bindActionCreators } from 'redux'
 import QuantityActions from '../ducks/quantity/actions'
 import {getChildren} from '../ducks/widget/selectors'
 import NewValue from './NewValue'
-
-
+import EqText from './EqText'
 
 class NewExpression extends React.Component{
 	constructor(props){
@@ -36,7 +35,8 @@ class NewExpression extends React.Component{
 
 		var childTypes = {
 			NewExpression,
-			NewValue
+			NewValue,
+			EqText
 		}
 
 		function createChild(childData,i){

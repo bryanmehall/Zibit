@@ -80,86 +80,102 @@ const initialAppState = {
 		app: {
 			type: 'SmdApp',
 			props: {},
-			children: ['massPlot', 'forcingEq', 'expTest']
+			children: ['massPlot', 'forcingEq']
 		},
 		forcingEq: {
-			type: 'Expression',
+			type: 'NewExpression',
 			props: {
 				pos: { x: 150, y: 500 }
 			},
-			children: ['fExt', 'springCoef', 'yVal','tVal' , 'dampCoef', 'dydtVal','t1Val']
+			children: ['fExt','eq1', 'springCoef', 'yVal','lp1','tVal','rp1' ,'plus1', 'dampCoef', 'dydtVal','lp2','tVal1','rp2']
 		},
-        expTest:{
-            type:"NewExpression",
-            props:{pos:{x:400,y:400}},
-            children:["val1Test",'valTest', ]
-        },
-        valTest: {
-            type: "NewValue",
-            props: {
-                quantity: 'fs',
-				active: false
-            },
-            children: []
-        },
-        val1Test: {
-            type: "NewValue",
-            props: {
-                quantity: 'k',
-				active: false
-            }
-        },
 		fExt: {
-			type: 'Value',
+			type: 'NewValue',
 			props: {
 				quantity: 'fext',
 				active: false
 			}
 		},
-		yVal: {
-			type: 'Value',
-			props: {
-				quantity: 'y',
-				active: false
-			}
-		},
-		dampCoef: {
-			type: 'Value',
-			props: {
-				quantity: 'c',
-				active: false
+		eq1:{
+			type: 'EqText',
+			props:{
+				text:"="
 			}
 		},
 		springCoef: {
-			type: 'Value',
+			type: 'NewValue',
 			props: {
 				quantity: 'k',
 				active: false
 			}
 		},
+		yVal: {
+			type: 'NewValue',
+			props: {
+				quantity: 'y',
+				active: false
+			}
+		},
+		lp1:{
+			type: 'EqText',
+			props: {
+				text: "("
+			}
+		},
 		tVal: {
-			type: 'Value',
+			type: 'NewValue',
 			props: {
 				quantity: 't',
 				active: false
 			}
 		},
-		t1Val: {
-			type: 'Value',
+		rp1: {
+			type: 'EqText',
 			props: {
-				quantity: 't',
+				text: ")"
+			}
+		},
+		plus1: {
+			type: 'EqText',
+			props: {
+				text: "+"
+			}
+		},
+		dampCoef: {
+			type: 'NewValue',
+			props: {
+				quantity: 'c',
 				active: false
 			}
 		},
 		dydtVal: {
-			type: 'Value',
+			type: 'NewValue',
 			props: {
 				quantity: 'dydt',
 				active: false
 			}
 		},
+		lp2: {
+			type: 'EqText',
+			props: {
+				text: "("
+			}
+		},
+		tVal1: {
+			type: 'NewValue',
+			props: {
+				quantity: 't',
+				active: false
+			}
+		},
+		rp2: {
+			type: 'EqText',
+			props: {
+				text: ")"
+			}
+		},
 		animVal: {
-			type: 'Value',
+			type: 'NewValue',
 			props: {
 				quantity: 'animTime',
 				active: false
@@ -235,20 +251,20 @@ const initialAppState = {
 			max: 20,
 			abstractions: 300,
 			independent: true,
-			symbol: 't)',
+			symbol: 't',
 			highlighted: false,
 			animation: { playing: false }
 		},
 		imx: { value: 0, min: -10, max: 10, abstractions: 0, independent: false, symbol: 'im(x)', highlighted: false },//imaginary component of x
-		x: { value: 0, min: -10, max: 40, abstractions: 0, symbol: 'x(t)', prevPoints: [], highlighted: false }, //real component of x
-		y: { value: 0, min: -25, max: 20, symbol: 'y(', highlighted: false },//position of mass
-		dydt: { value: 0, min: -25, max: 20, symbol: "y'(", highlighted: false },
-		k: { value: 5, min: 0, max: 100, symbol: ' = k', abstractions: 10, independent: true, highlighted: false },//spring constant
-		fs: { value: 100, min: -100, max: 100, symbol: <tspan dx={3}>F<tspan dx="-3" fontSize="0.5em" y="6">s</tspan></tspan>, independent: false, highlighted: false },
+		x: { value: 0, min: -10, max: 40, abstractions: 0, symbol: 'x', prevPoints: [], highlighted: false }, //real component of x
+		y: { value: 0, min: -25, max: 20, symbol: 'y', highlighted: false },//position of mass
+		dydt: { value: 0, min: -25, max: 20, symbol: "y'", highlighted: false },
+		k: { value: 5, min: 0, max: 100, symbol: 'k', abstractions: 10, independent: true, highlighted: false },//spring constant
+		fs: { value: 100, min: -100, max: 100, symbol: <tspan dx={3}>F<tspan fontSize="0.5em" baselineShift="sub">s</tspan></tspan>, independent: false, highlighted: false },
 		dl: { value: 10, min: -10, max: 10, symbol: "displacement", independent: false, highlighted: false },
 		m: { value: 1, min: 0, max: 30, symbol: 'm', independent: true, highlighted: false },//mass
-		c: { value: 0, min: 0, max: 5, symbol: ' + c', independent: true, highlighted: false },
-		fext: { value: 10, min: -100, max: 100, symbol: <tspan>F<tspan dx="-2" fontSize="0.5em" dy="8">ext</tspan></tspan>, independent: false, highlighted: false },
+		c: { value: 0, min: 0, max: 5, symbol: 'c', independent: true, highlighted: false },
+		fext: { value: 10, min: -100, max: 100, symbol: <tspan>F<tspan fontSize="0.5em" baselineShift="sub">ext</tspan></tspan>, independent: false, highlighted: false },
 		y0: { value: 0, min: -20, max: 20, symbol: <tspan>y<tspan dx="-2" fontSize="0.5em" dy="8">0</tspan></tspan>, independent: true, highlighted: false },//initial mass position
 		dy0: { value: 0, min: -20, max: 20, symbol: 'dy0', independent: true, highlighted: false },
 		s: { value: 0, min: -6, max: 6, abstractions: 0, symbol: 's', highlighted: false }// lateral position

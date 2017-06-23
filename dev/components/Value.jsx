@@ -15,7 +15,7 @@ class Value extends React.Component {
 		this.mouseOut = this.mouseOut.bind(this)
 		this.onDragStart = this.onDragStart.bind(this)
 		this.onDragEnd = this.onDragEnd.bind(this)
-		this.arrow = calcArrow({ x:100, y:100 }, 100)
+
 		this.textStyle = {
 			fontStyle: "italic",
 			fontFamily: 'MathJax_Main,"Times New Roman",Times,serif',
@@ -138,23 +138,7 @@ class Value extends React.Component {
   }
 }
 
-var pointToString = function(string, point){
-	return string + point.x+', '+point.y+' '
-}
-var scalePoint = function(point, xScale, yScale){
-	return {x:point.x*xScale, y:point.y*yScale}
-}
-var translatePoint = function(p, t){
-	return {x:p.x+t.x, y:p.y+t.y}
-}
-function calcArrow(pos, scale){
-	var unscaledPoints = [{x:0, y:10},{x:10,y:10},{x:10,y:0}, {x:30,y:15}, {x:10,y:30}, {x:10,y:20}, {x:0,y:20}]
-	var rightPoints = unscaledPoints.map((point) => {return scalePoint(point,scale,scale)})
-	var leftPoints = rightPoints.map((point) => {return scalePoint(point, -1, 1)})
-	var untranslatedPoints = rightPoints.concat(leftPoints)
-	var points = untranslatedPoints.map((point)=>{return translatePoint(point, pos)})
-	return points.reduce(pointToString,"")
-}
+
 function mapStateToProps(state, props) {
 	var quantityData = getQuantityData(state, props.quantity)
 	return {

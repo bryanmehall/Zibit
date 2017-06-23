@@ -4,22 +4,10 @@ import { connect } from "react-redux"
 import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
 import { getValue, getQuantityData, getAnimatable, getPlaying } from '../ducks/quantity/selectors'
+import {mathVarStyle} from './styles'
 
 
 class NewValue extends React.Component {
-	constructor(props){
-		super(props)
-
-		this.textStyle = {
-			fontStyle: "italic",
-			fontFamily: 'MathJax_Main,"Times New Roman",Times,serif',
-			fontSize: "1.6em",
-			WebkitTouchCallout: "none",
-			WebkitUserSelect: "none",
-			MozUserSelect: "none"
-		}
-
-	}
 
 	componentDidMount(){
         const domElement = ReactDOM.findDOMNode(this)
@@ -42,8 +30,9 @@ class NewValue extends React.Component {
         const mouseClick = () => {this.props.setActive(this.props.quantity, true)}
 		var text = (
                 <tspan
-                    style={this.textStyle}
+                    style={mathVarStyle}
                     filter={filter}
+					dx='3'
                     fontWeight= {highlighted ? "bold" : "normal"}
                     onMouseEnter={mouseOver}
                     onMouseLeave={mouseOut}

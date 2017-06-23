@@ -7,7 +7,7 @@ import Draggable from "./Draggable"
 import Path from './Path'
 
 
-class Arrow extends React.Component {
+class Vector extends React.Component {
 	constructor(props){
 		super(props)
 		this.dragStart = this.dragStart.bind(this)
@@ -33,7 +33,7 @@ class Arrow extends React.Component {
 		var tail = this.props.tail || {x:100, y:100}
 		var tip = this.props.tip || {x:tail.x+dx, y:tail.y+dy}
 		var maskString = 'url(#'+this.props.mask+')'
-		var arrowPath = calcArrow(magnitude, 10)
+		var arrowPath = calcVector(magnitude, 10)
 		var transform = 'translate('+tail.x+','+tail.y+') rotate('+angle+')'//','+tail.x+','+tail.y+')'
 
 		return(
@@ -43,7 +43,7 @@ class Arrow extends React.Component {
 }
 
 
-function calcArrow(l, w, tw, ar){
+function calcVector(l, w, tw, ar){
 	//tailPosition, tipPosition, width of arrow,width of tip, tipWidth/tipLength
 	ar = ar || Math.sqrt(3)
 	tw = tw || 2*w
@@ -96,4 +96,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Arrow);
+)(Vector);
