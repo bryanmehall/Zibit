@@ -27,16 +27,15 @@ class NewValue extends React.Component {
 		var filter = highlighted ? "url(#highlight)" : null//seei f this works with css filters
         var mouseOver = () => {this.props.setHighlight(quantity,true)}
         var mouseOut = () => {this.props.setHighlight(quantity, false)}
-        const mouseClick = () => {this.props.setActive(this.props.quantity, true)}
+
 		var text = (
                 <tspan
                     style={mathVarStyle}
                     filter={filter}
 					dx='3'
-                    fontWeight= {highlighted ? "bold" : "normal"}
+                    fill={highlighted ? "red" : "black"}
                     onMouseEnter={mouseOver}
                     onMouseLeave={mouseOut}
-                    onClick={mouseClick}
                 >
                     {this.props.symbol}
                 </tspan>

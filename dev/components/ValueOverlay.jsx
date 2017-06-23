@@ -28,16 +28,37 @@ class ValueOverlay extends React.Component {
 		const quantity = this.props.quantity
 		const active = this.props.active
 		const activityLevel = 0 //0 displays as inactive 1 as active
+        const origin = {x:bbox.x+bbox.width/2, y:bbox.y+bbox.height}
+        //const sliderp1 =
+        const mouseMove = (e) => {
+
+            console.log(e)
+        }
+        const mouseClick = () => {
+            this.props.setActive(this.props.id, true)
+            var svg = document.querySelector('#valueOverlay');
+            console.log("overlay", svg)
+            // Create an SVGPoint for future math
+            var pt = svg.createSVGPoint();
+
+            // Get point in global SVG space
+            function cursorPoint(evt){
+              pt.x = evt.clientX; pt.y = evt.clientY;
+              return pt.matrixTransform(svg.getScreenCTM().inverse());
+            }
+
+            svg.addEventListener('mousemove',mouseMove,false);
+        }
 		const activeOverlay = (
 			<g>
 				<text
-						x={bbox.width+bbox.x}
-						y={0}
+						x={bbox.width+6}
+						y={-5}
 						style={this.numberStyle}
 						filter="url(#textBackground)">
 						{'= '+(Math.round(this.props.quantityValue*100)/100)}
 					</text>
-				<rect x={-100} y={5} height={50} width={175} fill="#eee"></rect>
+				<rect x={-105} y={5} height={50} width={190} fill="#eee" id='valueOverlay'></rect>
 				<Slider
 					constPos={20}
 					quantity={quantity}
@@ -52,24 +73,20 @@ class ValueOverlay extends React.Component {
 					quantity = {quantity}
 					playing={this.props.playing}
 				></Animation>
-                <rect
-                    x={bbox.x}
-                    y={bbox.y}
-                    width={bbox.width}
-                    height={bbox.height}
-                    fill={'rgba(204, 204, 204, 0.35)'}
-                    />
+
 			</g>
 		)
         const inactiveOverlay = (
-			<g transform={'translate('+(bbox.width/2+bbox.x)+','+(bbox.y+bbox.height)+')'}>
-				<Arrow length={bbox.width} width={3} doubleSided={true}></Arrow>
-			</g>
+            <g>
+                <rect x={0} y={-bbox.height} height={bbox.height} width={bbox.width} fill={"rgba(0, 0, 0, 0.0)"} onClick={mouseClick}></rect>
+                <g transform={'translate('+(bbox.width/2)+','+0+')'}>
+                    <Arrow length={bbox.width} width={3} tipWidth={8} doubleSided={true}></Arrow>
+                </g>
+            </g>
 
 		)
-		console.log(active)
 		return (
-			<g>
+			<g transform={'translate('+bbox.x+','+(bbox.y+bbox.height)+')'}>
 				{inactiveOverlay}
 				{active ? activeOverlay : null}
 			</g>

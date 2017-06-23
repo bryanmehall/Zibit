@@ -8,43 +8,44 @@ import types from "./types";
 const widgetsReducer = (state = {}, action) => {
 	//here state refers to widgets object of state tree
 	switch (action.type) {
-	case 'ADD_WIDGET':
-		var name = action.payload.name
-		var type = action.payload.type
-		var props = action.payload.props
-		var children = action.payload.children || []
-		return Object.assign({}, state, {
-						[name]: {
-				type, props, children
-			}
-		})
-		break;
-	case 'REMOVE_WIDGET':
-		var name = action
-		break;
-	case 'SET_PROP':
-            console.log('setting prop',action )
-		var name = action.payload.name
-		return Object.assign({}, state, {
-				[name]: widgetReducer(state[name], action)
-		})
-		break;
-	case 'ADD_CHILD':
-		var name = action.payload.name
-		return Object.assign({}, state, {
-				[name]: widgetReducer(state[name], action)
-		})
-		break;
-	case 'REMOVE_CHILD':
-		var name = action.payload.name
-		return Object.assign({}, state, {
-				[name]: widgetReducer(state[name], action)
-		})
-		break;
+        case 'ADD_WIDGET': {
+            var name = action.payload.name
+            var type = action.payload.type
+            var props = action.payload.props
+            var children = action.payload.children || []
+            return Object.assign({}, state, {
+                            [name]: {
+                    type, props, children
+                }
+            })
+        }
+        case 'REMOVE_WIDGET':{
+            var name = action
+            break;
+        }
+        case 'SET_PROP':{
+            var name = action.payload.name
+
+            return Object.assign({}, state, {
+                    [name]: widgetReducer(state[name], action)
+            })
+        }
+        case 'ADD_CHILD':{
+            var name = action.payload.name
+            return Object.assign({}, state, {
+                    [name]: widgetReducer(state[name], action)
+            })
+        }
+        case 'REMOVE_CHILD':{
+            var name = action.payload.name
+            return Object.assign({}, state, {
+                    [name]: widgetReducer(state[name], action)
+            })
+        }
 	}
 	return state
 }
-const widgetReducer = (state = {}, action) => {
+const widgetReducer = (state, action) => {
 	switch (action.type) {
 	case "ADD_CHILD":
 		var childName = action.payload.childName
@@ -63,9 +64,8 @@ const widgetReducer = (state = {}, action) => {
 		return newState
 		break;
 	case "SET_PROP":
-            console.log('setting prop')
 		var name = action.payload.name
-		var propName = action.payload.propName
+		var propName = action.payload.prop
 		var value = action.payload.value
 		var newProps = Object.assign({}, state.props, {
 			[propName]: value
@@ -73,10 +73,10 @@ const widgetReducer = (state = {}, action) => {
 		var newState = Object.assign({}, state, {
 			props: newProps
 		})
-		return newState
-		break;
-	}
 
+		return newState
+	}
+    return {}
 }
 
 

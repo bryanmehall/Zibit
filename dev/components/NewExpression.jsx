@@ -18,8 +18,8 @@ class NewExpression extends React.Component{
 
     componentDidMount(){
         if (Object.keys(this.bboxes).length !== 0){
-            console.log('forcing update')
-            this.forceUpdate()
+            this.forceUpdate() //force update when bounding boxes become available
+            //############could cause problems when creatign new widgets equal to child elements.length?
         }
 	}
 
@@ -49,11 +49,12 @@ class NewExpression extends React.Component{
 			return React.createElement(type, props)
 		}
         function createOverlays(childData){
+
             const active = childData.props.active
             const id = childData.props.id
             const bbox = self.bboxes[id]
             const quantity = childData.props.quantity
-            return (bbox === undefined) ? null : <ValueOverlay quantity={quantity} active={active} key={id} bbox={bbox}/>
+            return (bbox === undefined) ? null : <ValueOverlay quantity={quantity} active={active} id={id} key={id} bbox={bbox}/>
         }
 
         const children = this.props.childData.map(createChild)
