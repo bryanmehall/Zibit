@@ -9,6 +9,16 @@ export const colors = {
 	dark: "#666"
 }
 
+export const cardStyle = {
+	fontFamily: "helvetica",
+	fontSize: 15,
+	margin: 5,
+	mozBoxSizing: "border-box",
+	boxSizing: "border-box",
+	borderRadius: 2,
+	boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.8)"
+}
+
 export const mathTextStyle = {
 	fontFamily: 'MathJax_Main,"Times New Roman",Times,serif',
 	fontSize: "1.6em",

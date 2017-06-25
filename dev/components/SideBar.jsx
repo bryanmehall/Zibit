@@ -4,6 +4,7 @@ import QuantityActions from '../ducks/quantity/actions';
 import { audio } from '../anim'
 import { getValue, getTransformedValue, getCoordSys, getQuantityData, getPlaying } from '../ducks/quantity/selectors'
 import Animation from "./Animation";
+import {cardStyle} from './styles'
 import InfoBar from "./InfoBar"
 import Handle from "./Handle"
 import Slider from "./Slider"
@@ -58,7 +59,7 @@ class SideBar extends React.Component {
 
 		return (
 			<div style={sideBarStyle}>
-				<div style={{ backgroundColor: '#666', color:"#eee", position:"relative"}}>
+				<div style={{ ...cardStyle, backgroundColor: '#666', color: "#eee", position: "relative" }}>
 					<div style={{position:"absolute", top:"14%", left:"25%", textAlign:"center"}}>
 						<div>Part 01:</div>
 						<div>Simple Harmonic Oscillator</div>

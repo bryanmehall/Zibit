@@ -11,6 +11,7 @@ import Expression from './Expression'
 import Value from './Value'
 import SideBar from './SideBar'
 import NewExpression from './NewExpression'
+import {cardStyle} from './styles'
 
 
 class SmdApp extends React.Component {
@@ -32,25 +33,18 @@ class SmdApp extends React.Component {
 			return React.createElement(type, props)
 		}
 		var children = this.props.childData.map(createChild)
-		var app = this
-		var appStyle = {
-			display: 'flex',
-			fontFamily: "helvetica",
-			fontSize: 15,
-			margin: 10,
-			mozBoxSizing: "border-box",
-			boxSizing: "border-box",
-			boxShadow: "0 4px 8px 0 rgba(1,1,1,0.8)"
-		}
 
 		return (
 			<div>
-				<div style={{ ...appStyle, backgroundColor: "#666",  padding:10, height:40, color:"#eee"}}>
-					Zibit > Control Systems > Part 02: Damped Harmonic Oscillator > Question Here
+				<div style={{fontFamily: "helvetica", verticalAlign:'middle', fontSize: 15, marginLeft:20, padding:8, height:30, color:"#eee"}}>
+					Zibit <span style={{fontSize:20}}> &#9002; </span> 
+					Control Systems <span style={{fontSize:20}}> &#9002; </span> 
+					Part 02: Damped Harmonic Oscillator <span style={{fontSize:20}}> &#9002; </span> 
+					Question Here
 				</div>
-				<div style={{...appStyle}}>
+				<div style={{display:'flex'}}>
 					<SideBar></SideBar>
-					<div style={{flexGrow: 1, marginLeft:10, height:"25%", backgroundColor:'white'}}>
+					<div style={{...cardStyle, flexGrow: 1, height:"25%", backgroundColor:'white'}}>
 						<svg width={700} height={600} id="sim" >
 						<defs>
 							<filter id="highlight" primitiveUnits="userSpaceOnUse">

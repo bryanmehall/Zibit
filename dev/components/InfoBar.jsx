@@ -5,6 +5,7 @@ import QuantityActions from '../ducks/quantity/actions';
 import {getValue, getTransformedValue, getCoordSys, getQuantityData} from '../ducks/quantity/selectors'
 import Animation from "./Animation";
 import ConceptCheck from "./ConceptCheck"
+import {cardStyle} from './styles'
 
 class InfoBar extends React.Component {
 
@@ -15,7 +16,7 @@ class InfoBar extends React.Component {
 			padding:10
 		}
 		return (
-			<div style={{backgroundColor:"#e0f0ff", marginTop:10}}>
+			<div style={{...cardStyle, backgroundColor:"#e0f0ff", marginTop:10}}>
                 <div style={headerStyle}>
 					<div >Concept Check</div>
 				</div>
