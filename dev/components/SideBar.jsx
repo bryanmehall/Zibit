@@ -7,6 +7,8 @@ import Animation from "./Animation";
 import InfoBar from "./InfoBar"
 import Handle from "./Handle"
 import Slider from "./Slider"
+import ConceptCheck from "./ConceptCheck"
+
 
 
 class SideBar extends React.Component {
@@ -36,6 +38,7 @@ class SideBar extends React.Component {
 	}
 
 	render() {
+
 		var width = 300
 		var height = 80
 		var titleFontSize = 15
@@ -48,52 +51,50 @@ class SideBar extends React.Component {
 
 		}
 		var sideBarStyle = {
-			width: width+'px',
+			width: '25%',
 			fontFamily: "helvetica",
-			fontSize: 15,
+			fontSize: 15
 		}
 
 		return (
 			<div style={sideBarStyle}>
-                <svg
-					width={width}
-					height={height}
-					>
-					<rect
+				<div style={{ backgroundColor: '#666', color:"#eee", position:"relative"}}>
+					<div style={{position:"absolute", top:"14%", left:"25%", textAlign:"center"}}>
+						<div>Part 01:</div>
+						<div>Simple Harmonic Oscillator</div>
+					</div>
+
+					<svg
 						width={width}
 						height={height}
-						fill="#666"/>
-					<text
-						{...textStyle}
-						y={20}>
-						Part 01:
-					</text>
-					<text
-						{...textStyle}
-						y={20+titleFontSize+5}>
-						Simple Harmonic Oscillator
-					</text>
-					<Animation
-						pos={{ x: 10, y: 9 } }
-						quantity="animTime"
-						scale={1.6}
-						color={color}
-						onPlay={this.onPlay}
-						onPause={this.onPause}
-						/>
-					<Slider
-						constPos={height-15}
-						quantity="animTime"
-						min={15}
-						max={width-15}
-						showAxis={false}
-						onDragEnd={this.onDragEnd}
-						onDragStart={this.onDragStart}
-						/>
-				</svg>
-				<div style={{ overflow: "auto", backgroundColor: color, height: 1000, margin: "0px" }}>
-					<InfoBar></InfoBar>
+						>
+						<Animation
+							pos={{ x: 10, y: 9 } }
+							quantity="animTime"
+							scale={1.6}
+							color={color}
+							onPlay={this.onPlay}
+							onPause={this.onPause}
+							/>
+						<Slider
+							constPos={height-15}
+							quantity="animTime"
+							min={15}
+							max={width-15}
+							showAxis={false}
+							onDragEnd={this.onDragEnd}
+							onDragStart={this.onDragStart}
+							/>
+					</svg>
+
 				</div>
+				<InfoBar>
+					<ConceptCheck questionState={"completed"}>
+						Adjust the damping coefficient so the oscillations don't decrease over time
+					</ConceptCheck>
+					<ConceptCheck questionState={"active"}> Adjust the damping coefficient so the system never oscillates</ConceptCheck>
+					<ConceptCheck questionState={"inactive"}>Explore the relationship between the damping ratio and spring constant</ConceptCheck>
+				</InfoBar>
             </div>
 
 		)

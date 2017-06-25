@@ -34,17 +34,24 @@ class SmdApp extends React.Component {
 		var children = this.props.childData.map(createChild)
 		var app = this
 		var appStyle = {
-			display: 'flex'
+			display: 'flex',
+			fontFamily: "helvetica",
+			fontSize: 15,
+			margin: 10,
+			mozBoxSizing: "border-box",
+			boxSizing: "border-box",
+			boxShadow: "0 4px 8px 0 rgba(1,1,1,0.8)"
 		}
+
 		return (
-			<div >
-				<div style={{ backgroundColor: "#666", height:40, borderBottom:"3px solid #ccc", fontFamily: "helvetica", fontSize: 15, color:"#eee"}}>
+			<div>
+				<div style={{ ...appStyle, backgroundColor: "#666",  padding:10, height:40, color:"#eee"}}>
 					Zibit > Control Systems > Part 02: Damped Harmonic Oscillator > Question Here
 				</div>
-				<div style={appStyle}>
+				<div style={{...appStyle}}>
 					<SideBar></SideBar>
-					<div style={{flexGrow: 1}}>
-						<svg width={1200} height={800} id="sim" >
+					<div style={{flexGrow: 1, marginLeft:10, height:"25%", backgroundColor:'white'}}>
+						<svg width={700} height={600} id="sim" >
 						<defs>
 							<filter id="highlight" primitiveUnits="userSpaceOnUse">
 								<feMorphology operator="dilate" radius="1.5" in="SourceAlpha" result="expanded"/>

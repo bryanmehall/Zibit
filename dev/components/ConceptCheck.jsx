@@ -1,8 +1,7 @@
 import React from 'react'
-import {colors, icons} from './styles'
+import { TestIcon, inactive, active, completed } from './icons'
 
 class ConceptCheck extends React.Component {
-
 	render(){
 		const questionState = this.props.questionState
 		const text = this.props.children
@@ -26,9 +25,7 @@ class ConceptCheck extends React.Component {
 		return (
 			<div style={{ display: 'flex', marginTop: 10 }}>
 				<div style={{ width: 50 }}>
-					<svg width={40} height={40} viewBox="0 0 40 40" >
-					{icons[questionState]}
-				</svg>
+					<TestIcon state={questionState}></TestIcon>
 				</div>
 
 				<div style={{ flexGrow: 1, marginTop: 5, marginLeft: 8 }}>
