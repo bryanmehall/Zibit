@@ -11,20 +11,16 @@ class InfoBar extends React.Component {
 	render() {
 		var headerStyle = {
 			backgroundColor:"#ccc",
-			height:"30px",
-
+			height:"20px",
+			padding:10
 		}
 		return (
-			<div >
+			<div style={{backgroundColor:"#e0f0ff", marginTop:10}}>
                 <div style={headerStyle}>
-					<div style={{ margin: 5 }}>Concept Check</div>
+					<div >Concept Check</div>
 				</div>
-				<div style={{ fontSize: 13 }}>
-					<ConceptCheck questionState={"completed"}>
-						Adjust the damping coefficient so the oscillations don't decrease over time
-					</ConceptCheck>
-					<ConceptCheck questionState={"active"}> Adjust the damping coefficient so the system never oscillates</ConceptCheck>
-					<ConceptCheck questionState={"inactive"}>Explore the relationship between the damping ratio and spring constant</ConceptCheck>
+				<div style={{ fontSize: 13, padding:10}}>
+					{this.props.children}
 				</div>
             </div>
 
