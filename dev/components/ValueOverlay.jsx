@@ -7,7 +7,7 @@ import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
 import {getValue, getQuantityData, getAnimatable, getPlaying} from '../ducks/quantity/selectors'
 import Animation from './Animation'
-import {Arrow} from './styles'
+import {UpArrow, DownArrow} from './icons'
 
 class ValueOverlay extends React.Component {
 	constructor(props){
@@ -58,12 +58,11 @@ class ValueOverlay extends React.Component {
 						filter="url(#textBackground)">
 						{'= '+(Math.round(this.props.quantityValue*100)/100)}
 					</text>
-				<rect x={-105} y={5} height={50} width={190} fill="#eee" id='valueOverlay'></rect>
+				<rect x={-105} y={5} height={50} width={190} fill="#eee" id="valueOverlay"></rect>
 				<Slider
-					constPos={20}
+					p1={{ x: -20, y: 0 }}
+					p2={{ x: -20, y: 100 }}
 					quantity={quantity}
-					min={-75}
-					max={75}
 					showAxis={true}
 					onDragStart={this.onDragStart}
 					onDragEnd={this.onDragEnd}
@@ -78,9 +77,10 @@ class ValueOverlay extends React.Component {
 		)
         const inactiveOverlay = (
             <g>
-                <rect x={0} y={-bbox.height} height={bbox.height} width={bbox.width} fill={"rgba(0, 0, 0, 0.0)"} onClick={mouseClick}></rect>
-                <g transform={'translate('+(bbox.width/2)+','+0+')'}>
-                    <Arrow length={bbox.width} width={3} tipWidth={8} doubleSided={true}></Arrow>
+                <rect x={0} y={-bbox.height} height={bbox.height} width={bbox.width} fill={"rgba(0, 0, 0, 0.0)"} onMouseDown={mouseClick}></rect>
+                <g>
+					<UpArrow pos={{ x: bbox.width/2, y: -bbox.height }} active={false}></UpArrow>
+					<DownArrow pos={{ x: bbox.width/2, y: 0 }} active={false}></DownArrow>
                 </g>
             </g>
 

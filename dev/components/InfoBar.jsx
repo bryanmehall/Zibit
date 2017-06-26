@@ -11,12 +11,17 @@ class InfoBar extends React.Component {
 
 	render() {
 		var headerStyle = {
-			backgroundColor:"#ccc",
+			backgroundColor:"#667",
+			color : '#eee',
 			height:"20px",
-			padding:10
+			paddingLeft:18,
+
+			borderBottom:"1px",
+			paddingTop:10,
+			paddingBottom:10
 		}
 		return (
-			<div style={{...cardStyle, backgroundColor:"#e0f0ff", marginTop:10}}>
+			<div style={{...cardStyle, backgroundColor:"#eee", marginTop:10, overflow:"hidden"}}>
                 <div style={headerStyle}>
 					<div >Concept Check</div>
 				</div>

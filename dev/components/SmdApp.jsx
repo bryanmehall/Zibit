@@ -44,7 +44,7 @@ class SmdApp extends React.Component {
 				</div>
 				<div style={{display:'flex'}}>
 					<SideBar></SideBar>
-					<div style={{...cardStyle, flexGrow: 1, height:"25%", backgroundColor:'white'}}>
+					<div style={{...cardStyle, flexGrow: 1, height:"25%", backgroundColor:'#fff'}}>
 						<svg width={700} height={600} id="sim" >
 						<defs>
 							<filter id="highlight" primitiveUnits="userSpaceOnUse">

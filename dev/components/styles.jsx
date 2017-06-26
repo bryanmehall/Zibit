@@ -15,7 +15,7 @@ export const cardStyle = {
 	margin: 5,
 	mozBoxSizing: "border-box",
 	boxSizing: "border-box",
-	borderRadius: 2,
+	borderRadius: 3,
 	boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.8)"
 }
 

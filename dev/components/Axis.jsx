@@ -1,29 +1,55 @@
 import React from 'react';
+import { dist, angle, rotate } from '../utils/point'
 
+function tickValues(min, max){
+	var spacing = tickSpacing(min, max)
+	var minTick = Math.floor(min / spacing) * spacing
+	var values = []
+	var value = minTick
+	while (value <= max){
+		values.push(value)
+		value += spacing
+	}
+	return values
+
+	function tickSpacing(min, max, minTics=5, maxTics=8, niceValues=[ 1,2,5 ]) {
+		var range = max - min
+		var nearestOrderOfMagnitude = Math.floor(Math.log10(range))
+		var niceRange = Math.pow(10.0, nearestOrderOfMagnitude)
+		if (range / (niceRange/1) >= minTics){ //spacing 10*10^n less tics
+			return niceRange/1;
+		} else if (range / (niceRange / 2.0) >= minTics) {
+			return niceRange / 2.0; //spacing 5*10^n
+		} else if (range/ (niceRange/5) >=minTics){
+			return niceRange / 5.0; //spacing 2*10^n more tics
+		}
+	}
+}
 
 class Axis extends React.Component {
-	
 	render(){
-		var axis = this
-		var scale = this.props.scale
-		var pos = this.props.pos//position at axis min in px orthogonal to axis
-		var showBar = this.props.showBar !== false; //true to show axis bar
-		var vertical = this.props.vertical
-		var tickValues = tickValues(scale)
-		var ticks = tickValues.map(drawTick)
+		const showBar = this.props.showBar !== false; //true to show axis bar
 
+		const p1 = this.props.p1
+		const p2 = this.props.p2
+		const orthOffs = this.props.offs || 0 //offset to clockwise of p1,p2
+		const length = dist(p1,p2)
+		const a = angle(p1,p2)
+		const min = this.props.min
+		const max = this.props.max
+		const tickVals = tickValues(min, max)
+		const ticks = tickVals.map(drawTick)
+		console.log(length, min, max, a)
 		function drawTick(value,i){
-			var loc = scale.transform(value)
-			var textPos = axis.props.pos
-			var textOffs = 18
-			var x = vertical ? textPos-textOffs : loc;
-			var y = vertical ? loc : textPos+textOffs;
+			const frac = (value-min)/(max-min)
+			const offs = frac*length
+			const pos = rotate({ x: offs, y: orthOffs }, a)
 
 			return (
 				<g key={i}>
 					<text
-						x={x}
-						y={y}
+						x={pos.x+p1.x}
+						y={pos.y+p1.y}
 						fontFamily= "helvetica"
 						fontSize={12}
 						textAnchor="middle"
@@ -34,67 +60,28 @@ class Axis extends React.Component {
 		}
 				//define base line
 		var lineStyle = {
-			"strokeWidth":1,
-			"stroke":"black",
+			"strokeWidth": 1,
+			"stroke": "black",
 			"strokeLinecap": "round"
 		}
-		var baseline;
-		if (vertical){
-			baseline = <line
-				style = {lineStyle}
-				x1={this.props.pos}
-				x2={this.props.pos}
-				y1={scale.tMin}
-				y2={scale.tMax}
+
+		const baseline = <line
+			style = {lineStyle}
+			x1={p1.x}
+			x2={p2.x}
+			y1={p1.y}
+			y2={p2.y}
 			/>
-		} else {
-			baseline = <line 
-				style = {lineStyle}
-				x1={scale.tMin} 
-				x2={scale.tMax} 
-				y1={this.props.pos} 
-				y2={this.props.pos}
-			/>
-		}
-		if (showBar) {
-			return (
-				<g>
-					{baseline}
-					{ticks}
-				</g>
-			)
-		} else {
-			return (
-				<g>
-					{ticks}
-				</g>
-			)
-		}
-		
-		function tickValues(scale){
-			var spacing = tickSpacing(scale)
-			var minTick = Math.floor(scale.min / spacing) * spacing
-			var values = []
-			var value = minTick
-			while (value <= scale.max){
-				values.push(value)
-				value += spacing
-			}
-			return values
-			
-			function tickSpacing(scale, minTics=5, maxTics=8, niceValues=[1,2,5]) {
-				var range = scale.max - scale.min
-				var nearestOrderOfMagnitude = Math.floor(Math.log10(range))
-  				var niceRange = Math.pow(10.0, nearestOrderOfMagnitude)
-  				if (range / (niceRange/1) >= minTics){//spacing 10*10^n less tics
-    				return niceRange/1;
-				} else if (range / (niceRange / 2.0) >= minTics) {
-					return niceRange / 2.0; //spacing 5*10^n
-				} else if (range/ (niceRange/5) >=minTics){
-    				return niceRange / 5.0; //spacing 2*10^n more tics
-				}
-			}	
-		}
+
+		return (
+			<g>
+				{ticks}
+				{showBar ? baseline : null}
+			</g>
+		)
 	}
 }
+
+
+
 export default Axis;

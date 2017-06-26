@@ -45,6 +45,7 @@
     "jsx-loader": "^0.13.2",
     "redux-devtools": "^3.3.2",
     "redux-logger": "^3.0.1",
-    "webpack": "~2.2.1"
+    "webpack": "~2.2.1",
+    "webpack-deploy": "github:productboard/webpack-deploy"
   }
 }

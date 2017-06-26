@@ -66,8 +66,20 @@ class Plot extends React.Component {
 					</mask>
 				</defs>
 				{children}
-				<Axis scale={xScale} pos={pos.y}></Axis>
-				<Axis scale={yScale} pos={pos.x} vertical={true}></Axis>
+				<Axis
+					min={xScale.min}
+					max={xScale.max}
+					p1={{x:xScale.tMin, y:pos.y}}
+					p2={{x:xScale.tMax, y:pos.y}}
+					offs={15}
+					></Axis>
+				<Axis
+					min={yScale.min}
+					max={yScale.max}
+					p1={{x:pos.x, y:yScale.tMin}}
+					p2={{x:pos.x, y:yScale.tMax}}
+					offs={-15}
+					></Axis>
 			</g>
 		)
 	}

@@ -59,7 +59,7 @@ class SideBar extends React.Component {
 
 		return (
 			<div style={sideBarStyle}>
-				<div style={{ ...cardStyle, backgroundColor: '#666', color: "#eee", position: "relative" }}>
+				<div style={{ ...cardStyle, paddingLeft:10,backgroundColor: '#667', color: "#eee", position: "relative" }}>
 					<div style={{position:"absolute", top:"14%", left:"25%", textAlign:"center"}}>
 						<div>Part 01:</div>
 						<div>Simple Harmonic Oscillator</div>
@@ -78,10 +78,9 @@ class SideBar extends React.Component {
 							onPause={this.onPause}
 							/>
 						<Slider
-							constPos={height-15}
+							p1={{ x: 15, y: height-15 }}
+							p2={{ x: width-15, y: height-15 }}
 							quantity="animTime"
-							min={15}
-							max={width-15}
 							showAxis={false}
 							onDragEnd={this.onDragEnd}
 							onDragStart={this.onDragStart}

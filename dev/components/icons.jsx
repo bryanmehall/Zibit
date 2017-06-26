@@ -1,5 +1,21 @@
 import React from 'react'
 import { MorphReplaceResize } from 'react-svg-morph'
+import { getTransformString } from '../utils/point'
+
+export const UpArrow = ({ pos={ x: 0, y: 0 }, active }) => (
+	<g transform={getTransformString(pos)}>
+		<path
+			d="M5 0L0 -5L-5 0Z"
+			fill="#ccc"
+			stroke="none"
+			></path>
+	</g>
+)
+export const DownArrow = ({ pos={ x: 0, y: 0 }, active }) => (
+	<g transform={getTransformString(pos)+"scale(1,-1)"}>
+		<UpArrow active={active}></UpArrow>
+	</g>
+)
 
 export const completed = (
 	<svg width={40} height={40} viewBox="0 0 40 40" >
