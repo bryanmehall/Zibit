@@ -29,7 +29,12 @@ class ValueOverlay extends React.Component {
 		const active = this.props.active
 		const activityLevel = 0 //0 displays as inactive 1 as active
         const origin = {x:bbox.x+bbox.width/2, y:bbox.y+bbox.height}
-        //const sliderp1 =
+        const mouseOver = (e) => {
+            this.props.setHighlight(quantity, true)
+        }
+        const mouseOut = (e) => {
+            this.props.setHighlight(quantity, false)
+        }
         const mouseMove = (e) => {
 
             console.log(e)
@@ -77,7 +82,16 @@ class ValueOverlay extends React.Component {
 		)
         const inactiveOverlay = (
             <g>
-                <rect x={0} y={-bbox.height} height={bbox.height} width={bbox.width} fill={"rgba(0, 0, 0, 0.0)"} onMouseDown={mouseClick}></rect>
+                <rect
+                    x={0}
+                    y={-bbox.height}
+                    height={bbox.height}
+                    width={bbox.width}
+                    fill={"rgba(0, 0, 0, 0.1)"}
+                    onMouseOver={mouseOver}
+                    onMouseOut={mouseOut}
+                    onMouseDown={mouseClick}
+                    ></rect>
                 <g>
 					<UpArrow pos={{ x: bbox.width/2, y: -bbox.height }} active={false}></UpArrow>
 					<DownArrow pos={{ x: bbox.width/2, y: 0 }} active={false}></DownArrow>

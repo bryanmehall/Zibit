@@ -9,14 +9,9 @@ import {mathVarStyle} from './styles'
 
 class NewValue extends React.Component {
 
-	componentDidMount(){
-        const domElement = ReactDOM.findDOMNode(this)
-        const extent = domElement.getExtentOfChar(0)//use SVG v1.1
-        const length = domElement.getComputedTextLength()
-		const bbox = { x: extent.x, y: extent.y, height: extent.height, width: length }
-        this.props.getBBox(bbox, this.props.id)
-	}
-
+    componentDidUpdate(){
+        this.props.callUpdate()
+    }
 	render(){
 		var self = this
 		var pos = this.props.pos || {x:200, y:200}
@@ -34,10 +29,8 @@ class NewValue extends React.Component {
                     filter={filter}
 					dx='3'
                     fill={highlighted ? "red" : "black"}
-                    onMouseEnter={mouseOver}
-                    onMouseLeave={mouseOut}
                 >
-                    {this.props.symbol}
+                    {highlighted ? this.props.quantityValue : this.props.symbol}
                 </tspan>
 		)
         return text

@@ -84,7 +84,12 @@ class SideBar extends React.Component {
 							showAxis={false}
 							onDragEnd={this.onDragEnd}
 							onDragStart={this.onDragStart}
-							/>
+                            >
+                            <g>
+                                <circle cx={0} cy={0} r={10}></circle>
+                            </g>
+
+                        </Slider>
 					</svg>
 
 				</div>

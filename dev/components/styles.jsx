@@ -13,7 +13,7 @@ export const cardStyle = {
 	fontFamily: "helvetica",
 	fontSize: 15,
 	margin: 5,
-	mozBoxSizing: "border-box",
+	MozBoxSizing: "border-box",
 	boxSizing: "border-box",
 	borderRadius: 3,
 	boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.8)"

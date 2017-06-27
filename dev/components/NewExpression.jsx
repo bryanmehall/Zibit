@@ -12,20 +12,38 @@ import EqText from './EqText'
 class NewExpression extends React.Component{
 	constructor(props){
 		super(props)
-		this.getBBox = this.getBBox.bind(this)
+        this.updatebboxes = this.updatebboxes.bind(this)
+        this.callUpdate = this.callUpdate.bind(this)
+        this.needsUpdate = true
 		this.bboxes = {}
 	}
+    updatebboxes(){
+        const expression = this
+        if (this.needsUpdate){
+            Object.keys(this.refs).forEach((id) => {
+                const domElement = ReactDOM.findDOMNode(expression.refs[id])
+                const extent = domElement.getExtentOfChar(0)//use SVG v1.1
+                const length = domElement.getComputedTextLength()
+                const bbox = { x: extent.x, y: extent.y, height: extent.height, width: length }
 
-    componentDidMount(){
-        if (Object.keys(this.bboxes).length !== 0){
-            this.forceUpdate() //force update when bounding boxes become available
-            //############could cause problems when creatign new widgets equal to child elements.length?
+                expression.bboxes[id] = bbox
+
+            })
+
+            this.forceUpdate() //need to update other bboxes when one updates
         }
+        this.needsUpdate = false
+    }
+    callUpdate(){
+        this.needsUpdate = true
+    }
+    componentDidMount(){
+        this.updatebboxes()
 	}
+    componentDidUpdate(){
 
-	getBBox(bbox, key) {
-		this.bboxes[key] = bbox
-	}
+        this.updatebboxes()
+    }
 
 	render(){
 		const self = this
@@ -43,21 +61,23 @@ class NewExpression extends React.Component{
 			var type = childTypes[childData.type]
 			var props = childData.props
 			props.key = props.id
+            props.ref = props.id
+            props.callUpdate = self.callUpdate
 			props.index = i
-			props.getBBox = self.getBBox
 			props.isSubExpression = true
 			return React.createElement(type, props)
 		}
         function createOverlays(childData){
-
-            const active = childData.props.active
-            const id = childData.props.id
-            const bbox = self.bboxes[id]
-            const quantity = childData.props.quantity
-            return (bbox === undefined) ? null : <ValueOverlay quantity={quantity} active={active} id={id} key={id} bbox={bbox}/>
+            if (childData.props.quantity !== undefined){ //if a quantity component --could swallow errrors?
+                const active = childData.props.active
+                const id = childData.props.id
+                const bbox = self.bboxes[id]
+                const quantity = childData.props.quantity
+                return (bbox === undefined) ? null : <ValueOverlay quantity={quantity} active={active} id={id} key={id} bbox={bbox}/>
+            } else {return null}
         }
 
-        const children = this.props.childData.map(createChild)
+        this.children = this.props.childData.map(createChild)
         const overlays = this.props.childData.map(createOverlays)
         const blurmask = null
 
@@ -71,7 +91,7 @@ class NewExpression extends React.Component{
 			return (//render children with refs first
                 <g transform={'translate('+pos.x+','+pos.y+')'}>
                     <text>
-                        {children}
+                        {this.children}
                     </text>
                     {blurmask}
 					{overlays}

@@ -39,7 +39,6 @@ class Axis extends React.Component {
 		const max = this.props.max
 		const tickVals = tickValues(min, max)
 		const ticks = tickVals.map(drawTick)
-		console.log(length, min, max, a)
 		function drawTick(value,i){
 			const frac = (value-min)/(max-min)
 			const offs = frac*length

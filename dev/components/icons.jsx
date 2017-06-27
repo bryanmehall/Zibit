@@ -1,7 +1,5 @@
 import React from 'react'
-import { MorphReplaceResize } from 'react-svg-morph'
 import { getTransformString } from '../utils/point'
-
 export const UpArrow = ({ pos={ x: 0, y: 0 }, active }) => (
 	<g transform={getTransformString(pos)}>
 		<path

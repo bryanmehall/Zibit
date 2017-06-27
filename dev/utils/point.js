@@ -16,9 +16,9 @@ export const rotate = (p, a) => ({
 	x: Math.cos(a) * p.x - Math.sin(a) * p.y,
 	y: Math.sin(a) * p.x + Math.cos(a) * p.y
 })
-export const getDistToLine = (p, l1, l2) => {
-	//normalize points so l1 is at origin
-	const A = p.x - l1.x
+
+export const getClosestPointOnLine = (p, l1, l2) => {
+    const A = p.x - l1.x
 	const B = p.y - l1.y
 	const C = l2.x - l1.x
 	const D = l2.y - l1.y
@@ -43,9 +43,14 @@ export const getDistToLine = (p, l1, l2) => {
 		xx = l1.x + param * C
 		yy = l1.y + param * D
 	}
+    return { x: xx, y: yy }
+}
 
-	const dx = x - xx
-	const dy = y - yy
+export const getDistToLine = (p, l1, l2) => {
+	//normalize points so l1 is at origin
+	var closestPoint = getClosestPointOnLine(p,l1,l2)
+	const dx = x - closestPoint.x
+	const dy = y - closestPoint.y
 	return Math.sqrt(dx * dx + dy * dy)
 
 }
