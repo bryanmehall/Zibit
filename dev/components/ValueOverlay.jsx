@@ -5,7 +5,7 @@ import {connect} from "react-redux"
 import { bindActionCreators } from 'redux'
 import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
-import {getValue, getQuantityData, getAnimatable, getPlaying} from '../ducks/quantity/selectors'
+import {getValue, getQuantityData, getMin, getMax, getAnimatable, getPlaying} from '../ducks/quantity/selectors'
 import Animation from './Animation'
 import {UpArrow, DownArrow} from './icons'
 
@@ -33,28 +33,30 @@ class ValueOverlay extends React.Component {
             this.props.setHighlight(quantity, true)
         }
         const mouseOut = (e) => {
-            this.props.setHighlight(quantity, false)
+            //this.props.setHighlight(quantity, false)
         }
         const mouseMove = (e) => {
 
             console.log(e)
         }
-        const mouseClick = () => {
+        const mouseDown = () => {
             this.props.setActive(this.props.id, true)
-            var svg = document.querySelector('#valueOverlay');
-            console.log("overlay", svg)
+
+            /*var domNode = ReactDOM.findDOMNode(this)
+            console.log(domNode)
             // Create an SVGPoint for future math
-            var pt = svg.createSVGPoint();
+            var pt = domNode.createSVGPoint();
 
             // Get point in global SVG space
             function cursorPoint(evt){
               pt.x = evt.clientX; pt.y = evt.clientY;
-              return pt.matrixTransform(svg.getScreenCTM().inverse());
+              return pt.matrixTransform(domNode.getScreenCTM().inverse());
             }
 
             svg.addEventListener('mousemove',mouseMove,false);
+            */
         }
-		const activeOverlay = (
+		/*const activeOverlay = (
 			<g>
 				<text
 						x={bbox.width+6}
@@ -79,7 +81,30 @@ class ValueOverlay extends React.Component {
 				></Animation>
 
 			</g>
-		)
+		)*/
+        const activeOverlay = (
+            <g>
+                <Slider
+                    p1={{ x: bbox.width/2, y: 50 }}
+					p2={{ x: bbox.width/2, y: -50 }}
+					quantity={quantity}
+					showAxis={true}
+                    width={bbox.width}
+                    >
+
+                        <rect
+                            x={-bbox.width/2}
+                            y={-bbox.height/2}
+                            height={bbox.height}
+                            rx="5"
+                            ry="5"
+                            width={bbox.width}
+                            fill={"rgb(255, 192, 192)"}
+                    ></rect>
+
+                </Slider>
+            </g>
+        )
         const inactiveOverlay = (
             <g>
                 <rect
@@ -87,10 +112,10 @@ class ValueOverlay extends React.Component {
                     y={-bbox.height}
                     height={bbox.height}
                     width={bbox.width}
-                    fill={"rgba(0, 0, 0, 0.1)"}
-                    onMouseOver={mouseOver}
-                    onMouseOut={mouseOut}
-                    onMouseDown={mouseClick}
+                    fill={ active ? "#fff": "rgba(0, 0, 0, 0.1)"}
+                    onMouseEnter={mouseOver}
+                    onMouseLeave={mouseOut}
+                    onMouseDown={mouseDown}
                     ></rect>
                 <g>
 					<UpArrow pos={{ x: bbox.width/2, y: -bbox.height }} active={false}></UpArrow>
@@ -111,11 +136,14 @@ class ValueOverlay extends React.Component {
 
 function mapStateToProps(state, props) {
 	var quantityData = getQuantityData(state, props.quantity)
+
 	return {
 		symbol: quantityData.symbol,
 		independent: quantityData.independent,
 		highlighted: quantityData.highlighted,
 		quantityValue: getValue(state, props.quantity),
+        quantityMin: getMin(state, props.quantity),
+        quantityMax: getMax(state, props.quantity),
 		//animatable:getAnimatable(state, props.quantity),
 		playing: getPlaying(state, props.quantity)
 	};

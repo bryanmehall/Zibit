@@ -23,6 +23,7 @@ class Animation extends React.Component {
 				transform = {'matrix('+scale+' 0 0 '+scale +' '+ pos.x+' '+pos.y+')'}
 				d={toPath}
 				pointerEvents="bounding-box"
+                filter="url(#dropShadow)"
 				fill={color}
 				onClick={function(){
 					if (!self.props.wasPlaying){

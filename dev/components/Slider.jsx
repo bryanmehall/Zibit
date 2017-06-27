@@ -58,16 +58,11 @@ class Slider extends React.Component {
 		const quantity = this.props.quantity
         const value = this.props.value
 		const scale = this.props.scale
-
+        const width = this.props.width || 0 //only works for vertical for now
 
 		const barStyle = {
 			"strokeWidth": "3",
-			"stroke": "#eee",
-			"strokeLinecap": "round"
-		}
-		const highlightStyle = {
-			"strokeWidth": "5",
-			"stroke": "#666",
+			"stroke": "#0ee",
 			"strokeLinecap": "round"
 		}
 		const axis = <Axis
@@ -77,34 +72,41 @@ class Slider extends React.Component {
 			max={max}
 			showBar={false}
 		/>
-		const handle = React.cloneElement(this.props.children,{
-            transform: getTransformString(pos)
-		})
-
+        const bar = (width !== 0) ? (
+            <rect
+                x={p1.x-width/2}
+                y={p2.y}
+                width={width}
+                rx="6"
+                ry="6"
+                fill="none"
+                strokeWidth={2}
+                stroke="rgba(0, 0, 0, 0.33)"
+                height = {this.props.length}>
+            </rect>
+                ):(
+            <line
+                style={barStyle}
+                x1={p1.x}
+                x2={p2.x}
+                y1={p1.y}
+                y2={p2.y}
+            />
+        )
 		return (
 			<g>
-				<line 
-					style={highlightStyle} 
-					x1={p1.x}
-					x2={p2.x}
-					y1={p1.y}
-					y2={p2.y}
-				/>
-				<line 
-					style={barStyle} 
-					x1={p1.x}
-					x2={p2.x}
-					y1={p1.y}
-					y2={p2.y}
-				/>
+				{this.props.showAxis ? axis : null}
+                {bar}
 				<Draggable
 					dragStart={this.dragStart}
 					dragMove={this.dragMove}
 					dragEnd={this.dragEnd}
 					>
-                    {handle}
+                    <g transform = {getTransformString(pos)}>
+                        {this.props.children}
+                    </g>
 				</Draggable>
-				{this.props.showAxis ? axis : null}
+
 			</g>
 		);
 	}
@@ -124,7 +126,6 @@ function mapStateToProps(state, props) {
         y: frac*dy+props.p1.y
     }
 	var scale = getScale(state, props.quantity, min, max)
-
 	return {
 		scale: scale,
         min: min,

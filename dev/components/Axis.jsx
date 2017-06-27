@@ -1,5 +1,6 @@
 import React from 'react';
 import { dist, angle, rotate } from '../utils/point'
+import {axisLabelStyle} from './styles'
 
 function tickValues(min, max){
 	var spacing = tickSpacing(min, max)
@@ -49,10 +50,7 @@ class Axis extends React.Component {
 					<text
 						x={pos.x+p1.x}
 						y={pos.y+p1.y}
-						fontFamily= "helvetica"
-						fontSize={12}
-						textAnchor="middle"
-						alignmentBaseline="middle"
+                        {...axisLabelStyle}
 					>{value}</text>
 				</g>
 				)

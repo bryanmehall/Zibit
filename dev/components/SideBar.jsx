@@ -41,7 +41,7 @@ class SideBar extends React.Component {
 	render() {
 
 		var width = 300
-		var height = 80
+		var height = 85
 		var titleFontSize = 15
 		var color = '#eee'
 		var textStyle = {
@@ -70,9 +70,9 @@ class SideBar extends React.Component {
 						height={height}
 						>
 						<Animation
-							pos={{ x: 10, y: 9 } }
+							pos={{ x: 10, y: 13 } }
 							quantity="animTime"
-							scale={1.6}
+							scale={1.7}
 							color={color}
 							onPlay={this.onPlay}
 							onPause={this.onPause}
@@ -85,9 +85,9 @@ class SideBar extends React.Component {
 							onDragEnd={this.onDragEnd}
 							onDragStart={this.onDragStart}
                             >
-                            <g>
-                                <circle cx={0} cy={0} r={10}></circle>
-                            </g>
+
+                            <circle cx={0} cy={0} r={8} fill="#eee" filter="url(#dropShadow)"></circle>
+
 
                         </Slider>
 					</svg>

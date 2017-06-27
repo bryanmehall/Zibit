@@ -14,9 +14,8 @@ class InfoBar extends React.Component {
 			backgroundColor:"#667",
 			color : '#eee',
 			height:"20px",
+            boxShadow:"0 0px 4px 0 rgba(0, 0, 0, 0.5)",
 			paddingLeft:18,
-
-			borderBottom:"1px",
 			paddingTop:10,
 			paddingBottom:10
 		}

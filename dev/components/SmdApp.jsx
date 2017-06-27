@@ -61,6 +61,11 @@ class SmdApp extends React.Component {
 								<feGaussianBlur stdDeviation="1" in="expandedColored" result="highlight"/>
 								<feComposite operator="over" in="SourceGraphic" in2="highlight"/>
 							 </filter>
+                            <filter id="dropShadow">
+                                <feOffset result="offOut" in="SourceAlpha" dx="0.5" dy="1" />
+                                <feGaussianBlur result="blurOut" in="offOut" stdDeviation="1" />
+                                <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+                            </filter>
 						</defs>
 						{children}
 						</svg>

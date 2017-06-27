@@ -35,6 +35,13 @@ export const mathVarStyle = {
 	WebkitUserSelect: "none",
 	MozUserSelect: "none"
 }
+export const axisLabelStyle = {
+    fontFamily: "helvetica",
+    fontSize:12,
+    textAnchor:"middle",
+    alignmentBaseline:"middle",
+    cursor: "default",
+}
 
 
 export const Arrow = ({ length, width, tipWidth, aspectRatio, doubleSided }) => {
