@@ -31,7 +31,7 @@ class ValueOverlay extends React.Component {
 		const bbox = this.props.bbox
 		const quantity = this.props.quantity
 		const active = this.props.active
-		const activityLevel = 1.0 //0 displays as inactive 1 as active
+		const activityLevel = 0.0 //0 displays as inactive 1 as active
         const inactiveY1 = 0
         const inactiveY2 = bbox.height
         const activeY1 = -50
