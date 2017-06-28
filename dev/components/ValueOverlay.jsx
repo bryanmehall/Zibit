@@ -7,12 +7,14 @@ import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
 import {getValue, getQuantityData, getMin, getMax, getAnimatable, getPlaying} from '../ducks/quantity/selectors'
 import Animation from './Animation'
-import {UpArrow, DownArrow} from './icons'
+import { UpArrow, DownArrow } from './icons'
+import { svgToScreen } from '../utils/point'
+import { transform } from '../utils/scale'
 
 class ValueOverlay extends React.Component {
 	constructor(props){
 		super(props)
-		this.state = {}
+		this.state = {activityLevel:0}
 		this.numberStyle = {
 			fontFamily:'MathJax_Main,"Times New Roman",Times,serif',
       		fontSize:"1.6em",
@@ -27,7 +29,20 @@ class ValueOverlay extends React.Component {
 		const bbox = this.props.bbox
 		const quantity = this.props.quantity
 		const active = this.props.active
-		const activityLevel = 0 //0 displays as inactive 1 as active
+		const activityLevel = 1.0 //0 displays as inactive 1 as active
+        const inactiveY1 = 0
+        const inactiveY2 = bbox.height
+        const activeY1 = -50
+        const activeY2 = 50
+        console.log(transform(0, 1, inactiveY1, activeY1, activityLevel))
+        const sliderP1 = {
+            x: bbox.width/2,
+            y: transform(0, 1, inactiveY2, activeY2, activityLevel)
+        }
+        const sliderP2 = {
+            x: bbox.width/2,
+            y: transform(0, 1, inactiveY1, activeY1, activityLevel)
+        }
         const origin = {x:bbox.x+bbox.width/2, y:bbox.y+bbox.height}
         const mouseOver = (e) => {
             this.props.setHighlight(quantity, true)
@@ -36,25 +51,32 @@ class ValueOverlay extends React.Component {
             //this.props.setHighlight(quantity, false)
         }
         const mouseMove = (e) => {
-
-            console.log(e)
+            const domNode = ReactDOM.findDOMNode(this)
+            const screenPoint = {
+                x: e.clientX,
+                y: e.clientY
+            }
+            const mousePos = svgToScreen('sim', domNode, screenPoint)
+            const dt = ((new Date())-this.dragStartTime)/1000
+            this.dragStartPoint = mousePos
+            console.log(dt,mousePos)
         }
-        const mouseDown = () => {
+        const mouseDown = (e) => {
             this.props.setActive(this.props.id, true)
 
-            /*var domNode = ReactDOM.findDOMNode(this)
-            console.log(domNode)
-            // Create an SVGPoint for future math
-            var pt = domNode.createSVGPoint();
-
-            // Get point in global SVG space
-            function cursorPoint(evt){
-              pt.x = evt.clientX; pt.y = evt.clientY;
-              return pt.matrixTransform(domNode.getScreenCTM().inverse());
+            //get local mouse coords
+            const domNode = ReactDOM.findDOMNode(this)
+            const screenPoint = {
+                x: e.clientX,
+                y: e.clientY
             }
+            const mousePos = svgToScreen('sim', domNode, screenPoint)
+            //get initial values
+            this.dragStartTime = new Date()
+            this.dragStartPoint = mousePos
 
-            svg.addEventListener('mousemove',mouseMove,false);
-            */
+            //
+            document.addEventListener('mousemove', mouseMove, false)
         }
 		/*const activeOverlay = (
 			<g>
@@ -85,8 +107,8 @@ class ValueOverlay extends React.Component {
         const activeOverlay = (
             <g>
                 <Slider
-                    p1={{ x: bbox.width/2, y: 50 }}
-					p2={{ x: bbox.width/2, y: -50 }}
+                    p1={sliderP1}
+					p2={sliderP2}
 					quantity={quantity}
 					showAxis={true}
                     width={bbox.width}

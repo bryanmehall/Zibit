@@ -43,3 +43,10 @@ var CoordSys = function CoordSys(xScale, yScale) {
 	};
 };
 exports.CoordSys = CoordSys;
+
+export const transform = (min1, max1, min2, max2, value1) => {
+    const range1 = max1-min1
+    const range2 = max2-min2
+    const value2 = value1/range1*range2 + min2
+    return value2
+}

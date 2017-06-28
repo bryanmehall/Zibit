@@ -52,5 +52,13 @@ export const getDistToLine = (p, l1, l2) => {
 	const dx = x - closestPoint.x
 	const dy = y - closestPoint.y
 	return Math.sqrt(dx * dx + dy * dy)
+}
 
+export const svgToScreen = (svgId, svgNode, point) => {
+    const svg = document.getElementById(svgId)
+    const pt = svg.createSVGPoint();
+    pt.x = point.x
+    pt.y = point.y
+    const transformedPoint = pt.matrixTransform(svgNode.getScreenCTM().inverse());
+    return transformedPoint
 }
