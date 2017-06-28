@@ -43,6 +43,16 @@ export const axisLabelStyle = {
     cursor: "default",
 }
 
+export const displayValue = (value) => {
+	//const precision = this.props.precision || Math.min(3,Math.max(Math.log10(Math.abs(value)+2),1))
+    //if (quantity = 't') {console.log('t',Math.log10(Math.abs(value)+2))}
+    //because the default toPrecision function is just bad
+    //converts scientific notation while keeping trailing zeroes
+    const toPre = value.toPrecision(2)
+    const displayValue = (toPre.indexOf('e') === -1) ?  toPre : parseFloat(toPre)
+	return displayValue
+
+}
 
 export const Arrow = ({ length, width, tipWidth, aspectRatio, doubleSided }) => {
 	const l = doubleSided ? length/2 : length

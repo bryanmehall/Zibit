@@ -10,6 +10,8 @@ import Animation from './Animation'
 import { UpArrow, DownArrow } from './icons'
 import { svgToScreen } from '../utils/point'
 import { transform } from '../utils/scale'
+import { displayValue, mathTextStyle } from './styles'
+
 
 class ValueOverlay extends React.Component {
 	constructor(props){
@@ -44,6 +46,7 @@ class ValueOverlay extends React.Component {
             y: transform(0, 1, inactiveY1, activeY1, activityLevel)
         }
         const origin = {x:bbox.x+bbox.width/2, y:bbox.y+bbox.height}
+		const value = this.props.quantityValue
         const mouseOver = (e) => {
             this.props.setHighlight(quantity, true)
         }
@@ -61,7 +64,13 @@ class ValueOverlay extends React.Component {
             this.dragStartPoint = mousePos
             console.log(dt,mousePos)
         }
-        const mouseDown = (e) => {
+        const mouseDown = () => {
+			this.setState({
+				prevValue:value,
+
+			})
+
+
             this.props.setActive(this.props.id, true)
 
             //get local mouse coords
@@ -80,22 +89,6 @@ class ValueOverlay extends React.Component {
         }
 		/*const activeOverlay = (
 			<g>
-				<text
-						x={bbox.width+6}
-						y={-5}
-						style={this.numberStyle}
-						filter="url(#textBackground)">
-						{'= '+(Math.round(this.props.quantityValue*100)/100)}
-					</text>
-				<rect x={-105} y={5} height={50} width={190} fill="#eee" id="valueOverlay"></rect>
-				<Slider
-					p1={{ x: -20, y: 0 }}
-					p2={{ x: -20, y: 100 }}
-					quantity={quantity}
-					showAxis={true}
-					onDragStart={this.onDragStart}
-					onDragEnd={this.onDragEnd}
-					/>
 				<Animation
 					pos={{ x: -100, y: 12 }}
 					quantity = {quantity}
@@ -112,6 +105,7 @@ class ValueOverlay extends React.Component {
 					quantity={quantity}
 					showAxis={true}
                     width={bbox.width}
+					lengthOffset={bbox.height/2}
                     >
 
                         <rect
@@ -121,9 +115,17 @@ class ValueOverlay extends React.Component {
                             rx="5"
                             ry="5"
                             width={bbox.width}
+							filter="url(#dropShadow)"
                             fill={"rgb(255, 192, 192)"}
                     ></rect>
-
+					<text
+						style={mathTextStyle}
+						x={-bbox.width/2}
+                        y={0}
+						alignmentBaseline="middle"
+						>
+						{displayValue(value)}
+					</text>
                 </Slider>
             </g>
         )
@@ -148,7 +150,7 @@ class ValueOverlay extends React.Component {
 		)
 		return (
 			<g transform={'translate('+bbox.x+','+(bbox.y+bbox.height)+')'}>
-				{inactiveOverlay}
+				{active ? null : inactiveOverlay}
 				{active ? activeOverlay : null}
 			</g>
 			)
