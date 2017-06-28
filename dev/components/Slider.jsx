@@ -59,7 +59,7 @@ class Slider extends React.Component {
         const value = this.props.value
 		const scale = this.props.scale
         const width = this.props.width || 0 //only works for vertical for now
-
+		const lengthOffset = this.props.lengthOffset || 0
 		const barStyle = {
 			"strokeWidth": "3",
 			"stroke": "#0ee",
@@ -74,15 +74,16 @@ class Slider extends React.Component {
 		/>
         const bar = (width !== 0) ? (
             <rect
-                x={p1.x-width/2}
-                y={p2.y}
-                width={width}
+                x={p1.x-width/2-1}
+                y={p2.y-lengthOffset-1}
+                width={width+2}
+				filter="url(#dropShadow)"
                 rx="6"
                 ry="6"
-                fill="none"
+                fill="white"
                 strokeWidth={2}
-                stroke="rgba(0, 0, 0, 0.33)"
-                height = {this.props.length}>
+                stroke="rgb(208, 208, 208)"
+                height = {this.props.length+2*lengthOffset+2}>
             </rect>
                 ):(
             <line
@@ -95,8 +96,9 @@ class Slider extends React.Component {
         )
 		return (
 			<g>
+
+				{bar}
 				{this.props.showAxis ? axis : null}
-                {bar}
 				<Draggable
 					dragStart={this.dragStart}
 					dragMove={this.dragMove}
