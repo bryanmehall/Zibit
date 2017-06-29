@@ -135,6 +135,11 @@ class ValueOverlay extends React.Component {
 						{displayValue(value)}
 					</text>
                 </Slider>
+                <Animation
+					pos={{ x: 8, y: sliderP1.y+20 }}
+					quantity = {quantity}
+					playing={this.props.playing}
+				></Animation>
             </g>
         )
         const inactiveOverlay = (
