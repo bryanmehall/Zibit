@@ -5,6 +5,7 @@ import * as QuantityActions from '../ducks/quantity/actions';
 import {getValue} from '../ducks/quantity/selectors'
 import {getChildren} from '../ducks/widget/selectors'
 import Slider from './Slider'
+import TitleBar from './TitleBar'
 import Plot from './Plot'
 import Abstraction from './Abstraction'
 import Expression from './Expression'
@@ -43,6 +44,7 @@ class SmdApp extends React.Component {
 					Question Here
 				</div>
 				<div style={{display:'flex'}}>
+                    <TitleBar width={300} height={85}></TitleBar>
 					<SideBar></SideBar>
 					<div style={{...cardStyle, flexGrow: 1, height:"25%", backgroundColor:'#fff'}}>
 						<svg width={700} height={600} id="sim" >
