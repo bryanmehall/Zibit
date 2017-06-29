@@ -48,9 +48,9 @@ export const getClosestPointOnLine = (p, l1, l2) => {
 
 export const getDistToLine = (p, l1, l2) => {
 	//normalize points so l1 is at origin
-	var closestPoint = getClosestPointOnLine(p,l1,l2)
-	const dx = x - closestPoint.x
-	const dy = y - closestPoint.y
+	const closestPoint = getClosestPointOnLine(p,l1,l2)
+	const dx = p.x - closestPoint.x
+	const dy = p.y - closestPoint.y
 	return Math.sqrt(dx * dx + dy * dy)
 }
 
