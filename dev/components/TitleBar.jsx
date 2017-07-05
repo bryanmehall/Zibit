@@ -50,37 +50,37 @@ class TitleBar extends React.Component {
 			fontSize: 15
 		}
         return (
-            <div style={{ ...cardStyle, height:{height}, paddingLeft:10,backgroundColor: '#667', color: "#eee", position: "relative" }}>
-            <div style={{position:"absolute", top:"14%", left:"25%", textAlign:"center"}}>
-                <div>Part 01:</div>
-                <div>Simple Harmonic Oscillator</div>
-            </div>
+            <div style={{ ...cardStyle,  width:width, backgroundColor: '#667', color: "#eee"}}>
+				<div style={{ top: "14%", left:"25%", position:"absolute", textAlign:"center"}}>
+					<div>Part 01:</div>
+					<div>Simple Harmonic Oscillator</div>
+				</div>
 
-            <svg
-                width={width}
-                height={height}
-                >
-                <Animation
-                    pos={{ x: 10, y: 13 } }
-                    quantity="animTime"
-                    scale={1.7}
-                    color={color}
-                    onPlay={this.onPlay}
-                    onPause={this.onPause}
-                    />
-                <Slider
-                    p1={{ x: 15, y: height-15 }}
-                    p2={{ x: width-15, y: height-15 }}
-                    quantity="animTime"
-                    showAxis={false}
-                    onDragEnd={this.onDragEnd}
-                    onDragStart={this.onDragStart}
-                    >
+				<svg
+					width={width}
+					height={height}
+					>
+					<Animation
+						pos={{ x: 10, y: 13 } }
+						quantity="animTime"
+						scale={1.7}
+						color={color}
+						onPlay={this.onPlay}
+						onPause={this.onPause}
+						/>
+					<Slider
+						p1={{ x: 15, y: height-15 }}
+						p2={{ x: width-15, y: height-15 }}
+						quantity="animTime"
+						showAxis={false}
+						onDragEnd={this.onDragEnd}
+						onDragStart={this.onDragStart}
+						>
 
-                    <circle cx={0} cy={0} r={8} fill="#eee" filter="url(#dropShadow)"></circle>
-                </Slider>
-            </svg>
-        </div>
+						<circle cx={0} cy={0} r={8} fill="#eee" filter="url(#dropShadow)"></circle>
+					</Slider>
+				</svg>
+        	</div>
         )
     }
 }

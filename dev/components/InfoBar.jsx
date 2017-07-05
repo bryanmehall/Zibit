@@ -14,13 +14,14 @@ class InfoBar extends React.Component {
 			backgroundColor:"#667",
 			color : '#eee',
 			height:"20px",
+
             boxShadow:"0 0px 4px 0 rgba(0, 0, 0, 0.5)",
 			paddingLeft:18,
 			paddingTop:10,
 			paddingBottom:10
 		}
 		return (
-			<div style={{...cardStyle, backgroundColor:"#eee", marginTop:10, overflow:"hidden"}}>
+			<div style={{...cardStyle, top: 145,backgroundColor: "#eee", overflow: "hidden", width: this.props.width}}>
                 <div style={headerStyle}>
 					<div >Concept Check</div>
 				</div>
@@ -28,7 +29,6 @@ class InfoBar extends React.Component {
 					{this.props.children}
 				</div>
             </div>
-
 		)
 	}
 }

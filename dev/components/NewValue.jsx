@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
 import { getValue, getQuantityData, getAnimatable, getPlaying } from '../ducks/quantity/selectors'
-import {mathVarStyle} from './styles'
+import {mathVarStyle, mathTextStyle} from './styles'
 
 
 class NewValue extends React.Component {
@@ -33,7 +33,7 @@ class NewValue extends React.Component {
 
 		var text = (
                 <tspan
-                    style={mathVarStyle}
+                    style={highlighted ? mathTextStyle : mathVarStyle}
                     filter={filter}
 					dx='3'
                     fill={highlighted ? "red" : "black"}

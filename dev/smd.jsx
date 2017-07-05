@@ -4,10 +4,12 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider, connect} from 'react-redux';
 import {createLogger} from "redux-logger";
 import SmdApp from "./components/SmdApp"
-import {getActiveTweens, tween, audio} from "./anim"
+import { getActiveTweens, tween, audio } from "./anim"
+import { runTests } from './tests'
 import QuantityActions from './ducks/quantity/actions'
-import {getValue, getQuantityData, getAnimatable, getMax, getPlaying} from './ducks/quantity/selectors'
+import { getValue, getAnimatable, getMax, getPlaying } from './ducks/quantity/selectors'
 import * as reducers from "./ducks";
+
 
 const rootReducer = combineReducers(reducers)
 
@@ -272,6 +274,8 @@ const initialAppState = {
 }
 
 const store = createStore(rootReducer, initialAppState, middleware)
+
+store.subscribe(() => { runTests(store.getState()) })
 
 ReactDOM.render(
 	<Provider store={store}>

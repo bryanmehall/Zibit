@@ -3,8 +3,8 @@ const setActive = (name, active) => ({
 	type: "SET_PROP",
 	payload: {
 		name,
-        prop:"active",
-        value:active
+        prop: "active",
+        value: active
 	}
 })
 const addWidget = (name, type, props, children) => ({

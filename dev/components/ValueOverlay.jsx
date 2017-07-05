@@ -5,7 +5,7 @@ import {connect} from "react-redux"
 import { bindActionCreators } from 'redux'
 import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
-import {getValue, getQuantityData, getMin, getMax, getAnimatable, getPlaying} from '../ducks/quantity/selectors'
+import {getValue, getQuantityData, getMin, getMax, getAnimatable, getPlaying, getIndependent} from '../ducks/quantity/selectors'
 import Animation from './Animation'
 import { UpArrow, DownArrow } from './icons'
 import { svgToScreen, getDistToLine } from '../utils/point'
@@ -76,8 +76,7 @@ class ValueOverlay extends React.Component {
         }
         const mouseDown = (e) => {
 			this.setState({
-				prevValue:value,
-
+				prevValue: value,
 			})
             this.props.setActive(this.props.id, true)
 
@@ -92,19 +91,9 @@ class ValueOverlay extends React.Component {
             this.dragStartTime = new Date()
             this.dragStartPoint = mousePos
 
-            //
             document.addEventListener('mousemove', mouseMove, false)
         }
-		/*const activeOverlay = (
-			<g>
-				<Animation
-					pos={{ x: -100, y: 12 }}
-					quantity = {quantity}
-					playing={this.props.playing}
-				></Animation>
 
-			</g>
-		)*/
         const activeOverlay = (
             <g>
                 <Slider
@@ -115,7 +104,6 @@ class ValueOverlay extends React.Component {
                     width={bbox.width}
 					lengthOffset={bbox.height/2}
                     >
-
                         <rect
                             x={-bbox.width/2}
                             y={-bbox.height/2}
@@ -152,12 +140,18 @@ class ValueOverlay extends React.Component {
                     fill={ active ? "#fff": "rgba(0, 0, 0, 0.0)"}
                     onMouseEnter={mouseOver}
                     onMouseLeave={mouseOut}
-                    onMouseDown={mouseDown}
+                    onMouseDown={independent ? mouseDown : null}
                     ></rect>
-                <g>
-					<UpArrow pos={{ x: bbox.width/2, y: -bbox.height }} active={false}></UpArrow>
-					<DownArrow pos={{ x: bbox.width/2, y: 0 }} active={false}></DownArrow>
-                </g>
+
+				{
+					independent ? (
+						<g>
+							<UpArrow pos={{ x: bbox.width/2, y: -bbox.height }} active={false}></UpArrow>
+							<DownArrow pos={{ x: bbox.width/2, y: 0 }} active={false}></DownArrow>
+						</g>
+					): null
+				}
+
             </g>
 
 		)
@@ -176,7 +170,7 @@ function mapStateToProps(state, props) {
 
 	return {
 		symbol: quantityData.symbol,
-		independent: quantityData.independent,
+		independent: getIndependent(state, props.quantity),
 		highlighted: quantityData.highlighted,
 		quantityValue: getValue(state, props.quantity),
         quantityMin: getMin(state, props.quantity),

@@ -30,12 +30,14 @@ class SideBar extends React.Component {
 		var sideBarStyle = {
 			width: '25%',
 			fontFamily: "helvetica",
-			fontSize: 15
+			fontSize: 15,
+			top: 100,
+			width: this.props.width
 		}
 
 		return (
 			<div style={sideBarStyle}>
-				<InfoBar>
+				<InfoBar width={this.props.width}>
 					<ConceptCheck questionState={"completed"}>
 						Adjust the damping coefficient so the oscillations don't decrease over time
 					</ConceptCheck>

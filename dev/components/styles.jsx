@@ -13,6 +13,7 @@ export const cardStyle = {
 	fontFamily: "helvetica",
 	fontSize: 15,
 	margin: 5,
+	position: 'absolute',
 	MozBoxSizing: "border-box",
 	boxSizing: "border-box",
 	borderRadius: 3,

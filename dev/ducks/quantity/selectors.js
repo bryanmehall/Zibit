@@ -53,6 +53,8 @@ export const getMax = (state, name) => (getQuantityData(state, name).max)
 
 export const getSymbol = (state, name) => (getQuantityData(state, name).symbol)
 
+export const getIndependent = (state, name) => (getQuantityData(state, name).independent || false)
+
 export const getAnimatable = (state, name) => (getQuantityData(state, name).hasOwnProperty('animation'))
 
 export const getPlaying = (state, name) => {

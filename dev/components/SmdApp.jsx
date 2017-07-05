@@ -16,11 +16,28 @@ import {cardStyle} from './styles'
 
 
 class SmdApp extends React.Component {
-	constructor(props){
-		super(props)
+	constructor(props) {
+		super(props);
+		this.state = { width: '0', height: '0' };
+		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 	}
+
+	componentDidMount() {
+	  	this.updateWindowDimensions();
+	  	window.addEventListener('resize', this.updateWindowDimensions);
+	}
+
+	componentWillUnmount() {
+	  	window.removeEventListener('resize', this.updateWindowDimensions);
+	}
+
+	updateWindowDimensions() {
+	  	this.setState({ width: window.innerWidth, height: window.innerHeight });
+	}
+
 	render(){
 		const { actions } = this.props;
+		const sideBarWidth = 0.25*this.state.width
 		var childTypes = {
 			"Plot": Plot,
             "NewExpression": NewExpression,
@@ -43,11 +60,11 @@ class SmdApp extends React.Component {
 					Part 02: Damped Harmonic Oscillator <span style={{fontSize:20}}> &#9002; </span> 
 					Question Here
 				</div>
-				<div style={{display:'flex'}}>
-                    <TitleBar width={300} height={85}></TitleBar>
-					<SideBar></SideBar>
-					<div style={{...cardStyle, flexGrow: 1, height:"25%", backgroundColor:'#fff'}}>
-						<svg width={700} height={600} id="sim" >
+				<div style={{display:'relative'}}>
+                    <TitleBar width={sideBarWidth - cardStyle.margin} height={85}></TitleBar>
+					<SideBar width={sideBarWidth - cardStyle.margin} height={400}></SideBar>
+					<div style={{ ...cardStyle, left: sideBarWidth+cardStyle.margin, backgroundColor: '#fff' }}>
+						<svg width={700} height={600} id="sim">
 						<defs>
 							<filter id="highlight" primitiveUnits="userSpaceOnUse">
 								<feMorphology operator="dilate" radius="1.5" in="SourceAlpha" result="expanded"/>
