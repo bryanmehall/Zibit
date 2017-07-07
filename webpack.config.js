@@ -3,29 +3,38 @@ var path = require("path");
  
 var DEV = path.resolve(__dirname, "dev");
 var OUTPUT = path.resolve(__dirname, "output");
- 
+
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
+	template: './client/index.html',
+	filename: 'index.html',
+	inject: 'body'
+})
+
 var config = {
-  entry: {
-	  components: DEV + "/index.jsx",
-	  smd: DEV + "/smd.jsx"
-  },
-  output: {
-    path: OUTPUT,
-    filename: "[name]-bundle.js"
-  },
+	entry: {
+		smd: DEV + "/smd.jsx"
+	},
+	output: {
+		filename: "bundle.js",
+		path: __dirname,
+
+	},
 	devtool: 'source-map',
-  module: {
-    loaders: [
+	module: {
+	loaders: [
 		{
-        include: DEV,
+		include: DEV,
 		exclude: "/node_modules/",
-        loader: "babel-loader",
-    }]
-  },
+		loader: "babel-loader",
+	}]
+	},
 	resolve: {
-        extensions: ['.js', '.jsx']
-    },
-	watch: true
+		extensions: ['.js', '.jsx']
+	},
+	watch: true,
+	plugins: [HtmlWebpackPluginConfig]
 };
  
 module.exports = config;

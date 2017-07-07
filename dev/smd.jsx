@@ -1,81 +1,29 @@
 import React, { PropTypes } from "react";
 import ReactDOM from "react-dom";
+
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider, connect} from 'react-redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import {createLogger} from "redux-logger";
+
+import createHistory from 'history/createBrowserHistory'
+import { Route } from 'react-router'
+
+import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
 import SmdApp from "./components/SmdApp"
-import { getActiveTweens, tween, audio } from "./anim"
+import { animMiddleware } from "./animMiddleware"
 import { runTests } from './tests'
 import QuantityActions from './ducks/quantity/actions'
 import { getValue, getAnimatable, getMax, getPlaying } from './ducks/quantity/selectors'
 import * as reducers from "./ducks";
 
 
-const rootReducer = combineReducers(reducers)
+const rootReducer = combineReducers({...reducers, router: routerReducer})
 
-const animMiddleware = store => next => action => {
-	function animStep() {
-		var t0 = action.payload.initTime
-		var v0 = action.payload.initValue
-		var t = Date.now()
-		var value = (t-t0)/1000 + v0
-		var name = action.payload.name
-		var state = store.getState()
-		var isPlaying = getPlaying(state, name)
 
-		if (isPlaying) { //only update and continue if quantity is still playing
-			store.dispatch(QuantityActions.setValue(name, value))
-			store.dispatch(QuantityActions.animStep(name, t0, v0))
-		}
-
-	}
-	function animStart(){
-		var t = Date.now()
-		var name = action.payload.name
-		var state = store.getState()
-		var initValue = getValue(state, name)
-		store.dispatch(QuantityActions.animStep(name, t, initValue))
-	}
-
-	if (action.type === "SET_VALUE" && action.payload.name === 'animTime'){
-		var state = store.getState()
-		var prevTime = getValue(state, 'animTime')
-		var t = action.payload.value
-		var activeTweens = getActiveTweens(prevTime, t)
-		tween(store, activeTweens, t)
-		if (audio.paused){
-			audio.currentTime = t
-		}
-	} else if (action.type === 'ANIM_PLAY') {
-
-		requestAnimationFrame(animStart);
-	} else if (action.type === 'ANIM_STEP') {
-		requestAnimationFrame(animStep)
-		function animStep(){
-			var t0 = action.payload.initTime
-			var v0 = action.payload.initValue
-			var t = Date.now()
-			var value = (t-t0)/1000 + v0
-			var name = action.payload.name
-			var state = store.getState()
-            var max = getMax(state, name)
-            var isPlaying = getPlaying(state, name)
-
-			if (isPlaying){//only update and continue if quantity is still playing
-               if (value > max){
-                    store.dispatch(QuantityActions.setValue(name, max))
-                } else {
-                    store.dispatch(QuantityActions.setValue(name, value))
-                    store.dispatch(QuantityActions.animStep(name, t0, v0))
-                }
-			}
-
-		}
-	}
-	next(action)
-};
 
 const middleware = applyMiddleware(animMiddleware)
+const history = createHistory()
 
 const initialAppState = {
 	widgets: {
@@ -273,14 +221,28 @@ const initialAppState = {
 	}
 }
 
-const store = createStore(rootReducer, initialAppState, middleware)
+const composeEnhancers = composeWithDevTools({
+  // Specify here name, actionsBlacklist, actionsCreators and other options
+});
+
+const store = createStore(rootReducer, initialAppState, composeEnhancers(middleware))
 
 store.subscribe(() => { runTests(store.getState()) })
 
+const container = document.getElementById('container')
+
 ReactDOM.render(
 	<Provider store={store}>
-		<SmdApp id="app"/>
+		<ConnectedRouter history={history}>
+      <div>
+        <Route path="/" component={SmdApp}/>
+
+      </div>
+    </ConnectedRouter>
+
 	</Provider>,
-	document.getElementById('container')
-)
+	container
+	)
+
+
 

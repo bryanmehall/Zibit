@@ -54,8 +54,8 @@ class SmdApp extends React.Component {
 
 		return (
 			<div>
-				<div style={{fontFamily: "helvetica", verticalAlign:'middle', fontSize: 15, marginLeft:20, padding:8, height:30, color:"#eee"}}>
-					Zibit <span style={{fontSize:20}}> &#9002; </span> 
+				<div style={{fontFamily: "helvetica", verticalAlign:'middle', fontSize: 15, marginLeft:20, padding:16, height:30, color:"#eee"}}>
+					<img src="./zibittest.svg" height={30}></img> <span style={{fontSize:20}}> &#9002; </span>
 					Control Systems <span style={{fontSize:20}}> &#9002; </span> 
 					Part 02: Damped Harmonic Oscillator <span style={{fontSize:20}}> &#9002; </span> 
 					Question Here

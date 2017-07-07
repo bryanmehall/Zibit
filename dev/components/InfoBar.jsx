@@ -21,7 +21,7 @@ class InfoBar extends React.Component {
 			paddingBottom:10
 		}
 		return (
-			<div style={{...cardStyle, top: 145,backgroundColor: "#eee", overflow: "hidden", width: this.props.width}}>
+			<div style={{...cardStyle, top: 162,backgroundColor: "#eee", overflow: "hidden", width: this.props.width}}>
                 <div style={headerStyle}>
 					<div >Concept Check</div>
 				</div>

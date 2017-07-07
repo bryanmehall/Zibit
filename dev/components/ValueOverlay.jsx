@@ -112,6 +112,7 @@ class ValueOverlay extends React.Component {
                             ry="5"
                             width={bbox.width}
 							filter="url(#dropShadow)"
+							opacity={activityLevel}
                             fill={"rgb(255, 192, 192)"}
                     ></rect>
 					<text
