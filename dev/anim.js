@@ -1,5 +1,5 @@
 import keyframeActions from './keyframeActions'
-export const audio = new Audio("./content/controlSystems/dho/intro.mp3")
+export const audio = new Audio("/content/controlSystems/dho/intro.mp3")
 console.log('audio err', audio)
 
 const course = {

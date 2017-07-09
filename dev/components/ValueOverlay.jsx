@@ -70,6 +70,7 @@ class ValueOverlay extends React.Component {
                 this.setState({activityLevel:newActivityLevel})
                 if (newActivityLevel <= 0) {
                     this.props.setActive(this.props.id, false)
+
                     this.props.setHighlight(quantity, false)
                 }
             }
@@ -111,7 +112,6 @@ class ValueOverlay extends React.Component {
                             rx="5"
                             ry="5"
                             width={bbox.width}
-							filter="url(#dropShadow)"
 							opacity={activityLevel}
                             fill={"rgb(255, 192, 192)"}
                     ></rect>

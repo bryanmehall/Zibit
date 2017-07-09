@@ -10,7 +10,8 @@ import createHistory from 'history/createBrowserHistory'
 import { Route } from 'react-router'
 
 import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
-import SmdApp from "./components/SmdApp"
+import Courses from "./components/Courses"
+import Home from "./components/Home"
 import { animMiddleware } from "./animMiddleware"
 import { runTests } from './tests'
 import QuantityActions from './ducks/quantity/actions'
@@ -26,6 +27,17 @@ const middleware = applyMiddleware(animMiddleware)
 const history = createHistory()
 
 const initialAppState = {
+	content: {
+		currentCourse: {
+			name: "ControlSystems"
+		},
+		currentPart: {
+			name: ""
+		},
+		currentContent: {
+
+		}
+	},
 	widgets: {
 		app: {
 			type: 'SmdApp',
@@ -233,13 +245,14 @@ const container = document.getElementById('container')
 
 ReactDOM.render(
 	<Provider store={store}>
+
 		<ConnectedRouter history={history}>
-      <div>
-        <Route path="/" component={SmdApp}/>
-
-      </div>
-    </ConnectedRouter>
-
+			<div>
+				<Route exact path="/" component={Home}/>
+				<Route path="/courses" component={Courses}>
+				</Route>
+			</div>
+		</ConnectedRouter>
 	</Provider>,
 	container
 	)

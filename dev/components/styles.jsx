@@ -20,6 +20,14 @@ export const cardStyle = {
 	boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.8)"
 }
 
+export const linkStyle = {
+	fontFamily: "helvetica",
+	color:"#eee",
+	cursor: 'pointer',
+	fontSize: 15,
+	textDecoration: 'none'
+}
+
 export const mathTextStyle = {
 	fontFamily: 'MathJax_Main,"Times New Roman",Times,serif',
 	fontSize: "1.6em",

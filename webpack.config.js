@@ -19,16 +19,19 @@ var config = {
 	output: {
 		filename: "bundle.js",
 		path: __dirname,
-
+		publicPath: '/'
+	},
+	devServer: {
+		historyApiFallback: true
 	},
 	devtool: 'source-map',
 	module: {
-	loaders: [
-		{
-		include: DEV,
-		exclude: "/node_modules/",
-		loader: "babel-loader",
-	}]
+		loaders: [
+			{
+			include: DEV,
+			exclude: "/node_modules/",
+			loader: "babel-loader",
+		}]
 	},
 	resolve: {
 		extensions: ['.js', '.jsx']
