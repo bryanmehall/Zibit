@@ -61,7 +61,7 @@ class TitleBar extends React.Component {
 					height={height}
 					>
 					<Animation
-						pos={{ x: 10, y: 13 } }
+						pos={{ x: 18, y: 13 } }
 						quantity="animTime"
 						scale={1.7}
 						color={color}
@@ -69,8 +69,8 @@ class TitleBar extends React.Component {
 						onPause={this.onPause}
 						/>
 					<Slider
-						p1={{ x: 15, y: height-15 }}
-						p2={{ x: width-15, y: height-15 }}
+						p1={{ x: 18, y: height-12 }}
+						p2={{ x: width-18, y: height-12 }}
 						quantity="animTime"
 						showAxis={false}
 						onDragEnd={this.onDragEnd}

@@ -1,21 +1,41 @@
 import keyframeActions from './keyframeActions'
-export const audio = new Audio("./content/controlSystems/dho/dho1.mp3")
+export const audio = new Audio("/content/controlSystems/dho/intro.mp3")
+console.log('audio err', audio)
+
+const course = {
+	id: "controlSystems",
+	title: "Control Systems"
+}
 
 const contentGroup = {
-	id: "dho",
+	id: "dampedHarmonicOscillator",
 	title: "Part 02: Damped Harmonic Oscilator",
-	contentBlocks: ["adjustDamping"]
+	contentBlocks: ["intro", "zeroDamping"]
 }
-const contentBlock = {
-	id: "adjustDamping",
+const contentBlocks = [
+{
+	id: "intro",
+	title:"intro",
+	text:"Introduction to damped harmonic oscillators",
+	type:"animation",
 	initialState: {},//initial state of store goes here
 	completed: false,
-	audio: "./audio/dho1.mp3",
-	tests: [
-		{ test: "isEqual", id: "zeroDamping", params: { quantity: 'c', value: 0 }, text: "adjust the damping coefficient so the ", helpBlocks: [] }
-	],
-	onTestsComplete: { action: 'goTo', contentBlock: "zeta" }
+	progress:0,//time in autio to jump to?
+	audio: "intro.mp3",
+	onComplete: { action: 'goTo', contentBlock: "zeroDamping" }
+},{
+	id:"zeroDamping",
+	text: "Adjust the damping coefficient so the oscillations don't decrease over time",
+	type:"test",
+	completed:false,
+	active: false,
+	test: {
+		type: "isEqual",
+		params: { quantity: 'c', value: 0 },
+		helpBlocks: []
+	}
 }
+]
 
 var keyframes = [
 	{ //make keyframes relative to each other to that a change in one shifts all--maybe also have a time so that it can be set absolutely
@@ -41,17 +61,6 @@ var keyframes = [
 					children: ['abstraction1']
 				},
 				interp: 'linear' //make cubic default
-			}
-		]
-	},
-	{
-		time: 5,
-		actions: [
-			{
-				type: "askQuestion",
-				params: {
-					testId: "zeroDamping"
-				}
 			}
 		]
 	}

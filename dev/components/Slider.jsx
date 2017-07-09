@@ -77,7 +77,6 @@ class Slider extends React.Component {
                 x={p1.x-width/2-1}
                 y={p2.y-lengthOffset-1}
                 width={width+2}
-				filter="url(#dropShadow)"
                 rx="6"
                 ry="6"
                 fill="white"
