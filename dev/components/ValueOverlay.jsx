@@ -5,7 +5,7 @@ import {connect} from "react-redux"
 import { bindActionCreators } from 'redux'
 import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
-import {getValue, getQuantityData, getMin, getMax, getAnimatable, getPlaying, getIndependent} from '../ducks/quantity/selectors'
+import {getValue, getQuantityData, getMin, getMax, getAnimatable, getPlaying, getIndependent, getColor} from '../ducks/quantity/selectors'
 import Animation from './Animation'
 import { UpArrow, DownArrow } from './icons'
 import { svgToScreen, getDistToLine } from '../utils/point'
@@ -112,7 +112,7 @@ class ValueOverlay extends React.Component {
                             ry="5"
                             width={bbox.width}
 							filter="url(#dropShadow)"
-                            fill={"rgb(255, 192, 192)"}
+                            fill={this.props.color}
                     ></rect>
 					<text
 						style={mathTextStyle}
@@ -176,7 +176,8 @@ function mapStateToProps(state, props) {
         quantityMin: getMin(state, props.quantity),
         quantityMax: getMax(state, props.quantity),
 		//animatable:getAnimatable(state, props.quantity),
-		playing: getPlaying(state, props.quantity)
+		playing: getPlaying(state, props.quantity),
+		color:getColor(state, props.quantity)
 	};
 }
 

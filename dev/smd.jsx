@@ -255,16 +255,17 @@ const initialAppState = {
 			independent: true,
 			symbol: 't',
 			highlighted: false,
-			animation: { playing: false }
+			animation: { playing: false },
+			color: '#ffffff'
 		},
 		imx: { value: 0, min: -10, max: 10, abstractions: 0, independent: false, symbol: 'im(x)', highlighted: false },//imaginary component of x
 		x: { value: 0, min: -10, max: 40, abstractions: 0, symbol: 'x', prevPoints: [], highlighted: false }, //real component of x
-		y: { value: 0, min: -25, max: 20, symbol: 'y', highlighted: false },//position of mass
+		y: { value: 0, min: -25, max: 20, symbol: 'y', highlighted: false, color:'#e0ffe0'},//position of mass
 		dydt: { value: 0, min: -25, max: 20, symbol: "y'", highlighted: false },
-		k: { value: 5, min: 0, max: 100, symbol: 'k', abstractions: 10, independent: true, highlighted: false },//spring constant
+		k: { value: 5, min: 0, max: 100, symbol: 'k', abstractions: 10, independent: true, highlighted: false, color:'#ffe0e0'},//spring constant
 		fs: { value: 100, min: -100, max: 100, symbol: <tspan dx={3}>F<tspan fontSize="0.5em" baselineShift="sub">s</tspan></tspan>, independent: false, highlighted: false },
 		dl: { value: 10, min: -10, max: 10, symbol: "displacement", independent: false, highlighted: false },
-		m: { value: 1, min: 0, max: 30, symbol: 'm', independent: true, highlighted: false },//mass
+		m: { value: 1, min: 0, max: 30, symbol: 'm', independent: true, highlighted: false, color:'#e0e0ff' },//mass
 		c: { value: 0, min: 0, max: 5, symbol: 'c', independent: true, highlighted: false },
 		fext: { value: 10, min: -100, max: 100, symbol: <tspan>F<tspan fontSize="0.5em" baselineShift="sub">ext</tspan></tspan>, independent: false, highlighted: false },
 		y0: { value: 0, min: -20, max: 20, symbol: <tspan>y<tspan dx="-2" fontSize="0.5em" dy="8">0</tspan></tspan>, independent: true, highlighted: false },//initial mass position

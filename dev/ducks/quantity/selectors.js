@@ -57,6 +57,8 @@ export const getIndependent = (state, name) => (getQuantityData(state, name).ind
 
 export const getAnimatable = (state, name) => (getQuantityData(state, name).hasOwnProperty('animation'))
 
+export const getColor = (state, name) => (getQuantityData(state, name).color || '#000000')
+
 export const getPlaying = (state, name) => {
 	var animatable = getAnimatable(state, name)
 

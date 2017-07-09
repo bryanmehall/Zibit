@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import { connect } from "react-redux"
 import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
-import { getValue, getQuantityData, getAnimatable, getPlaying } from '../ducks/quantity/selectors'
+import { getValue, getQuantityData, getAnimatable, getPlaying, getColor } from '../ducks/quantity/selectors'
 import {mathVarStyle, mathTextStyle} from './styles'
 
 
@@ -36,7 +36,7 @@ class NewValue extends React.Component {
                     style={highlighted ? mathTextStyle : mathVarStyle}
                     filter={filter}
 					dx='3'
-                    fill={highlighted ? "red" : "black"}
+                    fill={highlighted ? this.props.color : "black"}
                 >
                     {highlighted ? displayValue : this.props.symbol}
                 </tspan>
@@ -53,6 +53,7 @@ function mapStateToProps(state, props) {
 		independent: quantityData.independent,
 		highlighted: quantityData.highlighted,
 		quantityValue: getValue(state, props.quantity),
+		color: getColor(state, props.quantity),
 		playing: getPlaying(state, props.quantity)
         //add precision as state
 	};
