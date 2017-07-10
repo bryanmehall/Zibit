@@ -62,6 +62,7 @@ class ValueOverlay extends React.Component {
                 y: e.clientY
             }
             const mousePos = svgToScreen('sim', domNode, screenPoint)//mouse position in overlay coordinates
+
             const dt = ((new Date())-this.dragStartTime)/1000
             this.dragStartPoint = mousePos
             const dist = getDistToLine(mousePos, sliderP1, sliderP2)
@@ -70,17 +71,20 @@ class ValueOverlay extends React.Component {
                 this.setState({activityLevel:newActivityLevel})
                 if (newActivityLevel <= 0) {
                     this.props.setActive(this.props.id, false)
-
+					document.removeEventListener('mousemove', mouseMove)
                     this.props.setHighlight(quantity, false)
+					this.setState({
+						activityLevel: 1
+					})
                 }
             }
         }
         const mouseDown = (e) => {
 			this.setState({
 				prevValue: value,
+				activityLevel:1
 			})
             this.props.setActive(this.props.id, true)
-
             //get local mouse coords
             const domNode = ReactDOM.findDOMNode(this)
             const screenPoint = {
@@ -92,7 +96,7 @@ class ValueOverlay extends React.Component {
             this.dragStartTime = new Date()
             this.dragStartPoint = mousePos
 
-            document.addEventListener('mousemove', mouseMove, false)
+            document.addEventListener('mousemove', mouseMove)
         }
 
         const activeOverlay = (

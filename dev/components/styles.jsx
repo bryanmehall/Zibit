@@ -10,7 +10,8 @@ export const colors = {
 }
 
 export const cardStyle = {
-	fontFamily: "helvetica",
+	fontFamily: '"Roboto", sans-serif',
+	fontWeight: "400",
 	fontSize: 15,
 	margin: 5,
 	position: 'absolute',
@@ -21,7 +22,8 @@ export const cardStyle = {
 }
 
 export const linkStyle = {
-	fontFamily: "helvetica",
+	fontFamily: '"Roboto Condensed", sans-serif',
+	fontWeight: "500",
 	color:"#eee",
 	cursor: 'pointer',
 	fontSize: 15,
