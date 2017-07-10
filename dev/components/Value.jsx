@@ -1,153 +1,61 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import Slider from './Slider'
-import {connect} from "react-redux"
-import { bindActionCreators } from 'redux'
+import { connect } from "react-redux"
 import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
-import {getValue, getQuantityData, getAnimatable, getPlaying} from '../ducks/quantity/selectors'
-import Animation from './Animation'
+import { getValue, getQuantityData, getAnimatable, getPlaying, getColor } from '../ducks/quantity/selectors'
+import {mathVarStyle, mathTextStyle} from './styles'
+
 
 class Value extends React.Component {
-	constructor(props){
-		super(props)
-		this.mouseOver = this.mouseOver.bind(this)
-		this.mouseOut = this.mouseOut.bind(this)
-		this.onDragStart = this.onDragStart.bind(this)
-		this.onDragEnd = this.onDragEnd.bind(this)
 
-		this.textStyle = {
-			fontStyle: "italic",
-			fontFamily: 'MathJax_Main,"Times New Roman",Times,serif',
-			fontSize: "1.6em",
-			WebkitTouchCallout: "none",
-			WebkitUserSelect: "none",
-			MozUserSelect: "none"
-    	}
-		this.numberStyle = {
-			fontFamily:'MathJax_Main,"Times New Roman",Times,serif',
-      		fontSize:"1.6em",
-      		WebkitTouchCallout: "none",
-      		WebkitUserSelect: "none",
-      		MozUserSelect: "none"
-
-		}
-		this.numberBoxStyle = {
-			animationName:"scaleNumbers",
-			animationDuration: '0.6s'
-		}
-
-	}
-	mouseOver(){
-		this.props.setHighlight(this.props.quantity, true)
-	}
-	mouseOut(e){
-		e.preventDefault()
-		e.stopPropagation()
-		this.props.setHighlight(this.props.quantity, false)
-	}
-
-	componentDidMount(){
-		if (this.props.pos === undefined){
-			var bBox = ReactDOM.findDOMNode(this).getBBox()
-			this.props.getWidth(bBox, this.props.id)
-		}
-	}
-	onDragStart() {
-		this.isPlaying = this.props.playing
-		this.props.setPlay(this.props.quantity, false)
-	}
-	onDragEnd() {
-		this.props.setPlay(this.props.quantity, this.isPlaying)
-	}
+    componentDidUpdate(){
+        this.props.callUpdate()
+    }
 
 	render(){
 		var self = this
-		var pos = this.props.pos || {x:200, y:200}
-        var translation = 'translate('+pos.x+','+pos.y+')'
+        var quantity = this.props.quantity
 		var bbox = this.props.bbox || {width:0}
         var independent = this.props.independent
-		var filter = (this.props.highlighted) ? "url(#highlight)": null
+        const highlighted = this.props.highlighted
+        const value = this.props.quantityValue
+		var filter = highlighted ? "url(#highlight)" : null//seei f this works with css filters
+        var mouseOver = () => {this.props.setHighlight(quantity,true)}
+        var mouseOut = () => {this.props.setHighlight(quantity, false)}
+
+        //const precision = this.props.precision || Math.min(3,Math.max(Math.log10(Math.abs(value)+2),1))
+        //if (quantity = 't') {console.log('t',Math.log10(Math.abs(value)+2))}
+        //because the default toPrecision function is just bad
+        //converts scientific notation while keeping trailing zeroes
+        const toPre = value.toPrecision(2)
+        const displayValue = (toPre.indexOf('e') === -1) ?  toPre : parseFloat(toPre)
 
 		var text = (
-			<text
-				style={this.textStyle}
-				filter={filter}
-
-				onMouseEnter={this.mouseOver}
-			>
-				{this.props.symbol}
-			</text>
+                <tspan
+                    style={highlighted ? mathTextStyle : mathVarStyle}
+                    filter={filter}
+					dx='3'
+                    fill={highlighted ? this.props.color : "black"}
+                >
+                    {highlighted ? displayValue : this.props.symbol}
+                </tspan>
 		)
-        /*<ReactEditableSvgLabel x={bbox.width+20} y={0} focusOnOpen={true}>
-                    {(Math.round(this.props.quantityValue*100)/100)}
-                </ReactEditableSvgLabel>*/
-        var number = (
-            <g>
-                <rect x={-20} y={-bbox.height} width={80+bbox.width} height={bbox.height+40} fill="#eee"/>
-                <text x={bbox.width} y={0} style={this.numberStyle}>= {(Math.round(this.props.quantityValue*100)/100)}</text>
-            </g>
-        )
-    	var overlay = (//transform is relative to lower left corner of value text
-			<g transform = {'translate('+pos.x+','+pos.y+')'}>
-                    <Animation
-                        pos={{x:0, y:10}}
-                        quantity = {this.props.quantity}
-                        playing={this.props.playing}
-                    ></Animation>
-				<g>
-					<text
-						x={bbox.width+5}
-						y={0}
-						style={this.numberStyle}
-						filter="url(#textBackground)">
-						{'= '+(Math.round(this.props.quantityValue*100)/100)}
-					</text>
-				</g>
-				<rect x={-100} y={5} height={50} width={175} fill="#eee"></rect>
-				<Slider
-					constPos={20}
-					quantity={this.props.quantity}
-					min={-75}
-					max={75}
-					showAxis={true}
-					onDragStart={this.onDragStart}
-					onDragEnd={this.onDragEnd}
-					/>
-				<Animation
-					pos={{x:-100, y:12}}
-					quantity = {this.props.quantity}
-					playing={this.props.playing}
-				></Animation>
-        	</g>
-		)
-    
-    if (this.props.highlighted){
-		return <g onMouseLeave={this.mouseOut} transform = {translation}>
-            {number}
-            {independent ? overlay : null}
-			{text}
-		</g>
-	} else {
-		return (
-            <g transform = {translation}>
-                {text}
-            </g>
-        )
+        return text
     }
-  }
 }
 
-
 function mapStateToProps(state, props) {
+
 	var quantityData = getQuantityData(state, props.quantity)
 	return {
 		symbol: quantityData.symbol,
-		independent:quantityData.independent,
-		highlighted:quantityData.highlighted,
+		independent: quantityData.independent,
+		highlighted: quantityData.highlighted,
 		quantityValue: getValue(state, props.quantity),
-		//animatable:getAnimatable(state, props.quantity),
+		color: getColor(state, props.quantity),
 		playing: getPlaying(state, props.quantity)
+        //add precision as state
 	};
 }
 

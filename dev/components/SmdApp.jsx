@@ -13,8 +13,7 @@ import Value from './Value'
 import SideBar from './SideBar'
 import NavBar from './NavBar'
 import Sim from './Sim'
-import NewExpression from './NewExpression'
-import {cardStyle} from './styles'
+import { cardStyle } from './styles'
 
 
 class SmdApp extends React.Component {
@@ -42,8 +41,7 @@ class SmdApp extends React.Component {
 		const sideBarWidth = 0.25*this.state.width
 		var childTypes = {
 			"Plot": Plot,
-            "NewExpression": NewExpression,
-			"Expression": Expression
+            "Expression": Expression
 		}
 
 		function createChild(childData){

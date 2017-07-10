@@ -1,57 +1,85 @@
 import React from "react"
-import Value from './Value'
 import ValueOverlay from './ValueOverlay'
+import ReactDOM from "react-dom"
 import {connect} from "react-redux"
 import { bindActionCreators } from 'redux'
 import QuantityActions from '../ducks/quantity/actions'
 import {getChildren} from '../ducks/widget/selectors'
+import Value from './Value'
+import EqText from './EqText'
 
 class Expression extends React.Component{
 	constructor(props){
 		super(props)
-		this.getWidth = this.getWidth.bind(this)
-		this.childProps = []
-		this.bBoxes = {}
-		this.state = {subPositions:{}}
-		this.offset = 0
+        this.updatebboxes = this.updatebboxes.bind(this)
+        this.callUpdate = this.callUpdate.bind(this)
+        this.needsUpdate = true
+		this.bboxes = {}
 	}
+    updatebboxes(){
+        const expression = this
+        if (this.needsUpdate){
+            Object.keys(this.refs).forEach((id) => {
+                const domElement = ReactDOM.findDOMNode(expression.refs[id])
+                const extent = domElement.getExtentOfChar(0)//use SVG v1.1
+                const length = domElement.getComputedTextLength()
+                const bbox = { x: extent.x, y: extent.y, height: extent.height, width: length }
 
-	getWidth(bbox, id){
-		var newSubPositions = Object.assign(this.state.subPositions, {[id]:{x:this.offset, y:0}})
-		this.offset += bbox.width
-		this.bBoxes[id] = bbox
-		this.setState(newSubPositions)
+                expression.bboxes[id] = bbox
+
+            })
+
+            this.forceUpdate() //need to update other bboxes when one updates
+        }
+        this.needsUpdate = false
+    }
+    callUpdate(){
+        this.needsUpdate = true
+    }
+    componentDidMount(){
+        this.updatebboxes()
 	}
+    componentDidUpdate(){
 
+        this.updatebboxes()
+    }
 
 	render(){
-		var self = this
-		var subPos = this.state.subPositions
-		var positioned = !(Object.keys(subPos).length === 0 && subPos.constructor === Object)
+		const self = this
+		const childData = this.props.childData
+		const pos = this.props.pos
+		const activeElements = this.props.childData.filter((child) => (child.props.active))
+
 		var childTypes = {
 			Expression,
-			Value
+			Value,
+			EqText
 		}
 
 		function createChild(childData,i){
 			var type = childTypes[childData.type]
 			var props = childData.props
 			props.key = props.id
-			props.pos = subPos[props.id]
-			props.bbox = self.bBoxes[props.id]
+            props.ref = props.id
+            props.callUpdate = self.callUpdate
+			props.index = i
 			props.isSubExpression = true
-			props.getWidth = self.getWidth
 			return React.createElement(type, props)
 		}
-		//define children in order to get widths and in reverse order for rendering
+        function createOverlays(childData){
+            if (childData.props.quantity !== undefined){ //if a quantity component --could swallow errrors?
+                const active = childData.props.active
+                const id = childData.props.id
+                const bbox = self.bboxes[id]
+                const quantity = childData.props.quantity
+                return (bbox === undefined) ? null : <ValueOverlay quantity={quantity} active={active} id={id} key={id} bbox={bbox}/>
+            } else {return null}
+        }
 
-		if (positioned){//if subPositins is empty
-			var children = this.props.childData.map(createChild).reverse()
-		} else {
-			var children = this.props.childData.map(createChild)
-		}
+        this.children = this.props.childData.map(createChild)
+        const overlays = this.props.childData.map(createOverlays)
+        const blurmask = null
 
-		var pos = this.props.pos
 		//if (this.props.isSubExpression){
 		//	return (
 		//		<tspan>
@@ -60,18 +88,21 @@ class Expression extends React.Component{
 		//	)
 		//} else {
 			return (//render children with refs first
-				<g transform={'translate('+pos.x+','+pos.y+')'}>
-						{children}
-				</g>
+                <g transform={'translate('+pos.x+','+pos.y+')'}>
+                    <text>
+                        {this.children}
+                    </text>
+                    {blurmask}
+					{overlays}
+                </g>
+
 			)
 		//}
-
-	  }
+	}
 }
 
 
 function mapStateToProps(state, props) {
-
 	return {
 		childData: getChildren(state, props.id)
 	}

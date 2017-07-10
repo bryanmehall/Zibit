@@ -45,14 +45,14 @@ const initialAppState = {
 			children: ['massPlot', 'forcingEq']
 		},
 		forcingEq: {
-			type: 'NewExpression',
+			type: 'Expression',
 			props: {
 				pos: { x: 150, y: 500 }
 			},
 			children: ['fExt','eq1', 'springCoef', 'yVal','lp1','tVal','rp1' ,'plus1', 'dampCoef', 'dydtVal','lp2','tVal1','rp2']
 		},
 		fExt: {
-			type: 'NewValue',
+			type: 'Value',
 			props: {
 				quantity: 'fext',
 				active: false
@@ -65,14 +65,14 @@ const initialAppState = {
 			}
 		},
 		springCoef: {
-			type: 'NewValue',
+			type: 'Value',
 			props: {
 				quantity: 'k',
 				active: false
 			}
 		},
 		yVal: {
-			type: 'NewValue',
+			type: 'Value',
 			props: {
 				quantity: 'y',
 				active: false
@@ -85,7 +85,7 @@ const initialAppState = {
 			}
 		},
 		tVal: {
-			type: 'NewValue',
+			type: 'Value',
 			props: {
 				quantity: 't',
 				active: false
@@ -104,14 +104,14 @@ const initialAppState = {
 			}
 		},
 		dampCoef: {
-			type: 'NewValue',
+			type: 'Value',
 			props: {
 				quantity: 'c',
 				active: false
 			}
 		},
 		dydtVal: {
-			type: 'NewValue',
+			type: 'Value',
 			props: {
 				quantity: 'dydt',
 				active: false
@@ -124,7 +124,7 @@ const initialAppState = {
 			}
 		},
 		tVal1: {
-			type: 'NewValue',
+			type: 'Value',
 			props: {
 				quantity: 't',
 				active: false
@@ -137,7 +137,7 @@ const initialAppState = {
 			}
 		},
 		animVal: {
-			type: 'NewValue',
+			type: 'Value',
 			props: {
 				quantity: 'animTime',
 				active: false

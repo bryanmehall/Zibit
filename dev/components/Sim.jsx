@@ -11,7 +11,6 @@ import Abstraction from './Abstraction'
 import Expression from './Expression'
 import Value from './Value'
 import SideBar from './SideBar'
-import NewExpression from './NewExpression'
 import {cardStyle} from './styles'
 
 
@@ -22,7 +21,7 @@ class Sim extends React.Component {
 		const { actions } = this.props;
 		var childTypes = {
 			"Plot": Plot,
-            "NewExpression": NewExpression,
+            "Expression": Expression,
 			"Expression": Expression
 		}
 
