@@ -3,7 +3,7 @@ import {connect} from "react-redux"
 import { bindActionCreators } from 'redux';
 import Path from "./Path";
 import * as QuantityActions from '../ducks/quantity/actions';
-import {getValue, getAbsPoints} from '../ducks/quantity/selectors'
+import {getValue, getAbsPoints, getColor} from '../ducks/quantity/selectors'
 
 class Abstraction extends React.Component {
 	render(){
@@ -12,7 +12,7 @@ class Abstraction extends React.Component {
 		return(
 			<Path
 				points={points}
-				strokeColor="gray"
+				strokeColor={this.props.color}
 				coordSys={this.props.coordSys}
 				mask={this.props.mask}
 				></Path>
@@ -22,7 +22,8 @@ class Abstraction extends React.Component {
 
 function mapStateToProps(state, props) {
 	return {
-		points:getAbsPoints(state, props.indVar, props.xVar, props.yVar)
+		points:getAbsPoints(state, props.indVar, props.xVar, props.yVar),
+		color:getColor(state, props.xVar)
 	};
 }
 

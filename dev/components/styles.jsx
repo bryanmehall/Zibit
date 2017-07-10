@@ -11,7 +11,7 @@ export const colors = {
 
 export const cardStyle = {
 	fontFamily: '"Roboto", sans-serif',
-	fontWeight: "400",
+	fontWeight: "500",
 	fontSize: 15,
 	margin: 5,
 	position: 'absolute',

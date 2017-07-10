@@ -30,7 +30,7 @@ class Value extends React.Component {
         //converts scientific notation while keeping trailing zeroes
         const toPre = value.toPrecision(2)
         const displayValue = (toPre.indexOf('e') === -1) ?  toPre : parseFloat(toPre)
-
+		//<tspan dx={3}>F<tspan fontSize="0.5em" baselineShift="sub">s</tspan></tspan>
 		var text = (
                 <tspan
                     style={highlighted ? mathTextStyle : mathVarStyle}
