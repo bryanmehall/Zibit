@@ -43,7 +43,7 @@ export default class ZibitLogo extends React.Component {
 	   const text = (
 		   <text
 			   x={w*16/15}
-			   fontFamily='"Roboto Condensed", sans-serif'
+			   fontFamily='"Yanone Kaffeesatz", sans-serif'
 			   y={h}
 			   fontSize={h}
 			   fill='#58de58'

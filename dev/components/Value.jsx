@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
 import { getValue, getQuantityData, getAnimatable, getPlaying, getColor } from '../ducks/quantity/selectors'
-import {mathVarStyle, mathTextStyle} from './styles'
+import { mathVarStyle, mathTextStyle, displayValue } from './styles'
 
 
 class Value extends React.Component {
@@ -28,17 +28,14 @@ class Value extends React.Component {
         //if (quantity = 't') {console.log('t',Math.log10(Math.abs(value)+2))}
         //because the default toPrecision function is just bad
         //converts scientific notation while keeping trailing zeroes
-        const toPre = value.toPrecision(2)
-        const displayValue = (toPre.indexOf('e') === -1) ?  toPre : parseFloat(toPre)
 		//<tspan dx={3}>F<tspan fontSize="0.5em" baselineShift="sub">s</tspan></tspan>
 		var text = (
                 <tspan
                     style={highlighted ? mathTextStyle : mathVarStyle}
-                    filter={filter}
 					dx='3'
-                    fill={highlighted ? this.props.color : "black"}
+                    fill={highlighted ? "white" : "black"}
                 >
-                    {highlighted ? displayValue : this.props.symbol}
+                    {highlighted ? displayValue(value) : this.props.symbol}
                 </tspan>
 		)
         return text

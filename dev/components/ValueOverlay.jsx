@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import Slider from './Slider'
-import {connect} from "react-redux"
+import { connect } from "react-redux"
 import { bindActionCreators } from 'redux'
 import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
@@ -16,7 +16,7 @@ import { displayValue, mathTextStyle } from './styles'
 class ValueOverlay extends React.Component {
 	constructor(props){
 		super(props)
-		this.state = {activityLevel:1}
+		this.state = { activityLevel: 1 }
 		this.numberStyle = {
 			fontFamily:'MathJax_Main,"Times New Roman",Times,serif',
       		fontSize:"1.6em",
@@ -50,11 +50,15 @@ class ValueOverlay extends React.Component {
         const origin = {x:bbox.x+bbox.width/2, y:bbox.y+bbox.height}
 		const value = this.props.quantityValue
         const mouseOver = (e) => {
+			this.wasHighlighted = this.props.highlighted
             this.props.setHighlight(quantity, true)
         }
         const mouseOut = (e) => {
-            this.props.setHighlight(quantity, false)
+			if (!this.props.playing){
+            	this.props.setHighlight(quantity, false)
+			}
         }
+
         const mouseMove = (e) => {
             const domNode = ReactDOM.findDOMNode(this)
             const screenPoint = {
@@ -134,27 +138,44 @@ class ValueOverlay extends React.Component {
 				></Animation>
             </g>
         )
+		const hoverText = <text
+						style={mathTextStyle}
+						x={0}
+                        y={-bbox.height/2+4}
+						alignmentBaseline="middle"
+						fill={this.props.color || "black"}
+						>
+						{displayValue(value)}
+					</text>
+		const hoverAnimButton = (
+			<Animation
+				pos={{ x: bbox.width/2-9, y: 20 }}
+				quantity = {quantity}
+				playing={this.props.playing}
+			></Animation>
+		)
+		const independentControls = (
+			<g>
+				<UpArrow pos={{ x: bbox.width/2, y: -bbox.height }} active={false}></UpArrow>
+				<DownArrow pos={{ x: bbox.width/2, y: 0 }} active={false}></DownArrow>
+				{this.props.highlighted ? hoverAnimButton : null}
+			</g>
+		)
         const inactiveOverlay = (
             <g>
-                <rect
+                {this.props.highlighted ? hoverText : null}
+				<rect
                     x={0}
                     y={-bbox.height}
-                    height={bbox.height}
+                    height={bbox.height+70}
                     width={bbox.width}
                     fill={ active ? "#fff": "rgba(0, 0, 0, 0.0)"}
                     onMouseEnter={mouseOver}
-                    onMouseLeave={mouseOut}
+                    onMouseOut={mouseOut}
                     onMouseDown={independent ? mouseDown : null}
-                    ></rect>
-
-				{
-					independent ? (
-						<g>
-							<UpArrow pos={{ x: bbox.width/2, y: -bbox.height }} active={false}></UpArrow>
-							<DownArrow pos={{ x: bbox.width/2, y: 0 }} active={false}></DownArrow>
-						</g>
-					): null
-				}
+                    >
+				</rect>
+				{independent ? independentControls : null}
 
             </g>
 
