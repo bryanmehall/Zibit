@@ -162,16 +162,19 @@ class ValueOverlay extends React.Component {
 			</g>
 		)
         const inactiveOverlay = (
-            <g>
+            <g
+				onMouseEnter={mouseOver}
+                onMouseLeave={mouseOut}
+
+				>
                 {this.props.highlighted ? hoverText : null}
 				<rect
                     x={0}
                     y={-bbox.height}
-                    height={bbox.height+70}
+                    height={bbox.height+70*this.props.highlighted/* expand if highlighted*/}
                     width={bbox.width}
                     fill={ active ? "#fff": "rgba(0, 0, 0, 0.0)"}
-                    onMouseEnter={mouseOver}
-                    onMouseOut={mouseOut}
+                    pointerEvents="bounding-box"
                     onMouseDown={independent ? mouseDown : null}
                     >
 				</rect>
