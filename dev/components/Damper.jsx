@@ -25,25 +25,27 @@ class Damper extends React.Component {
 }
 
 function damperPath(p1, p2, c){
-	var W = 15;
-	var s = 5;	//scale
-	var x1 = p1.x;
-	var y1 = p1.y;
-	var x2 = p2.x;
-	var y2 = p2.y;
-	var w = W/4+(W/2 - Math.pow(W/2,1-c/s))/2;
-	var L = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));	//length from p1 to p2
-	var l = 30;	//length of cylinder
-	var l_p = 25; //length of piston in cylinder
-	var dx = l_p*(x2 - x1)/L; //x component of l_p
-	var dy = l_p*(y2 - y1)/L;	//y component of l_p
-	var Vx = W*(y2-y1)/L;
-	var Vy = W*(x1-x2)/L;
-	var vx = w*(y2-y1)/L;
-	var vy = w*(x1-x2)/L;
-	var g1 = { x: (L-l)/(2*L)*(x2-x1)+x1, y:(L-l)/(2*L)*(y2-y1)+y1};	//base of cylinder
-	var g2 = { x: x2-(L-l)/(2*L)*(x2-x1), y:y2-(L-l)/(2*L)*(y2-y1)};	//ends of cylinder
-	var g3 = { x: x2-(L-l)/(2*L)*(x2-x1) - dx, y: y2-(L-l)/(2*L)*(y2-y1) - dy};	//piston head
+	const W = 15;
+	const s = 5;	//scale
+	const x1 = p1.x;
+	const y1 = p1.y;
+	const x2 = p2.x;
+	const y2 = p2.y;
+	const w = W/4+(W/2 - Math.pow(W/2,1-c/s))/2;
+	const L = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));	//length from p1 to p2
+	const l = Math.min(50, L - 10);	//length of cylinder
+	const L_0 = 100;
+	const l_p_frac = 1 - (Math.atan((L - L_0) / (l*3)) + Math.PI / 2) / (Math.PI);	//fraction of piston in cylinder
+	const l_p = l * l_p_frac; //length of piston in cylinder
+	const dx = l_p*(x2 - x1)/L; //x component of l_p
+	const dy = l_p*(y2 - y1)/L;	//y component of l_p
+	const Vx = W*(y2-y1)/L;
+	const Vy = W*(x1-x2)/L;
+	const vx = w*(y2-y1)/L;
+	const vy = w*(x1-x2)/L;
+	const g1 = { x: (L-l)/(2*L)*(x2-x1)+x1, y:(L-l)/(2*L)*(y2-y1)+y1};	//base of cylinder
+	const g2 = { x: x2-(L-l)/(2*L)*(x2-x1), y:y2-(L-l)/(2*L)*(y2-y1)};	//ends of cylinder
+	const g3 = { x: x2-(L-l)/(2*L)*(x2-x1) - dx, y: y2-(L-l)/(2*L)*(y2-y1) - dy};	//piston head
 	var data = [{ x: x1,y: y1 }, {x:g1.x, y:g1.y}];
 	data.push({mx:g2.x + Vx, my:g2.y + Vy, x:g1.x + Vx, y:g1.y + Vy});
 	data.push({x:g1.x - Vx, y:g1.y - Vy});
