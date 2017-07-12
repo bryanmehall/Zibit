@@ -120,6 +120,7 @@ class ValueOverlay extends React.Component {
                             rx="5"
                             ry="5"
                             width={bbox.width}
+							cursor="pointer"
                             fill={this.props.color}
                     ></rect>
 					<text
@@ -127,6 +128,7 @@ class ValueOverlay extends React.Component {
 						x={-bbox.width/2}
                         y={0}
 						alignmentBaseline="middle"
+						cursor="pointer"
 						>
 						{displayValue(value)}
 					</text>

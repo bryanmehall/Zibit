@@ -1,7 +1,8 @@
 import React, {PropTypes} from "react"
 import {connect} from "react-redux"
 import { bindActionCreators } from 'redux';
-import * as QuantityActions from '../ducks/quantity/actions';
+
+import ContentActions from '../ducks/content/actions'
 import {getValue} from '../ducks/quantity/selectors'
 import {getChildren} from '../ducks/widget/selectors'
 import Slider from './Slider'
@@ -11,18 +12,19 @@ import Abstraction from './Abstraction'
 import Expression from './Expression'
 import Value from './Value'
 import SideBar from './SideBar'
-import {cardStyle} from './styles'
+import { cardStyle } from './styles'
 
 
 class Sim extends React.Component {
-
+	componentDidMount(){
+		const path = ['courses', 'controlsystems', 'dho', 'intro']
+		this.props.fetchSimData(path)
+	}
 	render(){
-		const pos = this.props.pos || {x:100, y:100}
-		const { actions } = this.props;
+		const pos = this.props.pos || { x: 100, y: 100 }
 		var childTypes = {
 			"Plot": Plot,
-            "Expression": Expression,
-			"Expression": Expression
+            "Expression": Expression
 		}
 
 		function createChild(childData){
@@ -73,7 +75,10 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		actions: bindActionCreators(QuantityActions, dispatch)
+		fetchSimData: (path) => {
+			dispatch(ContentActions.fetchSimData(path))
+		}
+
 	};
 }
 
