@@ -23,7 +23,7 @@ import { animMiddleware } from "./animMiddleware"
 import { runTests } from './tests'
 
 
-import { initialState }  from '../content/controlSystems/dho/intro'
+import { initialState }  from '../courses/controlsystems/dho/intro'
 
 const sagaMiddleware = createSagaMiddleware()
 const rootReducer = combineReducers({...reducers, router: routerReducer})
