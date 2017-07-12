@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux"
 import { bindActionCreators } from 'redux';
 import QuantityActions from '../ducks/quantity/actions';
-import {getValue, getTransformedValue, getCoordSys, getQuantityData} from '../ducks/quantity/selectors'
+import {getValue, getTransformedValue, getCoordSys, getQuantityData, getMax} from '../ducks/quantity/selectors'
 import Path from "./Path";
 
 class Damper extends React.Component {
@@ -11,7 +11,7 @@ class Damper extends React.Component {
 		var coordSys2 = this.props.coordSys2//there are two different origins to the coordinate systems one for x and one for y
 		var p1 = this.props.p1
 		var p2 = this.props.p2
-		var path = damperPath(p1, p2, this.props.c);
+		var path = damperPath(p1, p2, this.props.c, this.props.cMax);
 		return (
 			<Path
 				fill="transparent"
@@ -24,14 +24,14 @@ class Damper extends React.Component {
 	}
 }
 
-function damperPath(p1, p2, c){
+function damperPath(p1, p2, c, cMax){
 	const W = 15;
-	const s = 5;	//scale
+	const s = cMax;	//scale
 	const x1 = p1.x;
 	const y1 = p1.y;
 	const x2 = p2.x;
 	const y2 = p2.y;
-	const w = W/4+(W/2 - Math.pow(W/2,1-c/s))/2;
+	const w = 0.9 * (W - 2 * Math.pow(W/2,1-c/s));
 	const L = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));	//length from p1 to p2
 	const l = Math.min(50, L - 10);	//length of cylinder
 	const L_0 = 100;
@@ -63,6 +63,7 @@ function mapStateToProps(state, props) {
 	var coordSys2 = getCoordSys(state, props.xVar2, props.yVar2, br)
 	return {
 		c: getValue(state, 'c'),
+		cMax: getMax(state, 'c'),
 		p2:{
 			x:getTransformedValue(state, props.xVar1, coordSys.xScale)+20,
 			y:getTransformedValue(state, props.yVar1, coordSys.yScale)
