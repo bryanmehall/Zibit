@@ -41,10 +41,13 @@ class Mass extends React.Component {
 		var width = 80
 		var height = 50
 		var maskString = 'url(#'+this.props.mask+')'
-		var mouseForce = <Vector
-						boundingRect={this.props.boundingRect}
-						tail={{x:pos.x, y:pos.y-height/2}}
-						quantity='fext'/>
+		var mouseForce = (
+			<Vector
+				boundingRect={this.props.boundingRect}
+				tail={{x:pos.x, y:pos.y-height/2}}
+				quantity='fext'
+				/>
+			)
 		var rect = <Draggable dragStart={this.dragStart} dragMove={this.dragMove} dragEnd={this.dragEnd}>
 				<g >
 					<rect x={pos.x-width/2} y={0} width={width} height={pos.y+height} mask={maskString} fill='none' cursor='grab'></rect>

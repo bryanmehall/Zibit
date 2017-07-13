@@ -1,9 +1,11 @@
-import React from "react";
+import React from "react"
 import {connect} from "react-redux"
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from 'redux'
 import QuantityActions from '../ducks/quantity/actions';
-import {getValue, getTransformedValue, getCoordSys, getQuantityData} from '../ducks/quantity/selectors'
-import Path from "./Path";
+import {getValue, getColor, getHighlighted, getTransformedValue, getCoordSys, getQuantityData} from '../ducks/quantity/selectors'
+import Path from "./Path"
+import {HighlightFilter} from './filters'
+
 
 class Spring extends React.Component {
 	render() {
@@ -14,13 +16,18 @@ class Spring extends React.Component {
 		var path = springPath(p1, p2);
 
 		return (
-			<Path
-				fill="transparent"
-				stroke="black"
-				strokeWidth = {Math.log10(this.props.k+1.1)}
-				points={path}
-				mask={this.props.mask}
-			/>
+			<g>
+				<HighlightFilter id="springFilter" color={this.props.color}></HighlightFilter>
+				<Path
+					fill="transparent"
+					stroke="black"
+					filter="url(#springFilter)"
+					highlighted = {this.props.highlighted}
+					strokeWidth = {Math.log10(this.props.k+1.1)}
+					points={path}
+					mask={this.props.mask}
+				/>
+			</g>
 		)
 	}
 }
@@ -57,6 +64,8 @@ function mapStateToProps(state, props) {
 	var coordSys2 = getCoordSys(state, props.xVar2, props.yVar2, br)
 	return {
 		k: getValue(state, 'k'),
+		color:getColor(state, 'k'),
+		highlighted: getHighlighted(state, 'k'),
 		p2:{
 			x:getTransformedValue(state, props.xVar1, coordSys.xScale)-20,
 			y:getTransformedValue(state, props.yVar1, coordSys.yScale)

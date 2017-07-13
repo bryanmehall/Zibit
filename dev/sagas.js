@@ -12,16 +12,12 @@ export function fetchJson(path) {
 function* fetchSimData(action) {
 	try {
 		const response = yield call(fetchJson, action.payload.path);
-		yield put(ContentActions.fetchSimDataSucceed(response.data));
+		yield put(ContentActions.initializeSimState(response.data));
 	} catch (e) {
 		yield put({ type: "SIM_DATA_FETCH_FAILED", message: e.message });
 	}
 }
 
-/*
-  Starts fetchUser on each dispatched `USER_FETCH_REQUESTED` action.
-  Allows concurrent fetches of user.
-*/
 function* simSaga() {
 	yield takeEvery("FETCH_SIM_DATA", fetchSimData);
 }

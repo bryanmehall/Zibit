@@ -2,8 +2,10 @@ import React from "react";
 import {connect} from "react-redux"
 import { bindActionCreators } from 'redux';
 import QuantityActions from '../ducks/quantity/actions';
-import {getValue, getTransformedValue, getCoordSys, getQuantityData, getMax} from '../ducks/quantity/selectors'
+import {getValue, getTransformedValue, getCoordSys, getQuantityData, getMax, getHighlighted, getColor} from '../ducks/quantity/selectors'
 import Path from "./Path";
+import {HighlightFilter} from './filters'
+
 
 class Damper extends React.Component {
 	render() {
@@ -13,13 +15,19 @@ class Damper extends React.Component {
 		var p2 = this.props.p2
 		var path = damperPath(p1, p2, this.props.c, this.props.cMax);
 		return (
-			<Path
-				fill="transparent"
-				stroke="black"
-				strokeWidth = '1'
-				points={path}
-				mask={this.props.mask}
-			></Path>
+			<g>
+				<HighlightFilter id="damperFilter" color={this.props.color}></HighlightFilter>
+				<Path
+					fill="transparent"
+					stroke="black"
+					strokeWidth = '1'
+					filter="url(#damperFilter)"
+					highlighted={this.props.highlighted}
+					points={path}
+					mask={this.props.mask}
+				></Path>
+			</g>
+
 		)
 	}
 }
@@ -64,6 +72,8 @@ function mapStateToProps(state, props) {
 	return {
 		c: getValue(state, 'c'),
 		cMax: getMax(state, 'c'),
+		color: getColor(state, 'c'),
+		highlighted: getHighlighted(state, 'c'),
 		p2:{
 			x:getTransformedValue(state, props.xVar1, coordSys.xScale)+20,
 			y:getTransformedValue(state, props.yVar1, coordSys.yScale)

@@ -5,13 +5,17 @@ const fetchSimData = (path) => ({
 	}
 })
 
-const fetchSimDataSucceed = (simData) => ({
-	type: 'SIM_DATA_FETCH_SUCCEEDED',
-	payload: {
-		simData: simData
+const initializeSimState = (contentBlockData) => {
+	console.log('running', simData)
+
+	return {
+		type: 'INITIALIZE_SIM_STATE',
+		payload: {
+			simData: initialState
+		}
 	}
-})
+}
 export default {
 	fetchSimData,
-	fetchSimDataSucceed
+	initializeSimState
 }

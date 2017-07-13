@@ -183,7 +183,7 @@ export const initialState = JSON.stringify({
 		x: { value: 0, min: -10, max: 40, abstractions: 0, symbol: 'x', prevPoints: [], highlighted: false }, //real component of x
 		y: { value: 0, min: -25, max: 20, symbol: 'y', highlighted: false, color:'#ffc'},//position of mass
 		dydt: { value: 0, min: -25, max: 20, symbol: "y'", highlighted: false },
-		k: { value: 5, min: 0, max: 100, symbol: 'k', abstractions: 10, independent: true, highlighted: false, color:'#ccf'},//spring constant
+		k: { value: 5, min: 0, max: 100, symbol: 'k', abstractions: 10, independent: true, highlighted: false, color:'#88f'},//spring constant
 		fs: { value: 100, min: -100, max: 100, symbol: 'F_s', independent: false, highlighted: false },
 		dl: { value: 10, min: -10, max: 10, symbol: "displacement", independent: false, highlighted: false },
 		m: { value: 1, min: 0, max: 30, symbol: 'm', independent: true, highlighted: false, color:'#e0e0ff' },//mass

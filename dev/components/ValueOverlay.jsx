@@ -11,7 +11,7 @@ import { UpArrow, DownArrow } from './icons'
 import { svgToScreen, getDistToLine } from '../utils/point'
 import { transform } from '../utils/scale'
 import { displayValue, mathTextStyle } from './styles'
-
+import { HighlightFilter } from './filters'
 
 class ValueOverlay extends React.Component {
 	constructor(props){
@@ -145,7 +145,8 @@ class ValueOverlay extends React.Component {
 						x={0}
                         y={-bbox.height/2+4}
 						alignmentBaseline="middle"
-						fill={this.props.color || "black"}
+						fill={ "black"}
+						filter = {"url(#"+ this.props.id+")"}
 						>
 						{displayValue(value)}
 					</text>
@@ -156,6 +157,7 @@ class ValueOverlay extends React.Component {
 				playing={this.props.playing}
 			></Animation>
 		)
+		//arrows and animation button
 		const independentControls = (
 			<g>
 				<UpArrow pos={{ x: bbox.width/2, y: -bbox.height }} active={false}></UpArrow>
@@ -163,12 +165,13 @@ class ValueOverlay extends React.Component {
 				{this.props.highlighted ? hoverAnimButton : null}
 			</g>
 		)
+		//text
         const inactiveOverlay = (
             <g
 				onMouseEnter={mouseOver}
                 onMouseLeave={mouseOut}
-
 				>
+				<HighlightFilter color={this.props.color} id={this.props.id}></HighlightFilter>
                 {this.props.highlighted ? hoverText : null}
 				<rect
                     x={0}

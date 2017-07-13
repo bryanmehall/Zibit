@@ -59,6 +59,8 @@ export const getAnimatable = (state, name) => (getQuantityData(state, name).hasO
 
 export const getColor = (state, name) => (getQuantityData(state, name).color || '#000000')
 
+export const getHighlighted = (state, name) => (getQuantityData(state, name).highlighted || false)
+
 export const getPlaying = (state, name) => {
 	var animatable = getAnimatable(state, name)
 

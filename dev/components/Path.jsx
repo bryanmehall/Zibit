@@ -7,7 +7,7 @@ class Path extends React.Component {
 			strokeWidth = this.props.strokeWidth || 1.8,
 			transform= this.props.transform || "",
 			fill =this.props.fill || "transparent",
-			filter = (this.props.highlighted) ? "url(#highlight)": null
+			filter = (this.props.highlighted) ? this.props.filter : null
 		if (this.props.hasOwnProperty('coordSys')){
 			var coordSys = this.props.coordSys
 			points = this.props.points.map(coordSys.transform)
@@ -16,7 +16,7 @@ class Path extends React.Component {
 		}
 		var maskString = 'url(#'+this.props.mask+')'
 		return(
-			<path
+				<path
 				d={pointsToSVGPath(points)}
 				fill={fill}
 				stroke={stroke}
@@ -27,6 +27,7 @@ class Path extends React.Component {
 				strokeLinejoin="round"
 				shapeRendering="geometricPrecision"
 				></path>
+
 		)
 	}
 }
