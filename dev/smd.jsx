@@ -23,15 +23,47 @@ import { animMiddleware } from "./animMiddleware"
 import { runTests } from './tests'
 
 
-import { initialState }  from '../courses/controlsystems/dho/intro'
+const initialState = {
+
+	content: {
+		activeCourse: "controlStystems",
+		activePart: "simpleharmonicoscillator",
+		activeBlock: {
+			id: "damping",
+			anim: { //must be a quantity object
+					"value": 0,
+					"min": 0,
+					"max": 28,
+					"symbol": "dispT",
+					"independent": true,
+					"abstractions": 10,
+					"animation": {
+						"playing": false
+					}
+				}
+		}
+	},
+	sim: {
+		loading:true,
+		widget: {
+			"app": {
+				"type": "SmdApp",
+				"props": { loading:true},
+				"children": [
+				]
+			}
+		}
+
+	}
+}
 
 const sagaMiddleware = createSagaMiddleware()
-const rootReducer = combineReducers({...reducers, router: routerReducer})
+const rootReducer = combineReducers({ ...reducers, router: routerReducer })
 const middleware = applyMiddleware(animMiddleware, sagaMiddleware)
 const history = createHistory()
-const composeEnhancers = composeWithDevTools({})// Specify here name, actionsBlacklist, actionsCreators and other options
-const store = createStore(rootReducer, JSON.parse(initialState), composeEnhancers(middleware))
-store.subscribe(() => { runTests(store.getState()) })
+const composeEnhancers = composeWithDevTools({})// specify here name, actionsBlacklist, actionsCreators and other options
+const store = createStore(rootReducer, initialState, composeEnhancers(middleware))
+//store.subscribe(() => { runTests(store.getState()) })
 const container = document.getElementById('container')
 sagaMiddleware.run(simSaga)
 ReactDOM.render(

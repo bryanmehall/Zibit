@@ -1,12 +1,12 @@
+
 const contentReducer = (state = {}, action) => {
-	//here state refers to entire state tree
+	//here state refers to sim section of tree
 	if (action.hasOwnProperty('payload')) {
 
-		console.log(state)
 		//return Object.assign({}, state, {
 		//	[name]: quantityReducer(state[name], action)
 		//})
-		return {}
+		return state
 	} else {
 		return state
 	}

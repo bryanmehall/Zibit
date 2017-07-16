@@ -2,7 +2,8 @@ import React, {PropTypes} from "react"
 import {connect} from "react-redux"
 import { bindActionCreators } from 'redux';
 
-import ContentActions from '../ducks/content/actions'
+import SimActions from '../ducks/sim/actions'
+import { isLoading } from '../ducks/sim/selectors'
 import {getValue} from '../ducks/quantity/selectors'
 import {getChildren} from '../ducks/widget/selectors'
 import Slider from './Slider'
@@ -34,7 +35,11 @@ class Sim extends React.Component {
 			return React.createElement(type, props)
 		}
 		var children = this.props.childData.map(createChild)
-
+		if (this.props.loading){
+			return <div style={{ ...cardStyle, left: pos.x, backgroundColor: '#fff', width: this.props.width, height: this.props.height }}>
+				Loading....
+			</div>
+		}
 		return (
 			<div style={{ ...cardStyle, left: pos.x, backgroundColor: '#fff' }}>
 				<svg width={this.props.width} height={this.props.height} id="sim">
@@ -69,14 +74,15 @@ class Sim extends React.Component {
 
 function mapStateToProps(state, props) {
 	return {
-		childData: getChildren(state, 'app')
+		childData: getChildren(state, 'app'),
+		loading: isLoading(state)
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
 		fetchSimData: (path) => {
-			dispatch(ContentActions.fetchSimData(path))
+			dispatch(SimActions.fetchSimData(path))
 		}
 
 	};

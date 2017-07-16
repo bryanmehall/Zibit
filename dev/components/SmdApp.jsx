@@ -39,18 +39,6 @@ class SmdApp extends React.Component {
 	render(){
 		const { actions } = this.props;
 		const sideBarWidth = 0.25*this.state.width
-		var childTypes = {
-			"Plot": Plot,
-            "Expression": Expression
-		}
-
-		function createChild(childData){
-			var type = childTypes[childData.type]
-			var props = childData.props
-			props.key = props.id
-			return React.createElement(type, props)
-		}
-		var children = this.props.childData.map(createChild)
 		const navPath = []
 		//console.log('sim match', this.props.match)
 		return (
@@ -71,7 +59,7 @@ class SmdApp extends React.Component {
 
 function mapStateToProps(state, props) {
 	return {
-		childData: getChildren(state, 'app')
+
 	};
 }
 

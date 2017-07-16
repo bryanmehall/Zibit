@@ -1,25 +1,23 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
-import ContentActions from './ducks/content/actions'
+import SimActions from './ducks/sim/actions'
 import axios from 'axios'
-//import Api from '...'
 
-// worker Saga: will be fired on USER_FETCH_REQUESTED actions
-export function fetchJson(path) {
+function fetchJson(path) {
 	const url = '/'+path.join('/')+'.json'
-	return axios.get(url);
+	return axios.get(url)
 }
 
 function* fetchSimData(action) {
 	try {
-		const response = yield call(fetchJson, action.payload.path);
-		yield put(ContentActions.initializeSimState(response.data));
+		const response = yield call(fetchJson, action.payload.path)
+		yield put(SimActions.initializeSimState(response.data))
 	} catch (e) {
-		yield put({ type: "SIM_DATA_FETCH_FAILED", message: e.message });
+		yield put({ type: "SIM_DATA_FETCH_FAILED", message: e.message })
 	}
 }
 
 function* simSaga() {
-	yield takeEvery("FETCH_SIM_DATA", fetchSimData);
+	yield takeEvery("FETCH_SIM_DATA", fetchSimData)
 }
 
-export default simSaga;
+export default simSaga

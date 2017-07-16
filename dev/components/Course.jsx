@@ -10,7 +10,6 @@ const Course = ({match}) => {
 		{name:'Courses', id:'courses'},
 		{name:match.params.courseId, id:match.params.courseId}
 	]
-	console.log(match.url)
 	return (
 		<Switch>
 

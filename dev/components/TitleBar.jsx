@@ -94,9 +94,6 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		setY0:(value) => {
-			dispatch(QuantityActions.setValue('y0', value))
-		},
 		setPlay:(name, value) => {
 			dispatch(QuantityActions.setPlay(name, value))
 		},

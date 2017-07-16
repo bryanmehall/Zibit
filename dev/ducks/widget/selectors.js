@@ -9,8 +9,9 @@ from '../quantity/selectors'
 
 
 const getWidget = function (state, id) {
+	const widgetState = state.sim.widget
 	try {
-		var widgetData = Object.assign({}, state.widgets[id])
+		var widgetData = Object.assign({}, widgetState[id])
 	widgetData.props.id = id
 	} catch (e){
 		throw "could not find widget named "+id

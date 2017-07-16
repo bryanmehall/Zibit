@@ -1,5 +1,5 @@
 export const initialState = JSON.stringify({
-	widgets: {
+	widget: {
 		app: {
 			type: 'SmdApp',
 			props: {},

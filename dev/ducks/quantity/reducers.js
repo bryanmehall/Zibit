@@ -1,5 +1,5 @@
 //import types from "./types";
-const defaultQuantityState = {//is this needed because we never create new quantities at runtime
+const defaultQuantityState = { //is this needed because we never create new quantities at runtime
 	value: 0,
 	selected: false,
 	min: 0,
@@ -58,6 +58,7 @@ const quantityReducer = (state = defaultQuantityState, action) => {
 
 const quantitiesReducer = (state = {}, action) => {
 	//here state refers to quantities object of state tree
+
 	if (action.hasOwnProperty('payload')) {
 		let name = action.payload.name
 		return Object.assign({}, state, {

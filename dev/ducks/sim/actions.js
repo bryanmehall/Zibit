@@ -7,7 +7,6 @@ const fetchSimData = (path) => ({
 
 const initializeSimState = (contentBlockData) => {
 	//initialize keyframes, selector functions ...? ...here
-	console.log(contentBlockData.initialState)
 	return {
 		type: 'INITIALIZE_SIM_STATE',
 		payload: {
@@ -16,5 +15,9 @@ const initializeSimState = (contentBlockData) => {
 	}
 }
 
+
+
 export default {
+	fetchSimData,
+	initializeSimState
 }

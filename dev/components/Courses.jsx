@@ -8,7 +8,6 @@ import NavBar from './NavBar'
 
 
 const Courses = ({match}) => {
-	console.log('match for course list is: ', match)
 	const navPath = [
 		{name:'Courses', id:'courses'}
 	]

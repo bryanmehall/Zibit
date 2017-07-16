@@ -36,14 +36,19 @@ function transform(value, scale) {
 
 
 //define value accessors
-export const getQuantityData = function (state, name) {//make this not avaliable
-	if (name === undefined) {
-		throw 'Selector Error: name is undefined'
-	}
+export const getQuantityData = function (state, name) { //make this not avaliable
 	try {
-		return state.quantities[name]
+		if (name === undefined) {
+			throw 'Selector Error: name is undefined'
+		} else if (name === 'animTime') { //should this abstraction go here?
+			return state.content.activeBlock.anim
+		} else {
+			return state.sim.quantity[name]
+		}
+
+
 	} catch (e) {
-		throw 'quantitiy ' + name + ' not found'
+		throw 'quantity ' + name + ' not found'
 	}
 }
 
