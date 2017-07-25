@@ -1,19 +1,24 @@
-import React, {PropTypes} from "react"
-import {connect} from "react-redux"
-import { bindActionCreators } from 'redux';
-import * as QuantityActions from '../ducks/quantity/actions';
-import {getValue} from '../ducks/quantity/selectors'
-import {getChildren} from '../ducks/widget/selectors'
+import React, { PropTypes } from "react"
+import { connect } from "react-redux"
+import { bindActionCreators } from 'redux'
+import * as QuantityActions from '../ducks/quantity/actions'
+import { getValue } from '../ducks/quantity/selectors'
+import { getChildren } from '../ducks/widget/selectors'
+import { getContentBlocks } from '../ducks/content/selectors'
+import { Link } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router'
 import Slider from './Slider'
 import TitleBar from './TitleBar'
 import Plot from './Plot'
 import Abstraction from './Abstraction'
 import Expression from './Expression'
 import Value from './Value'
-import SideBar from './SideBar'
+import InfoBar from './InfoBar'
 import NavBar from './NavBar'
+import ContentBlock from "./ContentBlock"
+
 import Sim from './Sim'
-import { cardStyle } from './styles'
+import { cardStyle, linkStyle, headerStyle } from './styles'
 
 
 class SmdApp extends React.Component {
@@ -38,29 +43,85 @@ class SmdApp extends React.Component {
 
 	render(){
 		const { actions } = this.props;
+		const partId = this.props.match.params.partId
+		const loading = this.props.loading
 		const sideBarWidth = 0.25*this.state.width
 		const navPath = []
-		//console.log('sim match', this.props.match)
-		return (
-			<div>
+		const createContentBlocks = (contentData) => (
+			<Link
+				key={contentData.id}
+				style={linkStyle}
+				to={`${this.props.match.url}/${contentData.id}`}
+				>
+				<Switch>
+					<Route
+					exact path={`${this.props.match.url}/${contentData.id}`}
+					render={()=>(
+						<ContentBlock
+						active={true}
+						{...contentData}
+						/>
+					)}
+					/>
+					<Route
+						path={`${this.props.match.url}`}
+						render={()=>(
+							<ContentBlock
+							active={false}
+							{...contentData}
+							/>
+						)}
+					/>
+				</Switch>
+
+
+
+			</Link>
+		)
+		if (loading){
+			return (<div>Loading</div>)
+		} else {
+			const contentBlocks = this.props.contentBlocks.map(createContentBlocks)
+			return (
 				<div style={{display:'relative'}}>
-					<NavBar path={navPath}></NavBar>
-                    <TitleBar width={sideBarWidth - cardStyle.margin} height={85}></TitleBar>
-					<SideBar width={sideBarWidth - cardStyle.margin} height={400}></SideBar>
+					<div style={{
+							overflow: "hidden",
+							width: sideBarWidth - cardStyle.margin,
+							fontFamily: '"Roboto", sans-serif',
+							fontWeight: "500",
+							fontSize: 15,
+							margin: 5,
+							position: 'absolute',
+						}}>
+						<div style={headerStyle}>
+							<div >Part 01: Simple Harmonic Oscillator</div>
+						</div>
+						{contentBlocks}
+					</div>
+					{/*<InfoBar
+						width={sideBarWidth - cardStyle.margin}
+						height={400}
+						partId={partId}
+						url={this.props.match.url}
+						></InfoBar>*/}
 					<Sim width={700} height={600} pos={{x:sideBarWidth+cardStyle.margin, y:100}}/>
 				</div>
+			)
+		}
 
-
-			</div>
-            )
 	}
 }
 
 
 function mapStateToProps(state, props) {
-	return {
+	if (props.loading){
+		return {}
+	} else {
+		return {
+			contentBlocks: getContentBlocks(state, props.match.params.partId)
+		}
+	}
 
-	};
 }
 
 function mapDispatchToProps(dispatch) {

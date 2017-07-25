@@ -14,9 +14,6 @@ sim: {
 const simReducer = (state = {}, action) => {
 	if (action.hasOwnProperty('payload')) {
 
-		//return Object.assign({}, state, {
-		//	[name]: quantityReducer(state[name], action)
-		//})
 		switch (action.type){
 			case "INITIALIZE_SIM_STATE":
 				const simData = action.payload.simData

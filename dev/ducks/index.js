@@ -1,10 +1,28 @@
 /*
 state Shape:
 	content:{
-		activeCourse: "controlStystems"
-		activePart: "simpleharmonicoscilator"
+		activeCourse: {
+			id : "controlSystems"
+			title: "Control Systems",
+			parts:[
+				"intro",
+				"simpleharmonicoscillator",
+				"dampedharmonicoscillator",
+			]
+		}
+
+		activePart: {
+			id:"simpleharmonicoscillator "
+			title: Simple Harmonic oscillator
+			blocks:[
+					id:damping
+			]
+		}
 		activeBlock: {
 			id: "damping"
+			complete: false
+			Title:"damping"
+			text:"adjust damping ratio
 			anim:{//must be a quantity object
 					"value": 0,
 					"min": 0,
@@ -18,15 +36,7 @@ state Shape:
 				},
 			tests?
 		}
-		blocks:[
-			{
-				id:damping
-				complete: false
-				Title:"damping"
-				}
-				text:"adjust damping ratio
-			}
-		]
+
 	},
 	sim:{
 		quantity     	//quantity reducers

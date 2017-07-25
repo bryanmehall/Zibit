@@ -9,7 +9,7 @@ const defaultQuantityState = { //is this needed because we never create new quan
 	state: "none"
 }
 
-const quantityReducer = (state = defaultQuantityState, action) => {
+export const quantityReducer = (state = defaultQuantityState, action) => {
 	//here state refers to an individual quantity object
 	switch (action.type) {
 		case 'SET_VALUE': {
@@ -64,6 +64,7 @@ const quantitiesReducer = (state = {}, action) => {
 		return Object.assign({}, state, {
 			[name]: quantityReducer(state[name], action)
 		})
+
 	} else {
 		return state
 	}

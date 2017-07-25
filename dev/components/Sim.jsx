@@ -12,7 +12,6 @@ import Plot from './Plot'
 import Abstraction from './Abstraction'
 import Expression from './Expression'
 import Value from './Value'
-import SideBar from './SideBar'
 import { cardStyle } from './styles'
 
 
@@ -36,7 +35,7 @@ class Sim extends React.Component {
 		}
 		var children = this.props.childData.map(createChild)
 		if (this.props.loading){
-			return <div style={{ ...cardStyle, left: pos.x, backgroundColor: '#fff', width: this.props.width, height: this.props.height }}>
+			return <div style={{ ...cardStyle, left: pos.x, backgroundColor: '#eee', width: this.props.width, height: this.props.height }}>
 				Loading....
 			</div>
 		}

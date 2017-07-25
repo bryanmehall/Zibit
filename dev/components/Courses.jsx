@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Route, Switch } from 'react-router'
+import { Route, Switch, Redirect } from 'react-router'
 import { linkStyle } from './styles'
 import Course from "./Course"
 import SmdApp from './SmdApp'
@@ -13,10 +13,10 @@ const Courses = ({match}) => {
 	]
 	return (
 		<Switch>
+
 			<Route path={`${match.url}/:courseId`} component={Course}/>
-			<Route exact path={match.url} >
+			<Route exact path={match.url}>
 				<div>
-				<NavBar path={navPath}></NavBar>
 				<ul>
 					<li>
 						<Link style={linkStyle} to={`${match.url}/controlsystems`}>
@@ -26,6 +26,7 @@ const Courses = ({match}) => {
 				</ul>
 				</div>
 			</Route>
+			<Redirect from="/courses/" to="/courses" />
 		</Switch>
 
 

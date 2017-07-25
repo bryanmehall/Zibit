@@ -1,32 +1,78 @@
 import React from "react";
-import {connect} from "react-redux"
+import { connect } from "react-redux"
 import { bindActionCreators } from 'redux';
-import QuantityActions from '../ducks/quantity/actions';
+import { Link } from 'react-router-dom'
+import { linkStyle } from './styles'
+import { Route, Switch, Redirect } from 'react-router'
+import ContentActions from '../ducks/content/actions'
+import { getContentBlocks } from '../ducks/content/selectors'
 import {getValue, getTransformedValue, getCoordSys, getQuantityData} from '../ducks/quantity/selectors'
-import Animation from "./Animation";
-import ConceptCheck from "./ConceptCheck"
+import ContentBlock from "./ContentBlock"
 import {cardStyle} from './styles'
 
 class InfoBar extends React.Component {
-
+	componentDidMount(){
+		const path = ['courses', 'controlsystems', 'dho']
+		//this.props.fetchPartData(path)
+	}
 	render() {
 		var headerStyle = {
-			backgroundColor:"#667",
-			color : '#eee',
-			height:"20px",
 
-            boxShadow:"0 0px 4px 0 rgba(0, 0, 0, 0.5)",
-			paddingLeft:18,
-			paddingTop:10,
-			paddingBottom:10
+			fontSize:20,
+			color : '#eee',
+			textAlign: 'center',
+
+			padding:20
 		}
+		const createContentBlocks = (contentData) => (
+
+			<Link
+				key={contentData.id}
+				style={linkStyle}
+				to={`${this.props.url}/${contentData.id}`}
+				>
+				<Switch>
+					<Route
+					exact path={`${this.props.url}/${contentData.id}`}
+					render={()=>(
+						<ContentBlock
+						active={true}
+						{...contentData}
+						/>
+					)}
+					/>
+					<Route
+						path={`${this.props.url}`}
+						render={()=>(
+							<ContentBlock
+							active={false}
+							{...contentData}
+							/>
+						)}
+					/>
+				</Switch>
+
+
+
+			</Link>
+		)
+		const contentBlocks = this.props.contentBlocks.map(createContentBlocks)
+
 		return (
-			<div style={{...cardStyle, top: 162,backgroundColor: "#eee", overflow: "hidden", width: this.props.width}}>
+			<div style={{
+					overflow: "hidden",
+					width: this.props.width,
+					fontFamily: '"Roboto", sans-serif',
+					fontWeight: "500",
+					fontSize: 15,
+					margin: 5,
+					position: 'absolute',
+				}}>
                 <div style={headerStyle}>
-					<div >Concept Check</div>
+					<div >Part 01: Simple Harmonic Oscillator</div>
 				</div>
-				<div style={{ fontSize: 13, padding:10}}>
-					{this.props.children}
+				<div style={{ fontSize: 13, padding:0}}>
+					{contentBlocks}
 				</div>
             </div>
 		)
@@ -36,20 +82,16 @@ class InfoBar extends React.Component {
 
 
 function mapStateToProps(state, props) {
-	var br = props.boundingRect
 	return {
-	};
+		contentBlocks: getContentBlocks(state, props.partId)
+	}
 }
 
 function mapDispatchToProps(dispatch) {
-	return {
-		setY0:(value) => {
-			dispatch(QuantityActions.setValue('y0', value))
-		},
-	};
+	return {}
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(InfoBar);
+)(InfoBar)
