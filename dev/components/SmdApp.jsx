@@ -73,9 +73,6 @@ class SmdApp extends React.Component {
 						)}
 					/>
 				</Switch>
-
-
-
 			</Link>
 		)
 		if (loading){
@@ -83,7 +80,7 @@ class SmdApp extends React.Component {
 		} else {
 			const contentBlocks = this.props.contentBlocks.map(createContentBlocks)
 			return (
-				<div style={{display:'relative'}}>
+				<div style={{ display: 'relative' }}>
 					<div style={{
 							overflow: "hidden",
 							width: sideBarWidth - cardStyle.margin,
@@ -104,7 +101,14 @@ class SmdApp extends React.Component {
 						partId={partId}
 						url={this.props.match.url}
 						></InfoBar>*/}
-					<Sim width={700} height={600} pos={{x:sideBarWidth+cardStyle.margin, y:100}}/>
+					<Route
+						exact path={`${this.props.match.url}/:contentId`}
+						render = {
+							(props) => {
+								return <Sim width={700}{...props} height={600} pos={{ x: sideBarWidth+cardStyle.margin, y: 100 }}/>
+							}
+						}
+						/>
 				</div>
 			)
 		}

@@ -4,7 +4,12 @@ import ContentActions from './ducks/content/actions'
 import axios from 'axios'
 
 function fetchJson(path) {
-	const url = '/'+path.join('/')+'.json'
+	let url
+	if (typeof path === 'string'){
+		url = path+'.json'
+	} else {
+		url = '/'+path.join('/')+'.json'
+	}
 	return axios.get(url)
 }
 //sim

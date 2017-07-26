@@ -16,11 +16,28 @@ import { cardStyle } from './styles'
 
 
 class Sim extends React.Component {
+	constructor(props){
+		super(props)
+		this.loadSim = this.loadSim.bind(this)
+	}
+
 	componentDidMount(){
-		const path = ['courses', 'controlsystems', 'dho', 'intro']
-		this.props.fetchSimData(path)
+		const url = this.props.match.url
+		this.loadSim(url)
+	}
+	componentWillReceiveProps(nextProps){
+		//componentWill update takes next props as argument
+		const url = nextProps.match.url
+		if (this.props.match.url !== url) {//only update on change
+			this.loadSim(url)
+		}
+	}
+	loadSim(url){
+
+		this.props.fetchSimData(url)
 	}
 	render(){
+
 		const pos = this.props.pos || { x: 100, y: 100 }
 		var childTypes = {
 			"Plot": Plot,
