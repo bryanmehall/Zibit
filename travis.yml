@@ -1,0 +1,8 @@
+language: node_js
+
+install:
+  - npm install
+
+before_script:
+  - node run build:client
+  - node run build:server
