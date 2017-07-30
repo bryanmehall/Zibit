@@ -48,7 +48,7 @@
 		}
 	],
 	"initialState": {
-		"widgets": {
+		"widget": {
 			"app": {
 				"type": "SmdApp",
 				"props": {},
@@ -247,7 +247,7 @@
 				"children": []
 			}
 		},
-		"quantities": {
+		"quantity": {
 			"animTime": {
 				"value": 0,
 				"min": 0,

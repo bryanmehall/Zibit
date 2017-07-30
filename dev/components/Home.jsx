@@ -6,7 +6,6 @@ import {linkStyle} from './styles'
 
 class Home extends React.Component {
 	render(){
-		console.log('link', linkStyle)
 		return (
 			<div>
 				<ZibitLogo width={120}></ZibitLogo>

@@ -2,7 +2,8 @@ import React, {PropTypes} from "react"
 import {connect} from "react-redux"
 import { bindActionCreators } from 'redux';
 
-import ContentActions from '../ducks/content/actions'
+import SimActions from '../ducks/sim/actions'
+import { isLoading } from '../ducks/sim/selectors'
 import {getValue} from '../ducks/quantity/selectors'
 import {getChildren} from '../ducks/widget/selectors'
 import Slider from './Slider'
@@ -11,16 +12,32 @@ import Plot from './Plot'
 import Abstraction from './Abstraction'
 import Expression from './Expression'
 import Value from './Value'
-import SideBar from './SideBar'
 import { cardStyle } from './styles'
 
 
 class Sim extends React.Component {
+	constructor(props){
+		super(props)
+		this.loadSim = this.loadSim.bind(this)
+	}
+
 	componentDidMount(){
-		const path = ['courses', 'controlsystems', 'dho', 'intro']
-		this.props.fetchSimData(path)
+		const url = this.props.match.url
+		this.loadSim(url)
+	}
+	componentWillReceiveProps(nextProps){
+		//componentWill update takes next props as argument
+		const url = nextProps.match.url
+		if (this.props.match.url !== url) {//only update on change
+			this.loadSim(url)
+		}
+	}
+	loadSim(url){
+
+		this.props.fetchSimData(url)
 	}
 	render(){
+
 		const pos = this.props.pos || { x: 100, y: 100 }
 		var childTypes = {
 			"Plot": Plot,
@@ -34,7 +51,11 @@ class Sim extends React.Component {
 			return React.createElement(type, props)
 		}
 		var children = this.props.childData.map(createChild)
-
+		if (this.props.loading){
+			return <div style={{ ...cardStyle, left: pos.x, backgroundColor: '#eee', width: this.props.width, height: this.props.height }}>
+				Loading....
+			</div>
+		}
 		return (
 			<div style={{ ...cardStyle, left: pos.x, backgroundColor: '#fff' }}>
 				<svg width={this.props.width} height={this.props.height} id="sim">
@@ -69,14 +90,15 @@ class Sim extends React.Component {
 
 function mapStateToProps(state, props) {
 	return {
-		childData: getChildren(state, 'app')
+		childData: getChildren(state, 'app'),
+		loading: isLoading(state)
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
 		fetchSimData: (path) => {
-			dispatch(ContentActions.fetchSimData(path))
+			dispatch(SimActions.fetchSimData(path))
 		}
 
 	};

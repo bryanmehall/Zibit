@@ -12,8 +12,8 @@ class NavBar extends React.Component {
 			fontFamily: "helvetica",
 			verticalAlign:'middle',
 			fontSize: 15,
-			marginLeft:20,
-			padding:16,
+			marginLeft:25,
+			padding:10,
 			height:30,
 			color:"#eee"
 		}
@@ -35,8 +35,8 @@ class NavBar extends React.Component {
 
 			)
 		}
-
-		this.props.path.forEach(createLinks)
+		const path = this.props.path || []
+		path.forEach(createLinks)
 		return (
 			<div style={navBarStyle}>
 				<Link to="/"><ZibitLogo></ZibitLogo></Link>

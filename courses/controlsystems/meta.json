@@ -1,0 +1,82 @@
+{
+	"id": "controlsystems",
+	"title": "Control Systems",
+	"parts":[
+		{
+			"id":"intro",
+			"title":"Intro",
+			"contentBlocks":[
+				{
+					"id":"intro",
+					"title":"intro",
+					"type":"test"
+				}
+			]
+		},
+		{
+			"id":"simpleharmonicoscillator",
+			"title":"Simple Harmonic Oscillator",
+
+			"contentBlocks":[
+				{
+					"id":"introduction",
+					"title":"Introduction",
+					"type":"anim",
+					"text":"Intro to simple harmonic motion"
+				},
+				{
+					"id":"hookes-law",
+					"title":"Hooke's Law",
+					"type":"anim",
+					"text":"Hooke's Law",
+					"complete": true
+				},
+				{
+					"id":"hookes-law-check",
+					"title":"",
+					"type":"test",
+					"text":"Hooke's Law: Drag the mass so that the reaction force of the spring is 20N",
+					"complete": true
+				},
+				{
+					"id":"forces",
+					"title":"Forces",
+					"type":"anim",
+					"text":"Forces in a simple harmonic oscillator"
+				},
+				{
+					"id":"frequency",
+					"title":"Frequency",
+					"type":"test",
+					"text":"Natural Frequency: Adjust the spring constant so the frequency is 2Hz",
+					"complete": false
+				},
+				{
+					"id":"spring-constant",
+					"title":"Spring Constant",
+					"type":"test",
+					"text":"Adjust the spring constant so that the system doesn't oscillate",
+					"complete": false
+				},
+				{
+					"id": "assumptions",
+					"title":"Assumptions",
+					"type":"anim",
+					"text":"Simplifications of spring model"
+				}
+			]
+		},
+		{
+			"id":"dho",
+			"title":"Damped Harmonic Oscillator",
+			"contentBlocks":[
+				{
+					"id":"intro",
+					"title":"intro",
+					"type":"test",
+					"text": "damping"
+				}
+			]
+		}
+	]
+}

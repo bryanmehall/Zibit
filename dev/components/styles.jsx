@@ -24,7 +24,7 @@ export const cardStyle = {
 export const linkStyle = {
 	fontFamily: '"Roboto Condensed", sans-serif',
 	fontWeight: "500",
-	color:"#eee",
+	color:"#ccc",
 	cursor: 'pointer',
 	fontSize: 15,
 	textDecoration: 'none'
@@ -52,6 +52,12 @@ export const axisLabelStyle = {
     textAnchor:"middle",
     alignmentBaseline:"middle",
     cursor: "default",
+}
+export const headerStyle = {
+	fontSize:20,
+	color : '#eee',
+	textAlign: 'center',
+	padding:20
 }
 
 export const displayValue = (value) => {

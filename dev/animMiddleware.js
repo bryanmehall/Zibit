@@ -25,7 +25,6 @@ export const animMiddleware = store => next => action => {
 		var initValue = getValue(state, name)
 		store.dispatch(QuantityActions.animStep(name, t, initValue))
 	}
-
 	if (action.type === "SET_VALUE" && action.payload.name === 'animTime'){
 		var state = store.getState()
 		var prevTime = getValue(state, 'animTime')
@@ -36,7 +35,9 @@ export const animMiddleware = store => next => action => {
 			audio.currentTime = t
 		}
 	} else if (action.type === 'ANIM_PLAY') {
-
+		if (action.payload.name === 'animTime'){
+			audio.play()
+		}
 		requestAnimationFrame(animStart);
 	} else if (action.type === 'ANIM_STEP') {
 		requestAnimationFrame(animStep)

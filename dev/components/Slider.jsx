@@ -115,9 +115,11 @@ class Slider extends React.Component {
 
 function mapStateToProps(state, props) {
 	//add support for full coordinate system
+
     const min = props.min || getMin(state, props.quantity)
     const max = props.max || getMax(state, props.quantity)
-    const value = getValue(state, props.quantity)
+    const value = props.value || getValue(state, props.quantity)
+
     const length = dist(props.p1,props.p2)
     const dx = props.p2.x-props.p1.x
     const dy = props.p2.y-props.p1.y

@@ -1,3 +1,5 @@
 /node_modules
 /output/
+/dist/
+server.js
 /output/components-bundle.js

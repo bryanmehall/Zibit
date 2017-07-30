@@ -2,19 +2,20 @@ import React from 'react'
 
 export default class ZibitLogo extends React.Component {
   render() {
-	  const r = 5/4 //ratio of height to width --this is correct for 5/4 but broken otherwise
-	  const w = this.props.width || 30//width
+	  const r = 1.6180339 //ratio of height to width --this is correct for 5/4 but broken otherwise
+	  const w = this.props.width || 22//width
 	  const h = w*r //height
-	  const t = w/4 //thickness
+	  const t = w/3.5 //thickness
 	  const topColor ="#58de58"
-	  const diagonalColor="#5858de"
-	  const bottomColor = "#00ffff"
-	  const diagonalOpacity = 0.6
+	  const diagonalColor="#ccd"
+	  const bottomColor = "#fac531"
+	  const diagonalOpacity = 0.83
 
 	  const pos = this.props.pos || { x: 0, y: 0 }
 	  const slope = h/(w-t*r)
+	  const dt = Math.sqrt(t*t+(t/slope)*(t/slope))
 	  const topPath = 'M0 0 L'+w+' 0L'+(w-t/slope)+' '+t+'L0 '+t
-	  const diagonalPath = 'M'+(w-t*r)+' 0L'+w+' 0L'+(t*r)+' '+h+'L0 '+h
+	  const diagonalPath = 'M'+(w-dt)+' 0L'+w+' 0L'+dt+' '+h+'L0 '+h
 
 	  const top = (
 		  <path
@@ -42,7 +43,7 @@ export default class ZibitLogo extends React.Component {
                       />)
 	   const text = (
 		   <text
-			   x={w*16/15}
+			   x={w*14.115/15}//14.115/15 to make touching
 			   fontFamily='"Yanone Kaffeesatz", sans-serif'
 			   y={h}
 			   fontSize={h}

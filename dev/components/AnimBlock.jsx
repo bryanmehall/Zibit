@@ -6,8 +6,9 @@ import Animation from "./Animation"
 import Slider from "./Slider"
 import { audio } from '../anim'
 import {cardStyle} from './styles'
+import {Anim} from './icons'
 
-class TitleBar extends React.Component {
+class AnimBlock extends React.Component {
 	constructor(props){
 		super(props)
 		this.onDragStart = this.onDragStart.bind(this)
@@ -15,26 +16,26 @@ class TitleBar extends React.Component {
 		this.onDragEnd = this.onDragEnd.bind(this)
 	}
     onDragStart(props, initVal){
-		this.isPlaying = this.props.playing
+		//this.isPlaying = this.props.playing
 
-		this.props.setPlay('animTime', false)
+		//this.props.setPlay('animTime', false)
 		audio.pause()
 	}
 	onDragEnd(props, endVal) {
 		if (this.isPlaying){
 			audio.play()
 		}
-		this.props.setPlay('animTime', this.isPlaying)
+		//this.props.setPlay('animTime', this.isPlaying)
 	}
 	onPlay(){
-		audio.play()
+		audio.play()//move these to anim middleware
 	}
 	onPause(){
 		audio.pause()
 	}
     render(){
-        const width = this.props.width
-		const height = this.props.height
+		const width = this.props.width || 100
+		const height = this.props.height || 30
 		const titleFontSize = 15
 		const color = '#eee'
 		const textStyle = {
@@ -49,54 +50,62 @@ class TitleBar extends React.Component {
 			fontFamily: "helvetica",
 			fontSize: 15
 		}
+		const slider = (
+			<Slider
+				p1={{ x: 18, y: height-12 }}
+				p2={{ x: width-18, y: height-12 }}
+				min={0}
+				max={10}
+				value={3}
+				showAxis={false}
+				//onDragEnd={this.onDragEnd}
+				//onDragStart={this.onDragStart}
+
+				>
+				<circle cx={0} cy={0} r={8} fill="#eee" filter="url(#dropShadow)"></circle>
+			</Slider>
+		)
         return (
-            <div style={{ ...cardStyle,  width:width, backgroundColor: '#667', color: "#eee"}}>
-				<div style={{ top: "14%", left:"25%", position:"absolute", textAlign:"center"}}>
-					<div>Part 01:</div>
-					<div>Simple Harmonic Oscillator</div>
+            <div style={{display: "flex"}}>
+				<div style={{ width: 50 }}>
+					<Anim state="paused"></Anim>
 				</div>
 
+				<div style={{ flexGrow: 1, paddingTop: 8, paddingLeft: 10 }}>
+					{ this.props.active ? this.props.text : this.props.title }
+					{ this.props.active ? slider : null}
+				</div>
+
+			</div>
+			/*
 				<svg
-					width={width}
-					height={height}
+					width={this.props.width}
+					height={50}
 					>
 					<Animation
 						pos={{ x: 18, y: 13 } }
-						quantity="animTime"
 						scale={1.7}
 						color={color}
 						onPlay={this.onPlay}
 						onPause={this.onPause}
 						/>
-					<Slider
-						p1={{ x: 18, y: height-12 }}
-						p2={{ x: width-18, y: height-12 }}
-						quantity="animTime"
-						showAxis={false}
-						onDragEnd={this.onDragEnd}
-						onDragStart={this.onDragStart}
-						>
-
-						<circle cx={0} cy={0} r={8} fill="#eee" filter="url(#dropShadow)"></circle>
-					</Slider>
 				</svg>
-        	</div>
+        	</div>*/
         )
     }
 }
 
 function mapStateToProps(state, props) {
-	var br = props.boundingRect
 	return {
-		playing:getPlaying(state, 'animTime')
+		//playing:getPlaying(state, 'animTime')
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		setPlay:(name, value) => {
+		/*setPlay:(name, value) => {
 			dispatch(QuantityActions.setPlay(name, value))
-		},
+		},*/
 	};
 }
 
@@ -104,4 +113,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TitleBar);
+)(AnimBlock);

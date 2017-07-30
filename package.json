@@ -4,19 +4,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "babel-node server-es6.js",
+    "build:server": "NODE_ENV='production' babel server-es6.js --out-file server.js",
+    "build:client": "NODE_ENV='production' webpack -p --config webpack.prod.config.js --progress",
+    "clean":"rimraf dist/* && rimraf server.js"
   },
   "author": "Bryan Mehall",
   "license": "BSD-2-Clause",
   "dependencies": {
     "axios": "^0.16.2",
+    "express": "^4.15.3",
+    "express-winston-2": "0.0.2",
     "history": "^4.6.3",
     "numeric": "1.2.6",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
+    "react-collapse": "^4.0.2",
     "react-cursor-position": "^2.1.0",
     "react-dom": "^15.5.4",
     "react-editable-svg-label": "^1.1.1",
+    "react-motion": "^0.5.0",
     "react-portal": "^3.1.0",
     "react-redux": "^5.0.3",
     "react-router-dom": "^4.1.1",
@@ -24,9 +32,11 @@
     "react-svg-morph": "^0.1.10",
     "redux": "^3.6.0",
     "redux-devtools-extension": "^2.13.2",
+    "redux-raven-middleware": "^1.2.0",
     "redux-routing": "^0.3.2",
     "redux-saga": "^0.15.4",
-    "reselect": "^3.0.1"
+    "reselect": "^3.0.1",
+    "rimraf": "^2.6.1"
   },
   "babel": {
     "presets": [
@@ -41,6 +51,8 @@
     "sourceMaps": true
   },
   "devDependencies": {
+    "@types/selenium-webdriver": "^2.44.26",
+    "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^6.4.1",
     "babel-plugin-transform-object-assign": "^6.22.0",
@@ -57,8 +69,10 @@
     "jsx-loader": "^0.13.2",
     "redux-devtools": "^3.3.2",
     "redux-logger": "^3.0.1",
-    "webpack": "~2.2.1",
+    "webpack": "^2.1.0-beta.21",
     "webpack-deploy": "github:productboard/webpack-deploy",
-    "webpack-dev-server": "^2.5.0"
+    "webpack-dev-middleware": "^1.11.0",
+    "webpack-dev-server": "2.1.0-beta.10",
+    "webpack-hot-middleware": "^2.18.2"
   }
 }

@@ -8,7 +8,7 @@ import {cardStyle} from './styles'
 import InfoBar from "./InfoBar"
 import Handle from "./Handle"
 import Slider from "./Slider"
-import ConceptCheck from "./ConceptCheck"
+import ContentBlock from "./ContentBlock"
 
 
 
@@ -16,33 +16,16 @@ class SideBar extends React.Component {
 
 	render() {
 
-		var width = 300
-		var height = 85
-		var titleFontSize = 15
-		var color = '#eee'
-		var textStyle = {
-			fontSize: titleFontSize,
-			textAnchor: "middle",
-			x: (width+50)/2,
-			fill: color,
-
-		}
-		var sideBarStyle = {
-			width: '25%',
-			fontFamily: "helvetica",
-			fontSize: 15,
-			top: 120,
-			width: this.props.width
-		}
 
 		return (
-			<div style={sideBarStyle}>
+			<div >
 				<InfoBar width={this.props.width}>
-					<ConceptCheck questionState={"completed"}>
+					<ContentBlock >Intro</ContentBlock>
+					<ContentBlock questionState={"completed"}>
 						Adjust the damping coefficient so the oscillations don't decrease over time
-					</ConceptCheck>
-					<ConceptCheck questionState={"active"}> Adjust the damping coefficient so the system never oscillates</ConceptCheck>
-					<ConceptCheck questionState={"inactive"}>Explore the relationship between the damping ratio and spring constant</ConceptCheck>
+					</ContentBlock>
+					<ContentBlock questionState={"active"}> Adjust the damping coefficient so the system never oscillates</ContentBlock>
+					<ContentBlock questionState={"inactive"}>Explore the relationship between the damping ratio and spring constant</ContentBlock>
 				</InfoBar>
             </div>
 
@@ -55,7 +38,7 @@ class SideBar extends React.Component {
 function mapStateToProps(state, props) {
 	var br = props.boundingRect
 	return {
-		playing:getPlaying(state, 'animTime')
+		//playing:getPlaying(state, 'animTime')
 	};
 }
 
