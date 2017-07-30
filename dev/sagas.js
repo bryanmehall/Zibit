@@ -6,10 +6,11 @@ import axios from 'axios'
 function fetchJson(path) {
 	let url
 	if (typeof path === 'string'){
-		url = path+'.json'
+		url = '/content'+path+'.json'
 	} else {
-		url = '/'+path.join('/')+'.json'
+		url = '/content/'+path.join('/')+'.json'
 	}
+	console.log(url)
 	return axios.get(url)
 }
 //sim

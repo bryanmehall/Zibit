@@ -1,8 +1,8 @@
 var webpack = require("webpack");
 var path = require("path");
- 
+
 var DEV = path.resolve(__dirname, "dev");
-var OUTPUT = path.resolve(__dirname, "output");
+var DIST = path.resolve(__dirname, "dist");
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -16,7 +16,7 @@ var config = {
 	entry: ['babel-polyfill', DEV + "/smd.jsx"],
 	output: {
 		filename: "bundle.js",
-		path: __dirname,
+		path: DIST,//__dist
 		publicPath: '/'
 	},
 	devServer: {
@@ -34,8 +34,10 @@ var config = {
 	resolve: {
 		extensions: ['.js', '.jsx']
 	},
-	watch: true,
-	plugins: [HtmlWebpackPluginConfig]
+	plugins: [
+		HtmlWebpackPluginConfig
+	]
+
 };
- 
+
 module.exports = config;

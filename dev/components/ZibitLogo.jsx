@@ -7,9 +7,9 @@ export default class ZibitLogo extends React.Component {
 	  const h = w*r //height
 	  const t = w/3.5 //thickness
 	  const topColor ="#58de58"
-	  const diagonalColor="#5858de"
-	  const bottomColor = "#00ffff"
-	  const diagonalOpacity = 0.6
+	  const diagonalColor="#ccd"
+	  const bottomColor = "#fac531"
+	  const diagonalOpacity = 0.83
 
 	  const pos = this.props.pos || { x: 0, y: 0 }
 	  const slope = h/(w-t*r)

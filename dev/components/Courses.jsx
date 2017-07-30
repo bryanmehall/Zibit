@@ -23,6 +23,17 @@ const Courses = ({match}) => {
 							Control Systems
 						</Link>
 					</li>
+					<li>
+						<Link style={linkStyle} to={`${match.url}/calculus`}>
+							Calculus
+						</Link>
+					</li>
+					<li>
+						<Link style={linkStyle} to={`${match.url}/mechanics`}>
+							Mechanics
+						</Link>
+					</li>
+
 				</ul>
 				</div>
 			</Route>
