@@ -8,7 +8,7 @@ npm install
 includes webpack watching files but no hot module reloading
 
 ### testing
-* pushes to github triggers travic CI 
+* pushes to github triggers travis CI 
 * need to add test coverage
 ### production
 
