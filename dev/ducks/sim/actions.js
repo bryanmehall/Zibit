@@ -15,9 +15,20 @@ const initializeSimState = (contentBlockData) => {
 	}
 }
 
+const simDataFetchFailed = (error) => (
+	{
+		type: "SIM_DATA_FETCH_FAILED",
+		payload:{
+			message: error.message
+		}
+	}
+)
+
+
 
 
 export default {
 	fetchSimData,
-	initializeSimState
+	initializeSimState,
+	simDataFetchFailed
 }

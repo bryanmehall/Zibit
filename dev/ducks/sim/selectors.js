@@ -1,3 +1,3 @@
 const getSimData = (state) => (state.sim)
 
-export const isLoading = (state) => ( getSimData(state).loading)
+export const getLoadState = (state) => (getSimData(state).loadState)

@@ -1,9 +1,8 @@
 import React, {PropTypes} from "react"
 import {connect} from "react-redux"
 import { bindActionCreators } from 'redux';
-
 import SimActions from '../ducks/sim/actions'
-import { isLoading } from '../ducks/sim/selectors'
+import { getLoadState } from '../ducks/sim/selectors'
 import {getValue} from '../ducks/quantity/selectors'
 import {getChildren} from '../ducks/widget/selectors'
 import Slider from './Slider'
@@ -27,6 +26,7 @@ class Sim extends React.Component {
 	}
 	componentWillReceiveProps(nextProps){
 		//componentWill update takes next props as argument
+
 		const url = nextProps.match.url
 		if (this.props.match.url !== url) {//only update on change
 			this.loadSim(url)
@@ -50,15 +50,21 @@ class Sim extends React.Component {
 			props.key = props.id
 			return React.createElement(type, props)
 		}
-		var children = this.props.childData.map(createChild)
-		if (this.props.loading){
-			return <div style={{ ...cardStyle, left: pos.x, backgroundColor: '#eee', width: this.props.width, height: this.props.height }}>
-				Loading....
+		const children = this.props.childData.map(createChild)
+		if (this.props.loadState === 'error'){
+			return <div style={{ ...cardStyle, left: pos.x, backgroundColor: '#fff', width: this.props.width, height: this.props.height }}>
+				Error: Failed to Load Simulation
 			</div>
 		}
+		const loadingIcon = <div style={{ position: 'absolute' }}>Loading</div>
 		return (
 			<div style={{ ...cardStyle, left: pos.x, backgroundColor: '#fff' }}>
-				<svg width={this.props.width} height={this.props.height} id="sim">
+				{this.props.loadState === "loading" ? loadingIcon : null }
+				<svg
+					width={this.props.width}
+					height={this.props.height}
+					id="sim"
+					>
 				<defs>
 					<filter id="highlight" primitiveUnits="userSpaceOnUse">
 						<feMorphology operator="dilate" radius="1.5" in="SourceAlpha" result="expanded"/>
@@ -91,7 +97,7 @@ class Sim extends React.Component {
 function mapStateToProps(state, props) {
 	return {
 		childData: getChildren(state, 'app'),
-		loading: isLoading(state)
+		loadState: getLoadState(state)
 	};
 }
 

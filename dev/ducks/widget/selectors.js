@@ -14,7 +14,7 @@ const getWidget = function (state, id) {
 		var widgetData = Object.assign({}, widgetState[id])
 	widgetData.props.id = id
 	} catch (e){
-		throw "could not find widget named "+id
+		throw new Error("could not find widget named "+id)
 	}
 
 	return widgetData

@@ -10,16 +10,16 @@ function fetchJson(path) {
 	} else {
 		url = '/content/'+path.join('/')+'.json'
 	}
-	console.log(url)
 	return axios.get(url)
 }
+
 //sim
 function* fetchSimData(action) {
 	try {
 		const response = yield call(fetchJson, action.payload.path)
 		yield put(SimActions.initializeSimState(response.data))
 	} catch (e) {
-		yield put({ type: "SIM_DATA_FETCH_FAILED", message: e.message })
+		yield put(SimActions.simDataFetchFailed(e))
 	}
 }
 

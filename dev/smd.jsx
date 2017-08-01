@@ -34,7 +34,6 @@ const initialState = {
 		}
 	},
 	sim: {
-		loading:true,
 		widget: {
 			"app": {
 				"type": "SmdApp",

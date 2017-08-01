@@ -39,7 +39,7 @@ function transform(value, scale) {
 export const getQuantityData = function (state, name) { //make this not avaliable
 	try {
 		if (name === undefined) {
-			throw 'Selector Error: name is undefined'
+			throw new Error('Selector Error: name is undefined')
 		} else if (name === 'animTime') { //should this abstraction go here?
 			return state.content.activeBlock.anim
 		} else {
@@ -48,7 +48,7 @@ export const getQuantityData = function (state, name) { //make this not avaliabl
 
 
 	} catch (e) {
-		throw 'quantity ' + name + ' not found'
+		throw new Error('quantity ' + name + ' not found')
 	}
 }
 
