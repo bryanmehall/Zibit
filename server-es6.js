@@ -1,18 +1,14 @@
 import path from "path"
 import express from "express"
-import webpack from "webpack"
 import fs from 'fs'
 import expressWinston from 'express-winston-2'
 import winston from 'winston'
-import webpackDevMiddleware from "webpack-dev-middleware"
-import config from "./webpack.dev.config.js"
-import request from 'request'
 
 const app = express(),
       DIST_DIR = path.join(__dirname, "dist"),
 	  HTML_FILE     = path.join(DIST_DIR, "index.html"),
-      PORT     = 3000,
-      compiler = webpack(config)
+      PORT     = 3000
+
 console.log(process.env.NODE_ENV)
 const isDevelopment  = process.env.NODE_ENV  !== "production"
 const DEFAULT_PORT = 3000
@@ -23,6 +19,12 @@ app.set("port", process.env.PORT || DEFAULT_PORT);
 
 
 if (isDevelopment) {
+	//import these in development mode only so they are not needed in production
+	//this whole if block should probably just be moved to a different file
+	const webpack = require('webpack')
+	const webpackDevMiddleware = require('webpack-dev-middleware')
+	const config = require("./webpack.dev.config.js")
+	const compiler = webpack(config)
 	app.use(webpackDevMiddleware(compiler, {
 		publicPath: config.output.publicPath,
 		stats: {
