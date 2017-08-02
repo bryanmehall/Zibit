@@ -61,34 +61,38 @@ export const TestIcon = ({ state }) => {
 }
 
 export const pause = (
-	<svg width={40} height={40} viewBox="0 0 40 40" >
 		<path
 			d= "M0,0 L7,0 7,20 0,20 M11,0 L18,0 18,20 11,20"
 			fill="#888"
 		/>
-	</svg>
 )
 
 export const play = (
-	<svg width={40} height={40} viewBox="0 0 40 40" >
 		<g transform = "translate(8,8) scale(1.2)">
 			<path
 				d= "M0,0 L9,5 9,15 0,20 M9,5 L18,10 18,10 9,15"
 				fill="#888"
 			/>
 		</g>
-	</svg>
 )
 
-export const Anim = ({ state }) => {
+export const Anim = ({ state, onClick, onMouseOver, onMouseOut }) => {
+	let icon
 	if (state === "playing") {
-		var icon = pause
+		icon = pause
 	} else if (state === 'paused'){
-		var icon = play
+		icon = play
 	} else {
-		var icon = completed
+		icon = completed
 	}
 	return (
-			icon
+		<svg
+			width={40}
+			height={40}
+			viewBox="0 0 40 40"
+			onClick={onClick}
+			>
+			{icon}
+		</svg>
 	)
 }

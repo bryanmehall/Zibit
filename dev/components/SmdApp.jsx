@@ -46,6 +46,7 @@ class SmdApp extends React.Component {
 		const partId = this.props.match.params.partId
 		const loading = this.props.loading
 		const sideBarWidth = 0.25*this.state.width
+		const margin = cardStyle.margin
 		const navPath = []
 		const createContentBlocks = (contentData) => (
 			<Link
@@ -59,6 +60,8 @@ class SmdApp extends React.Component {
 					render={()=>(
 						<ContentBlock
 						active={true}
+						partId={partId}
+						width={sideBarWidth-margin*2}
 						{...contentData}
 						/>
 					)}
@@ -68,6 +71,8 @@ class SmdApp extends React.Component {
 						render={()=>(
 							<ContentBlock
 							active={false}
+							partId={partId}
+							width={sideBarWidth-margin*2}
 							{...contentData}
 							/>
 						)}
@@ -95,12 +100,6 @@ class SmdApp extends React.Component {
 						</div>
 						{contentBlocks}
 					</div>
-					{/*<InfoBar
-						width={sideBarWidth - cardStyle.margin}
-						height={400}
-						partId={partId}
-						url={this.props.match.url}
-						></InfoBar>*/}
 					<Route
 						exact path={`${this.props.match.url}/:contentId`}
 						render = {
@@ -108,7 +107,7 @@ class SmdApp extends React.Component {
 								return <Sim width={700}{...props} height={600} pos={{ x: sideBarWidth+cardStyle.margin, y: 100 }}/>
 							}
 						}
-						/>
+					/>
 				</div>
 			)
 		}

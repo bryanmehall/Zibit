@@ -20,11 +20,11 @@ class TestBlock extends React.Component {
 		)
 		return (
 			<div style={{display: "flex"}}>
-				<div style={{ width: 50 }}>
+				<div style={{ width: 50, flexGrow: 1}}>
 					<TestIcon state={questionState}></TestIcon>
 				</div>
 
-				<div style={{ flexGrow: 1, paddingTop: 8, paddingLeft: 10 }}>
+				<div style={{ flexGrow: 2, padding:10 }}>
 					{ this.props.active ? this.props.text : this.props.title }
 					{ this.props.active ? questionsList : null}
 				</div>

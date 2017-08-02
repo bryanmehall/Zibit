@@ -1,7 +1,5 @@
 //import types from "./types";
 
-//import { bindActionCreators } from 'redux'
-
 const setValue = (name, value, keepHistory=false) => ({
 	type: "SET_VALUE",
 	payload: {

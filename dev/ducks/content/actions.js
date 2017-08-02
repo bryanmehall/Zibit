@@ -21,11 +21,23 @@ const initializeCourseState = (courseData) => ({
 	payload: { courseData }
 })
 
+const setPlaying = (blockId, value) => {
+	console.log('setPlay', blockId, value)
+	return {
+		type: 'PLAY_CONTENT_ANIM',
+		payload: {
+			blockId,
+			value
+		}
+	}
+}
+
 
 
 export default {
 	fetchContentBlock,
 	fetchPartData,
+	setPlaying,
 	fetchCourseData,
 	initializeCourseState
 }

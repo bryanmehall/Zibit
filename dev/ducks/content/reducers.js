@@ -1,6 +1,7 @@
 import { quantityReducer } from '../quantity/reducers'
 const contentReducer = (state = {}, action) => {
 	//here state refers to sim section of tree
+
 	if (action.hasOwnProperty('payload')) {
 		switch (action.type) {
 			case "FETCH_COURSE_DATA":
@@ -15,6 +16,12 @@ const contentReducer = (state = {}, action) => {
 	} else {
 		return state
 	}
+}
+const partReducer = (state = {}, action) => {
+	console.log(state, action)
+}
+const blockReducer = (state = {}, action) => {
+	console.log()
 }
 
 

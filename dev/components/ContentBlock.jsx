@@ -44,7 +44,7 @@ class ContentBlock extends React.Component {
 		let contentBlockStyle
 		if (this.props.active){
 			contentBlockStyle = {
-				tv: spring(0),
+				tv: spring(0),//text value
 				alpha: spring(1)
 			}
 

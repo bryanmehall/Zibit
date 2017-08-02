@@ -1,37 +1,38 @@
 import React from "react";
-import {connect} from "react-redux"
-import { getValue, getTransformedValue, getCoordSys, getQuantityData, getPlaying } from '../ducks/quantity/selectors'
-import QuantityActions from '../ducks/quantity/actions';
-import Animation from "./Animation"
-import Slider from "./Slider"
+import { connect } from "react-redux"
+import AnimSlider from "./AnimSlider"
 import { audio } from '../anim'
-import {cardStyle} from './styles'
-import {Anim} from './icons'
+import { cardStyle } from './styles'
+import { Anim } from './icons'
+import ContentActions from '../ducks/content/actions'
+import { getPlaying } from '../ducks/content/selectors'
 
 class AnimBlock extends React.Component {
 	constructor(props){
 		super(props)
 		this.onDragStart = this.onDragStart.bind(this)
-		//this.onDragMove = this.dragMove.bind(this)
+		this.onDragMove = this.onDragMove.bind(this)
 		this.onDragEnd = this.onDragEnd.bind(this)
 	}
-    onDragStart(props, initVal){
-		//this.isPlaying = this.props.playing
-
-		//this.props.setPlay('animTime', false)
-		audio.pause()
+    onDragStart(fractionStart){
+		this.isPlaying = this.props.playing
+		this.props.setPlaying(this.props.id, false)
+		//audio.pause()
 	}
-	onDragEnd(props, endVal) {
-		if (this.isPlaying){
-			audio.play()
-		}
+	onDragMove(dfrac){
+
+	}
+	onDragEnd() {
+		//if (this.isPlaying){
+		//	audio.play()
+		//}
 		//this.props.setPlay('animTime', this.isPlaying)
 	}
 	onPlay(){
-		audio.play()//move these to anim middleware
+		//this.props.setPlaying()
 	}
 	onPause(){
-		audio.pause()
+		//audio.pause()
 	}
     render(){
 		const width = this.props.width || 100
@@ -51,61 +52,49 @@ class AnimBlock extends React.Component {
 			fontSize: 15
 		}
 		const slider = (
-			<Slider
-				p1={{ x: 18, y: height-12 }}
-				p2={{ x: width-18, y: height-12 }}
-				min={0}
-				max={10}
-				value={3}
-				showAxis={false}
-				//onDragEnd={this.onDragEnd}
-				//onDragStart={this.onDragStart}
-
-				>
-				<circle cx={0} cy={0} r={8} fill="#eee" filter="url(#dropShadow)"></circle>
-			</Slider>
+			<AnimSlider
+				width={width-10}
+				fracDone={0.3}
+				onDragStart={this.onDragStart}
+				onDragEnd={this.onDragEnd}
+				onDragMove={this.onDragMove}
+				/>
 		)
         return (
-            <div style={{display: "flex"}}>
-				<div style={{ width: 50 }}>
-					<Anim state="paused"></Anim>
-				</div>
+            <div>
+				<div style={{ display: "flex" }}>
+					<div style={{ flexGrow: 1, width: 50 }}>
+						<Anim
+							onClick={() => this.props.setPlaying(this.props.id, true)}
+							state="paused"></Anim>
+					</div>
 
-				<div style={{ flexGrow: 1, paddingTop: 8, paddingLeft: 10 }}>
-					{ this.props.active ? this.props.text : this.props.title }
+					<div style={{ flexGrow: 2, padding:10 }}>
+						{ this.props.active ? this.props.text : this.props.title }
+
+					</div>
+				</div>
+				<div>
 					{ this.props.active ? slider : null}
 				</div>
-
 			</div>
-			/*
-				<svg
-					width={this.props.width}
-					height={50}
-					>
-					<Animation
-						pos={{ x: 18, y: 13 } }
-						scale={1.7}
-						color={color}
-						onPlay={this.onPlay}
-						onPause={this.onPause}
-						/>
-				</svg>
-        	</div>*/
         )
     }
 }
 
 function mapStateToProps(state, props) {
 	return {
-		//playing:getPlaying(state, 'animTime')
+		//playing:getPlaying(state, props.partId, props.id)
 	};
 }
 
 function mapDispatchToProps(dispatch) {
+	//console.log(ContentActions.default.setPlaying)
+	//console.log(ContentActions.setPlaying)
 	return {
-		/*setPlay:(name, value) => {
-			dispatch(QuantityActions.setPlay(name, value))
-		},*/
+		setPlaying: (blockId, value) => {
+			dispatch(ContentActions.setPlaying(blockId, value))
+		},
 	};
 }
 
