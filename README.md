@@ -1,4 +1,4 @@
-[![build status][travis-image]][travis-url]
+[![Travis](https://img.shields.io/travis/rust-lang/rust.svg)](https://travis-ci.org/bryanmehall/Sims)
 # installation
 
 git clone .....
