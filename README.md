@@ -1,3 +1,4 @@
+[![build status][travis-image]][travis-url]
 # installation
 
 git clone .....
