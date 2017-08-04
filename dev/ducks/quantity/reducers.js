@@ -58,7 +58,6 @@ export const quantityReducer = (state = defaultQuantityState, action) => {
 
 const quantitiesReducer = (state = {}, action) => {
 	//here state refers to quantities object of state tree
-
 	if (action.hasOwnProperty('payload')) {
 		let name = action.payload.name
 		return Object.assign({}, state, {

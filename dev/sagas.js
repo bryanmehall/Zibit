@@ -27,34 +27,6 @@ function* simSaga() {
 	yield takeEvery("FETCH_SIM_DATA", fetchSimData)
 }
 
-//contentBlock
-function* fetchContentBlockData(action) {
-	try {
-		const response = yield call(fetchJson, action.payload.path)
-		yield put(ContentActions.initializeContentBlockState(response.data))
-	} catch (e) {
-		yield put({ type: "CONTENT_BLOCK_FETCH_FAILED", message: e.message })
-	}
-}
-
-function* contentBlockSaga() {
-	yield takeEvery("FETCH_CONTENT_BLOCK_DATA", fetchContentBlockData)
-}
-
-//part
-function* fetchPartData(action) {
-	try {
-		const response = yield call(fetchJson, action.payload.path)
-		yield put(ContentActions.initializePartState(response.data))
-	} catch (e) {
-		yield put({ type: "PART_FETCH_FAILED", message: e.message })
-	}
-}
-
-function* partSaga() {
-	yield takeEvery("FETCH_PART_DATA", fetchPartData)
-}
-
 //course
 function* fetchCourseData(action) {
 
@@ -75,9 +47,7 @@ function* courseSaga() {
 function* rootSaga() {
 	yield [
 		fork(courseSaga),
-		fork(partSaga),
 		fork(simSaga),
-		fork(contentBlockSaga)
 	]
 }
 export default rootSaga

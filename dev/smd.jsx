@@ -7,6 +7,8 @@ import { Provider, connect} from 'react-redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import {createLogger} from "redux-logger"
 import * as reducers from "./ducks"
+import reduxMulti from 'redux-multi'
+import { batchedSubscribe } from 'redux-batched-subscribe'
 //routing
 import createHistory from 'history/createBrowserHistory'
 import { Route, Redirect } from 'react-router'
@@ -49,13 +51,20 @@ const initialState = {
 //const sentryPublicDSN = 'https://ba48e0434a8a4973b9b70447fa4aa4f4@sentry.io/191832'
 //const ravenMiddleware = RavenMiddleware(sentryPublicDSN)
 const sagaMiddleware = createSagaMiddleware()
-const middleware = applyMiddleware(animMiddleware, sagaMiddleware) //ravenMiddleware)
+const middleware = applyMiddleware(animMiddleware, sagaMiddleware, reduxMulti) //ravenMiddleware)
 
 
 const rootReducer = combineReducers({ ...reducers, router: routerReducer })
 const history = createHistory()
 const composeEnhancers = composeWithDevTools({})// specify here name, actionsBlacklist, actionsCreators and other options
-const store = createStore(rootReducer, initialState, composeEnhancers(middleware))
+
+const enhancers = composeEnhancers(
+	middleware,
+	batchedSubscribe((notify) => { //for patching dispatch of actions
+		notify();
+	})
+)
+const store = createStore(rootReducer, initialState, enhancers)
 //store.subscribe(() => { runTests(store.getState()) })
 const container = document.getElementById('container')
 

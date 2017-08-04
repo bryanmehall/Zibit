@@ -1,5 +1,5 @@
-describe('Unit', () => {
-  it('test unit test', () => {
+describe('fetch course content', () => {
+  it('initialize all course data', () => {
     expect(true).toBe(true);
   });
 });
