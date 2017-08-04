@@ -12,3 +12,13 @@ export const HighlightFilter = ({color, id}) => (
 		</filter>
 	</defs>
 )
+
+export const DropShadow = () => (
+	<defs>
+		<filter id="dropShadow">
+			<feOffset result="offOut" in="SourceAlpha" dx="0.5" dy="1" />
+			<feGaussianBlur result="blurOut" in="offOut" stdDeviation="1" />
+			<feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+		</filter>
+	</defs>
+)

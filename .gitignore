@@ -1,6 +1,8 @@
 /node_modules
-/output/
-dist
+/output
+/dist
 dockerBuild
 server.js
 /output/components-bundle.js
+/dist/bundle.js.map
+/dist/bundle.js

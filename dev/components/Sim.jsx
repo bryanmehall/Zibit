@@ -28,7 +28,7 @@ class Sim extends React.Component {
 		//componentWill update takes next props as argument
 
 		const url = nextProps.match.url
-		if (this.props.match.url !== url) {//only update on change
+		if (this.props.match.url !== url) { //only update on change
 			this.loadSim(url)
 		}
 	}
@@ -43,7 +43,13 @@ class Sim extends React.Component {
 			"Plot": Plot,
             "Expression": Expression
 		}
-
+		const simCardStyle = {
+			...cardStyle, 
+			width:this.props.width, 
+			height:this.props.height, 
+			left: pos.x, 
+			backgroundColor: '#fff' 
+		}
 		function createChild(childData){
 			var type = childTypes[childData.type]
 			var props = childData.props
@@ -58,38 +64,18 @@ class Sim extends React.Component {
 		}
 		const loadingIcon = <div style={{ position: 'absolute' }}>Loading</div>
 		return (
-			<div style={{ ...cardStyle, left: pos.x, backgroundColor: '#fff' }}>
+			<div style={simCardStyle}>
 				{this.props.loadState === "loading" ? loadingIcon : null }
+				
 				<svg
 					width={this.props.width}
 					height={this.props.height}
 					id="sim"
 					>
-				<defs>
-					<filter id="highlight" primitiveUnits="userSpaceOnUse">
-						<feMorphology operator="dilate" radius="1.5" in="SourceAlpha" result="expanded"/>
-						<feFlood floodColor="#80d8ff" result="highlightColor"/>
-						<feComposite in="highlightColor" in2="expanded" operator="in" result="expandedColored" />
-						<feGaussianBlur stdDeviation="2" in="expandedColored" result="highlight"/>
-						<feComposite operator="over" in="SourceGraphic" in2="highlight"/>
-					</filter>
-					<filter id="textBackground" primitiveUnits="userSpaceOnUse">
-						<feMorphology operator="dilate" radius="100" in="SourceAlpha" result="expanded"/>
-						<feFlood floodColor="white" result="highlightColor"/>
-						<feComposite in="highlightColor" in2="expanded" operator="in" result="expandedColored" />
-						<feGaussianBlur stdDeviation="1" in="expandedColored" result="highlight"/>
-						<feComposite operator="over" in="SourceGraphic" in2="highlight"/>
-					 </filter>
-					<filter id="dropShadow">
-						<feOffset result="offOut" in="SourceAlpha" dx="0.5" dy="1" />
-						<feGaussianBlur result="blurOut" in="offOut" stdDeviation="1" />
-						<feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
-					</filter>
-				</defs>
 				{children}
 				</svg>
 			</div>
-       	)
+		)
 	}
 }
 

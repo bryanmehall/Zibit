@@ -59,28 +59,30 @@ class Plot extends React.Component {
 		}
 		var children = this.props.childData.map(createChild)
 		return (
-			<g opacity={visibility}>
-				<defs>
-					<mask id={plotId}>
-						<rect x={pos.x} y={pos.y-height} width={width} height={height} fill="white" opacity="1" />
-					</mask>
-				</defs>
-				{children}
-				<Axis
-					min={xScale.min}
-					max={xScale.max}
-					p1={{x:xScale.tMin, y:pos.y}}
-					p2={{x:xScale.tMax, y:pos.y}}
-					offs={15}
-					></Axis>
-				<Axis
-					min={yScale.min}
-					max={yScale.max}
-					p1={{x:pos.x, y:yScale.tMin}}
-					p2={{x:pos.x, y:yScale.tMax}}
-					offs={-15}
-					></Axis>
-			</g>
+			<svg>
+				<g opacity={visibility}>
+					<defs>
+						<mask id={plotId}>
+							<rect x={pos.x} y={pos.y-height} width={width} height={height} fill="white" opacity="1" />
+						</mask>
+					</defs>
+					{children}
+					<Axis
+						min={xScale.min}
+						max={xScale.max}
+						p1={{x:xScale.tMin, y:pos.y}}
+						p2={{x:xScale.tMax, y:pos.y}}
+						offs={15}
+						></Axis>
+					<Axis
+						min={yScale.min}
+						max={yScale.max}
+						p1={{x:pos.x, y:yScale.tMin}}
+						p2={{x:pos.x, y:yScale.tMax}}
+						offs={-15}
+						></Axis>
+				</g>
+			</svg>
 		)
 	}
 }
