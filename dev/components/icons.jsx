@@ -1,18 +1,24 @@
 import React from 'react'
 import { getTransformString } from '../utils/point'
-export const UpArrow = ({ pos={ x: 0, y: 0 }, active }) => (
-	<g transform={getTransformString(pos)}>
+export const UpArrow = ({ width=12, active }) => (
+	<svg width={width} height={width/2} viewBox="-5 -5 10 5" style={{margin:"auto", display:'block', bottom:-10}}>
 		<path
 			d="M5 0L0 -5L-5 0Z"
 			fill="#ccc"
 			stroke="none"
-			></path>
-	</g>
+			>
+		</path>
+	</svg>
 )
-export const DownArrow = ({ pos={ x: 0, y: 0 }, active }) => (
-	<g transform={getTransformString(pos)+"scale(1,-1)"}>
-		<UpArrow active={active}></UpArrow>
-	</g>
+export const DownArrow = ({ width=12, active }) => (
+	<svg width={width} height={width/2} viewBox="-5 0 10 5" style={{margin:"auto", display:'block', bottom:-10}}>
+		<path
+			d="M5 0L0 5L-5 0Z"
+			fill="#ccc"
+			stroke="none"
+			>
+		</path>
+	</svg>
 )
 
 export const completed = (

@@ -10,6 +10,7 @@ import TitleBar from './TitleBar'
 import Plot from './Plot'
 import Abstraction from './Abstraction'
 import Expression from './Expression'
+import Tracker from './Tracker'
 import Value from './Value'
 import { cardStyle } from './styles'
 
@@ -41,11 +42,13 @@ class Sim extends React.Component {
 		const pos = this.props.pos || { x: 100, y: 100 }
 		var childTypes = {
 			"Plot": Plot,
-            "Expression": Expression
+            "Expression": Expression,
+			"Tracker": Tracker
 		}
 		const simCardStyle = {
 			...cardStyle, 
 			width:this.props.width, 
+			position: "relative",
 			height:this.props.height, 
 			left: pos.x, 
 			backgroundColor: '#fff' 
@@ -66,14 +69,7 @@ class Sim extends React.Component {
 		return (
 			<div style={simCardStyle}>
 				{this.props.loadState === "loading" ? loadingIcon : null }
-				
-				<svg
-					width={this.props.width}
-					height={this.props.height}
-					id="sim"
-					>
 				{children}
-				</svg>
 			</div>
 		)
 	}

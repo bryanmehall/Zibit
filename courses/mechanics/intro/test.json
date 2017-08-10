@@ -1,0 +1,83 @@
+{
+	"id": "intro",
+	"title": "intro",
+	"text": "Introduction to damped harmonic oscillators",
+	"type": "animation",
+	"completed": false,
+	"progress": 0,
+	"audio": "intro.mp3",
+	"onComplete": {
+		"action": "goTo",
+		"contentBlock": "zeroDamping"
+	},
+	"keyframes": [
+	],
+	"initialState": {
+		"widget": {
+			"app": {
+				"type": "SmdApp",
+				"props": {},
+				"children": [
+					"tracker",
+					"pendulumPlot"
+				]
+			},
+			"tracker": {
+				"type": "Tracker",
+				"props": {
+					"xQuantity":"measuredX",
+					"yQuantity":"measuredY"
+				}
+			},
+			"pendulumPlot":{
+				"type": "Plot",
+				"props": {
+					"xVar": "measuredX",
+					"yVar": "measuredY",
+					"xVars": [
+						"measuredX"
+					],
+					"yVars": [
+						"measuredY"
+					],
+					"width": 640,
+					"height": 480,
+					"pos": {
+						"x": 0,
+						"y": 480
+					},
+					"visibility": 1
+				},
+				"children": [
+					"pendulum"
+				]
+			},
+			"pendulum":{
+				"type": "Pendulum",
+				"props":{
+				}
+			}
+		},
+		"quantity": {
+			"measuredX": {
+				"value": 0,
+				"min": 0,
+				"max": 1000,
+				"independent": true,
+				"symbol": "t",
+				"highlighted": false,
+				"color": "#ffa020"
+			},
+			"measuredY": {
+				"value": 0,
+				"min": 0,
+				"max": 1000,
+				"abstractions": 0,
+				"independent": true,
+				"symbol": "im(x)",
+				"highlighted": false
+			}
+
+		}
+	}
+}

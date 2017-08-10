@@ -9,7 +9,7 @@ import {mathTextStyle} from './styles'
 
 class EqText extends React.Component {
 	render(){
-		return <tspan style={mathTextStyle} dx="3">{this.props.text}</tspan>
+		return <span style={mathTextStyle} >{this.props.text}</span>
 	}
 }
 
