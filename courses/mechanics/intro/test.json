@@ -19,7 +19,8 @@
 				"props": {},
 				"children": [
 					"tracker",
-					"pendulumPlot"
+					"pendulumPlot",
+					"posPlot"
 				]
 			},
 			"tracker": {
@@ -56,6 +57,38 @@
 				"type": "Pendulum",
 				"props":{
 				}
+			},
+			"posPlot":{
+				"type": "Plot",
+					"props": {
+						"xVar": "t",
+						"yVar": "measuredTheta",
+						"xVars": [
+							"t"
+						],
+						"yVars": [
+							"measuredTheta"
+						],
+						"width": 300,
+						"height": 400,
+						"pos": {
+							"x": 750,
+							"y": 480
+						},
+						"visibility": 1
+					},
+					"children": [
+						"abstraction1"
+					]
+			},
+			"abstraction1": {
+				"type": "Abstraction",
+				"props": {
+					"indVar": "t",
+					"xVar": "t",
+					"yVar": "measuredTheta"
+				},
+				"children": []
 			}
 		},
 		"quantity": {
@@ -63,8 +96,9 @@
 				"value": 0,
 				"min": 0,
 				"max": 1000,
+				"previousValues":[],
 				"independent": true,
-				"symbol": "t",
+				"symbol": "mX",
 				"highlighted": false,
 				"color": "#ffa020"
 			},
@@ -73,9 +107,30 @@
 				"min": 0,
 				"max": 1000,
 				"abstractions": 0,
+				"previousValues":[],
 				"independent": true,
-				"symbol": "im(x)",
+				"symbol": "mY",
 				"highlighted": false
+			},
+			"t":{
+				"value": 0,
+				"min": 0,
+				"max": 5,
+				"abstractions": 200,
+				"independent": true,
+				"symbol": "t",
+				"highlighted": false,
+				"color": "#0055ff"
+			},
+			"measuredTheta":{
+				"value": 0,
+				"min": -80,
+				"max": 80,
+				"abstractions": 200,
+				"independent": false,
+				"symbol": "&theta;",
+				"highlighted": false
+
 			}
 
 		}

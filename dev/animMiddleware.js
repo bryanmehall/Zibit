@@ -25,6 +25,11 @@ export const animMiddleware = store => next => action => {
 		var initValue = getValue(state, name)
 		store.dispatch(QuantityActions.animStep(name, t, initValue))
 	}
+	if (action.type === "SET_VALUE" && action.payload.keepHistory === true){
+		var state = store.getState()
+		var time = getValue(state, 't')
+		action.payload.previousPoint = {t:time, value:action.payload.value}
+	}
 	if (action.type === "SET_VALUE" && action.payload.name === 'animTime'){
 		var state = store.getState()
 		var prevTime = getValue(state, 'animTime')

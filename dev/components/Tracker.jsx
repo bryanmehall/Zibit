@@ -54,7 +54,8 @@ class Tracker extends React.Component {
 					 preload
 					 autoPlay
 					 loop
-					 muted>
+					 muted
+					 >
 				</video>
 				<svg style={{position:"absolute", left:0, top:0}}
 					width={this.width}
@@ -69,6 +70,7 @@ class Tracker extends React.Component {
 						cy={this.props.yValue}
 						r="20"/>
 				</svg>
+				<button onClick={this.props.startPlaying}>start</button>
 			</div>
 
 		)
@@ -89,8 +91,14 @@ function mapStateToProps(state, props) {
 function mapDispatchToProps(dispatch) {
 	return {
 		setValue:(quantity, value) => {
-			dispatch(QuantityActions.setValue(quantity, value))
+			dispatch(QuantityActions.setValue(quantity, value, true))
+		},
+		startPlaying:() =>{
+
+			console.log('playing')
+			dispatch(QuantityActions.setPlay('t', true))
 		}
+
 	};
 }
 

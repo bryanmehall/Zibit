@@ -5,6 +5,7 @@ const defaultQuantityState = { //is this needed because we never create new quan
 	min: 0,
 	max: 1,
 	independent: false,
+	previousValues: [],
 	abstractions: 0,
 	state: "none"
 }
@@ -15,9 +16,10 @@ export const quantityReducer = (state = defaultQuantityState, action) => {
 		case 'SET_VALUE': {
 			const value = action.payload.value
 			const updatedFields = { value: action.payload.value }
-			if (action.payload.keepHistory){
-				console.log( state.previousValues)
-				updatedFields.previousValues = state.previousValues.concat(value)
+
+			if (action.payload.hasOwnProperty("previousPoint")){
+				const previousPoint = action.payload.previousPoint
+				updatedFields.previousValues = state.previousValues.concat(previousPoint)
 			}
 			return Object.assign({}, state, updatedFields)
 		}

@@ -26,6 +26,11 @@ function s(t) {
 function y(sol, t) {
 	return sol.at(t)[0]
 }
+function thetaF(anchorX, anchorY, x, y) {
+	const dx = x-anchorX
+	const dy = y-anchorY
+	Math.atan2(dx, dy)//atan2 flips x and y but it is flipped back because pendulum is vertical
+}
 
 //define scales
 function transform(value, scale) {
@@ -99,13 +104,16 @@ export const getCoordSys = (state, xVar, yVar, parentBB) => ({
 })
 
 export const getValue = function (state, name, given={}) {
-		//given is an object of independent variables that replace concrete values
+	//given is an object of independent variables that replace concrete values
+
 	const quantityData = getQuantityData(state, name)
+
 	if (quantityData.independent) {
 		return (given[name] === undefined) ? quantityData.value : given[name]
 	}
-
-	var sol = getSol(state)
+	if (name !== "measuredTheta"){
+		var sol = getSol(state)
+	}
 	switch (name) {
 		case "x": {
 			const t = (given.t === undefined) ? getValue(state, 't') : given.t
@@ -146,7 +154,10 @@ export const getValue = function (state, name, given={}) {
 			var fdVal = 0//getValue(state, 'fd')
 			return fext([fsVal,fdVal])
 		}
-
+		case "measuredTheta": {
+			const t = (given.t === undefined) ? getValue(state, 't') : given.t
+			return 40*Math.sin(t)
+		}
 		default:
 			throw "make sure that " + name + " is labeled as independent"
 	}
@@ -198,6 +209,7 @@ function getSolNoMem(k, m, c, y0, dy0, min, max) {
 
 export const getAbsValues = function (state, name, absName) {
 	//abstract name w.r.t. absName
+
 	var absData = getQuantityData(state, absName)
 	var absPoints = linspace(absData.min, absData.max, absData.abstractions)
 	var values = absPoints.map(function (val) {
@@ -205,13 +217,28 @@ export const getAbsValues = function (state, name, absName) {
 			[absName]: val
 		})
 	})
-
 	return values
 }
 
 export const getAbsPoints = function (state, indVar, xVar, yVar) {
+	if (yVar === "measuredTheta"){//total hack --needs to be cleaned up
+		const xPrev = getQuantityData(state, "measuredX").previousValues
+		const yPrev = getQuantityData(state, "measuredY").previousValues
+		if (xPrev.length === 0){
+			return [{x:0, y:0}]
+		}
+		return xPrev.map((xPoint, i) => {
+			const t = xPoint.t
+			const x = (xPoint.value-320)/5
+			//const y = yPrev[i].value
+			//const theta = thetaF(350,20,x,y)
+			return {x:t, y:x}
+		})
+
+	}
 	var xPoints = getAbsValues(state, xVar, indVar)
 	var yPoints = getAbsValues(state, yVar, indVar)
+
 	var points = xPoints.map(function (xVal, i) {
 		return {
 			x: xVal,

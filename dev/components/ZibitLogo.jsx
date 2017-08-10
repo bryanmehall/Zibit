@@ -7,9 +7,9 @@ export default class ZibitLogo extends React.Component {
 	  const h = w*r //height
 	  const t = w/3.5 //thickness
 	  const topColor ="#0e759c"
-	  const diagonalColor="#382a72"
+	  const diagonalColor="#889"
 	  const bottomColor = "#26840b"
-	  const diagonalOpacity = 0.8
+	  const diagonalOpacity = 0.85
 
 	  const pos = this.props.pos || { x: 0, y: 0 }
 	  const slope = h/(w-t*r)
@@ -31,7 +31,7 @@ export default class ZibitLogo extends React.Component {
 	  )
        const whiteMask = (
 		   <path
-			   fill="#f66"
+			   fill="#000"
 			   d={diagonalPath}
 			   />
 	   )
