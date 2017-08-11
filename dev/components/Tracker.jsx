@@ -13,7 +13,7 @@ class Tracker extends React.Component {
 		this.width = 640
 		this.height = 480
 
-		this.tracker = new tracking.ColorTracker([ 'yellow'])
+		this.tracker = new tracking.ColorTracker(['yellow'])
 		this.tracker.on('track', function(event) {
 			if (event.data.length === 0) {
 				// No colors were detected in this frame.
@@ -72,10 +72,7 @@ class Tracker extends React.Component {
 				</svg>
 				<button onClick={this.props.startPlaying}>start</button>
 			</div>
-
 		)
-
-
 	}
 }
 

@@ -327,7 +327,7 @@
 				"color": "#e0e0ff"
 			},
 			"c": {
-				"value": 0,
+				"value": 0.6,
 				"min": 0,
 				"max": 5,
 				"symbol": "c",

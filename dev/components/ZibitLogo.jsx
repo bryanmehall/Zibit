@@ -38,7 +38,7 @@ export default class ZibitLogo extends React.Component {
        const bottom = (
 		   <path
                   d={topPath}
-                      fill={bottomColor}
+                  fill={bottomColor}
                   transform={'translate('+w+','+h+') rotate(180)'}
                       />)
 	   const text = (
@@ -46,14 +46,14 @@ export default class ZibitLogo extends React.Component {
 			   x={w*14.115/15}//14.115/15 to make touching
 			   fontFamily='"Yanone Kaffeesatz", sans-serif'
 			   y={h}
-			   fontSize={h}
+			   fontSize={h*1.2}
 			   fill='#0e759c'
 			   >
 			   ibit
 		   </text>
 	   )
     return (
-      <svg width={w*2.6} height={h+10}>
+      <svg width={w*3} height={h+10}>
 		<g transform={'translate('+pos.x+','+pos.y+')'}>
         {whiteMask}
         {top}
