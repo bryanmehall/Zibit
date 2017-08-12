@@ -14,7 +14,7 @@ const Courses = ({match}) => {
 	return (
 		<Switch>
 
-			<Route path={`${match.url}/:courseId`} component={Course}/>
+			<Route path={`/courses/:courseId`} component={Course}/>
 			<Route exact path={match.url}>
 				<div>
 				<ul>

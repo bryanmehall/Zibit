@@ -43,7 +43,7 @@ export default class ZibitLogo extends React.Component {
                       />)
 	   const text = (
 		   <text
-			   x={w*14.115/15}//14.115/15 to make touching
+			   x={w*0.908}//14.115/15 to make touching
 			   fontFamily='"Yanone Kaffeesatz", sans-serif'
 			   y={h}
 			   fontSize={h*1.2}
@@ -53,7 +53,11 @@ export default class ZibitLogo extends React.Component {
 		   </text>
 	   )
     return (
-      <svg width={w*3} height={h+10}>
+      <svg
+		  width={w*2.9}
+		  height={h+10}
+		  style= {this.props.style}
+		  >
 		<g transform={'translate('+pos.x+','+pos.y+')'}>
         {whiteMask}
         {top}

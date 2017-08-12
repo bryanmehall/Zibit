@@ -38,21 +38,23 @@ class Sim extends React.Component {
 		this.props.fetchSimData(url)
 	}
 	render(){
-
 		const pos = this.props.pos || { x: 100, y: 100 }
-		var childTypes = {
+		const active = this.props.active || true
+		const image = (<div>inactive</div>)
+		const childTypes = {
 			"Plot": Plot,
             "Expression": Expression,
 			"Tracker": Tracker
 		}
 		const simCardStyle = {
 			...cardStyle, 
-			width:this.props.width, 
-			position: "relative",
+			width:this.props.width,
 			height:this.props.height, 
+			position: "relative",
 			left: pos.x, 
 			backgroundColor: '#fff' 
 		}
+		//combine these into one file for importing children
 		function createChild(childData){
 			var type = childTypes[childData.type]
 			var props = childData.props
@@ -60,16 +62,20 @@ class Sim extends React.Component {
 			return React.createElement(type, props)
 		}
 		const children = this.props.childData.map(createChild)
-		if (this.props.loadState === 'error'){
-			return <div style={{ ...cardStyle, left: pos.x, backgroundColor: '#fff', width: this.props.width, height: this.props.height }}>
-				Error: Failed to Load Simulation
-			</div>
+		if (this.props.loadState === 'error') {
+			return (
+				<div style={{ ...cardStyle, left: pos.x, backgroundColor: '#fff', width: this.props.width, height: this.props.height }}>
+					Error: Failed to Load Simulation
+				</div>
+			)
 		}
-		const loadingIcon = <div style={{ position: 'absolute' }}>Loading</div>
+		const loadingIcon = (<div style={{ position: 'absolute' }}>Loading</div>)
+
+		const content = active ? children : image
 		return (
 			<div style={simCardStyle}>
 				{this.props.loadState === "loading" ? loadingIcon : null }
-				{children}
+				{content}
 			</div>
 		)
 	}
