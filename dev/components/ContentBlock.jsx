@@ -2,6 +2,7 @@ import React from 'react'
 import { TestIcon, inactive, active, completed } from './icons'
 import TestBlock from './TestBlock'
 import AnimBlock from './AnimBlock'
+import LabBlock from './LabBlock'
 import {Collapse} from 'react-collapse'
 import {Motion, spring} from 'react-motion'
 import {cardStyle} from './styles'
@@ -38,6 +39,8 @@ class ContentBlock extends React.Component {
 		let content
 		if (type === 'anim'){
 			content = <AnimBlock {...this.props} ></AnimBlock>
+		} else if (type === 'lab') {
+			content = <LabBlock {...this.props}></LabBlock>
 		} else {
 			content = <TestBlock {...this.props} />
 		}

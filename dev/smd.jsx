@@ -75,13 +75,9 @@ ReactDOM.render(
 
 		<ConnectedRouter history={history}>
 			<div>
-
 				<Route exact path="/" component={Home}/>
-
 				<Route path="/courses" component={NavBar}/>
-				<Route path="/courses" component={Courses}/>
-
-
+				<Route path="/courses" render={Courses}/>
 			</div>
 		</ConnectedRouter>
 	</Provider>,

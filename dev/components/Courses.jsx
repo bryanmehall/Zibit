@@ -13,39 +13,17 @@ const Courses = ({match}) => {
 	]
 	return (
 		<Switch>
-
 			<Route path={`/courses/:courseId`} component={Course}/>
-			<Route exact path={match.url}>
+			<Route path="/">
 				<div>
-				<ul>
-					<li>
-						<Link style={linkStyle} to={`${match.url}/controlsystems`}>
-							Control Systems
-						</Link>
-					</li>
-					<li>
-						<Link style={linkStyle} to={`${match.url}/calculus`}>
-							Calculus
-						</Link>
-					</li>
-					<li>
-						<Link style={linkStyle} to={`${match.url}/mechanics`}>
-							Mechanics
-						</Link>
-					</li>
-
-				</ul>
+					<Course id="controlsystems" expanded="false"></Course>
+					<Course id="calculus" expanded="false"></Course>
+					<Course id="mechanics" expanded="false"></Course>
 				</div>
 			</Route>
 			<Redirect from="/courses/" to="/courses" />
 		</Switch>
-
-
-
-
-
 	)
-
 }
 
 export default Courses

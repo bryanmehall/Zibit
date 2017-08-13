@@ -4,7 +4,7 @@ const getCurrentContent = (state) => (state.content.currentContent)
 
 export const courseIsLoading = (state) => (getCurrentCourse(state).loading)
 export const getParts = (state) => (getCurrentCourse(state).parts)
-
+export const getCourseTitle = (state) => (getCurrentCourse(state).title)
 export const getPart = (state, partId) => (
 	getParts(state).find((part) => (part.id === partId))
 )

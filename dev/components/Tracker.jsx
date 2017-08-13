@@ -12,12 +12,13 @@ class Tracker extends React.Component {
 		const component = this
 		this.width = 640
 		this.height = 480
-
+		this.state = ({recording:false, tracking:0})
 		this.tracker = new tracking.ColorTracker(['yellow'])
 		this.tracker.on('track', function(event) {
 			if (event.data.length === 0) {
-				// No colors were detected in this frame.
+				component.setState({tracking:0})
 			} else {
+				component.setState({tracking:event.data.length})
 				event.data.forEach(function(rect) {
 					const x = rect.x + rect.width/2
 					const y = rect.y + rect.height/2
@@ -31,6 +32,16 @@ class Tracker extends React.Component {
 	}
 	componentDidMount(){
 		this.trackerTask = tracking.track("#myVideo",this.tracker, { camera: true } )
+		document.addEventListener('keypress', (e) => {
+			if (e.keyCode === 32){
+				if (this.state.tracking === 0){
+					console.log('not tracking any objects')
+				} else if (this.state.tracking === 1){
+					this.setState({recording:true})
+					this.props.startRecording()
+				}
+			}
+		})
 	}
 	componentWillUnmount(){
 		const component = this
@@ -39,7 +50,6 @@ class Tracker extends React.Component {
         }, 100)
 	}
 	render() {
-
 		return (
 			<div>
 				 <video
@@ -70,7 +80,6 @@ class Tracker extends React.Component {
 						cy={this.props.yValue}
 						r="20"/>
 				</svg>
-				<button onClick={this.props.startPlaying}>start</button>
 			</div>
 		)
 	}
@@ -90,9 +99,7 @@ function mapDispatchToProps(dispatch) {
 		setValue:(quantity, value) => {
 			dispatch(QuantityActions.setValue(quantity, value, true))
 		},
-		startPlaying:() =>{
-
-			console.log('playing')
+		startRecording:() =>{
 			dispatch(QuantityActions.setPlay('t', true))
 		}
 

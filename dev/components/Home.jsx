@@ -7,7 +7,9 @@ import {linkStyle} from './styles'
 
 
 class Home extends React.Component {
+
 	render(){
+		const searchQuerry = ''
 		return (
 			<div>
 			<div
@@ -25,7 +27,8 @@ class Home extends React.Component {
 						></ZibitLogo>
 					<SearchBar></SearchBar>
 			</div>
-            <Link style={linkStyle} to="/courses">Courses</Link>
+            <Link style={linkStyle} to="/courses">browse all courses</Link>
+			<Courses filter={searchQuerry}></Courses>
 			</div>
 		)
 	}

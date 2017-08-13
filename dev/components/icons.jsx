@@ -65,7 +65,23 @@ export const TestIcon = ({ state }) => {
 			icon
 	)
 }
+export const LabIcon = ({}) => (
+	<svg width={40} height={40} viewBox="0 0 40 40" >
+		<path
+			d='
+				M20 2
+			   	L25 2
+				A1 1 1 0 1 25 4
+				L25 12
+				L35 35
+				'
 
+			stroke='black'
+			strokeWidth = {1}
+			fill='none'
+		/>
+	</svg>
+)
 export const pause = (
 		<path
 			d= "M0,0 L7,0 7,20 0,20 M11,0 L18,0 18,20 11,20"
