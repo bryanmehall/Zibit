@@ -11,6 +11,7 @@ import Mass from './Mass'
 import Spring from './Spring'
 import Anchor from './Anchor'
 import Damper from './Damper'
+import Pendulum from './Pendulum'
 
 
 
@@ -20,6 +21,8 @@ class Plot extends React.Component {
 			width = this.props.width,//width in px from axis min
 			height = this.props.height,//height in px from axis min
 			pos = this.props.pos,
+			axisPadding = 40,
+			borderPadding = 10,
 			visibility = this.props.visibility || 1,
 			xQuantities = this.props.xQuantities,
 			yQuantities = this.props.yQuantities,
@@ -29,14 +32,14 @@ class Plot extends React.Component {
 		var xScale = new Scale({//change to functional version
 			min: xQuantity.min,
 			max: xQuantity.max,
-			tMin: pos.x,
-			tMax: pos.x+width
+			tMin: axisPadding,
+			tMax: width + axisPadding
 		})
 		var yScale = new Scale({
 			min: yQuantity.min,
 			max: yQuantity.max,
-			tMin: pos.y,
-		  	tMax: pos.y-height
+			tMin: height+borderPadding,
+		  	tMax: borderPadding
 		})
 		var coordSys = new CoordSys(xScale, yScale)
 
@@ -45,7 +48,8 @@ class Plot extends React.Component {
 			Mass:Mass,
 			Spring: Spring,
 			Anchor: Anchor,
-			Damper: Damper
+			Damper: Damper,
+			Pendulum: Pendulum
 		}
 
 		function createChild(childData){
@@ -53,32 +57,39 @@ class Plot extends React.Component {
 			var props = childData.props
 			props.key = props.id
 			props.coordSys = coordSys
-			props.boundingRect = {xMin:pos.x,xMax:pos.x+width,yMin:pos.y,yMax:pos.y-height}
+			props.boundingRect = {xMin:axisPadding, xMax:axisPadding+width, yMin:height+borderPadding, yMax:borderPadding}
 			props.mask = plotId
 			return React.createElement(type, props)
 		}
 		var children = this.props.childData.map(createChild)
 		return (
-			<svg>
+			<svg
+				width={width+axisPadding+borderPadding}
+				height={height+axisPadding+borderPadding}
+				style={{
+					position:"absolute",
+					left:pos.x-axisPadding,
+					top:pos.y-height
+				}}>
 				<g opacity={visibility}>
 					<defs>
 						<mask id={plotId}>
-							<rect x={pos.x} y={pos.y-height} width={width} height={height} fill="white" opacity="1" />
+							<rect x={axisPadding} y={borderPadding} width={width} height={height} fill="white" opacity="1" />
 						</mask>
 					</defs>
 					{children}
 					<Axis
 						min={xScale.min}
 						max={xScale.max}
-						p1={{x:xScale.tMin, y:pos.y}}
-						p2={{x:xScale.tMax, y:pos.y}}
+						p1={{x:axisPadding, y:height}}
+						p2={{x:width+axisPadding, y:height}}
 						offs={15}
 						></Axis>
 					<Axis
 						min={yScale.min}
 						max={yScale.max}
-						p1={{x:pos.x, y:yScale.tMin}}
-						p2={{x:pos.x, y:yScale.tMax}}
+						p1={{x:axisPadding, y:height}}
+						p2={{x:axisPadding, y:0}}
 						offs={-15}
 						></Axis>
 				</g>

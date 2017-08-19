@@ -1,51 +1,32 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { Route, Switch, Redirect } from 'react-router'
+import Link  from 'redux-first-router-link'
+import { connect } from 'react-redux'
 import { linkStyle } from './styles'
+import {Collapse} from 'react-collapse'
+
+import { getCurrentCourseId } from '../ducks/content/selectors'
 import Course from "./Course"
 import SmdApp from './SmdApp'
 import NavBar from './NavBar'
 
 
-const Courses = ({match}) => {
-	const navPath = [
-		{name:'Courses', id:'courses'}
-	]
-	return (
-		<Switch>
-
-			<Route path={`${match.url}/:courseId`} component={Course}/>
-			<Route exact path={match.url}>
-				<div>
-				<ul>
-					<li>
-						<Link style={linkStyle} to={`${match.url}/controlsystems`}>
-							Control Systems
-						</Link>
-					</li>
-					<li>
-						<Link style={linkStyle} to={`${match.url}/calculus`}>
-							Calculus
-						</Link>
-					</li>
-					<li>
-						<Link style={linkStyle} to={`${match.url}/mechanics`}>
-							Mechanics
-						</Link>
-					</li>
-
-				</ul>
-				</div>
-			</Route>
-			<Redirect from="/courses/" to="/courses" />
-		</Switch>
-
-
-
-
-
-	)
-
+const Courses = ({activeCourse}) => {
+		return  (
+			<div>
+				<Course courseId="controlsystems" />
+				<Course courseId="mechanics" />
+				<Course courseId="calculus" />
+			</div>
+		)
+}
+const mapStateToProps = (state, props) => {
+	return {
+		activeCourse: getCurrentCourseId(state)
+	}
 }
 
-export default Courses
+const mapDispatchToProps = (dispatch) => {
+	return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Courses)

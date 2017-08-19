@@ -1,0 +1,23 @@
+{
+	"id": "mechanics",
+	"title": "Mechanics",
+	"parts":[
+		{
+			"id":"intro",
+			"title":"Test",
+			"contentBlocks":[
+				{
+					"id":"test",
+					"title":"intro",
+					"type":"anim"
+				},
+				{
+					"id": "lab",
+					"title": "Pendulum Lab",
+					"type": "lab"
+				}
+			]
+		}
+
+	]
+}

@@ -1,18 +1,24 @@
 import React from 'react'
 import { getTransformString } from '../utils/point'
-export const UpArrow = ({ pos={ x: 0, y: 0 }, active }) => (
-	<g transform={getTransformString(pos)}>
+export const UpArrow = ({ width=12, active }) => (
+	<svg width={width} height={width/2} viewBox="-5 -5 10 5" style={{margin:"auto", display:'block', bottom:-10}}>
 		<path
 			d="M5 0L0 -5L-5 0Z"
 			fill="#ccc"
 			stroke="none"
-			></path>
-	</g>
+			>
+		</path>
+	</svg>
 )
-export const DownArrow = ({ pos={ x: 0, y: 0 }, active }) => (
-	<g transform={getTransformString(pos)+"scale(1,-1)"}>
-		<UpArrow active={active}></UpArrow>
-	</g>
+export const DownArrow = ({ width=12, active }) => (
+	<svg width={width} height={width/2} viewBox="-5 0 10 5" style={{margin:"auto", display:'block', bottom:-10}}>
+		<path
+			d="M5 0L0 5L-5 0Z"
+			fill="#ccc"
+			stroke="none"
+			>
+		</path>
+	</svg>
 )
 
 export const completed = (
@@ -59,7 +65,23 @@ export const TestIcon = ({ state }) => {
 			icon
 	)
 }
+export const LabIcon = ({}) => (
+	<svg width={40} height={40} viewBox="0 0 40 40" >
+		<path
+			d='
+				M20 2
+			   	L25 2
+				A1 1 1 0 1 25 4
+				L25 12
+				L35 35
+				'
 
+			stroke='black'
+			strokeWidth = {1}
+			fill='none'
+		/>
+	</svg>
+)
 export const pause = (
 		<path
 			d= "M0,0 L7,0 7,20 0,20 M11,0 L18,0 18,20 11,20"

@@ -1,41 +1,53 @@
 /*
 state Shape:
 	content:{
-		activeCourse: {
-			id : "controlSystems"
-			title: "Control Systems",
-			parts:[
-				"intro",
-				"simpleharmonicoscillator",
-				"dampedharmonicoscillator",
-			]
-		}
+		activeCourse: "controlSystems"
+		activePart: "simpleharmonicoscillator"
+		activeBlock: "damping"
+		courses:[
+			{
+				id : "controlSystems"
+				title: "Control Systems",
+				parts:[
+					"intro",
+					"simpleharmonicoscillator",
+					"dampedharmonicoscillator",
+				]
+			}
+		]
+		parts[
+			{
+				id:"simpleharmonicoscillator "
+				course:"controlSystems"
+				title: Simple Harmonic oscillator
+				blocks:[
+						id:damping
+				]
+			}
+		]
 
-		activePart: {
-			id:"simpleharmonicoscillator "
-			title: Simple Harmonic oscillator
-			blocks:[
-					id:damping
-			]
-		}
-		activeBlock: {
-			id: "damping"
-			complete: false
-			Title:"damping"
-			text:"adjust damping ratio
-			anim:{//must be a quantity object
-					"value": 0,
-					"min": 0,
-					"max": 28,
-					"symbol": "dispT",
-					"independent": true,
-					"abstractions": 10,
-					"animation": {
-						"playing": false
-					}
-				},
-			tests?
-		}
+		contentBlocks: [
+			{
+				id: "damping"
+				part:"simpleHarmonicOscillator"
+				course:"controlSystems"
+				complete: false
+				Title:"damping"
+				text:"adjust damping ratio
+				anim:{//must be a quantity object
+						"value": 0,
+						"min": 0,
+						"max": 28,
+						"symbol": "dispT",
+						"independent": true,
+						"abstractions": 10,
+						"animation": {
+							"playing": false
+						}
+					},
+				tests?
+			}
+		]
 
 	},
 	sim:{

@@ -1,0 +1,18 @@
+{
+	"id": "calculus",
+	"title": "Calculus",
+	"parts":[
+		{
+			"id":"intro",
+			"title":"Introduction",
+			"contentBlocks":[
+				{
+					"id":"why-learn-calculus",
+					"title":"Why Learn Calculus?",
+					"text":"Why Learn Calculus?",
+					"type":"anim"
+				}
+			]
+		}
+	]
+}

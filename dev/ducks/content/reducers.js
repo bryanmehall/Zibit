@@ -1,29 +1,147 @@
-const contentReducer = (state = { parts: [] }, action) => {
+const defaultContent = {
+	activeCourse: null,
+	activePart: null,
+	activeContentBlock :null,
+	courses: [],
+	parts: [],
+	contentBlocks: []
+}
+const contentReducer = (state = defaultContent, action) => {
 	//here state refers to content section of tree
 	switch (action.type) {
+		case "HOME": {
+			const active = {
+				activeCourse: null,
+				activePart: null,
+				activeContentBlock: null
+			}
+			return Object.assign({}, state, active)
+		}
+		case "ACTIVATE_COURSE": {
+			const active = {
+				activeCourse: action.payload.courseId,
+				activePart: null,
+				activeContentBlock: null
+			}
+			return Object.assign({}, state, active)
+		}
+		case "ACTIVATE_PART": {
+			const active = {
+				activeCourse: action.payload.courseId,
+				activePart: action.payload.partId,
+				activeContentBlock: null
+			}
+
+			return Object.assign({}, state, active)
+		}
+		case "ACTIVATE_CONTENT_BLOCK":{
+			const active = {
+				activeCourse: action.payload.courseId,
+				activePart: action.payload.partId,
+				activeContentBlock: action.payload.contentBlockId
+			}
+
+			return Object.assign({}, state, active)
+		}
 		case "FETCH_COURSE_DATA":
-			return Object.assign({}, state, { currentCourse: { loading: true } })
-		case "INITIALIZE_COURSE_STATE":
-			const courseData = Object.assign(action.payload.courseData, {loading:false})
-			return Object.assign({}, state, {currentCourse:courseData})
+		case "INITIALIZE_COURSE_STATE": { //route above to course reducer
+			const index = state.courses.findIndex(
+				(courseData) => (
+					courseData.courseId === action.payload.courseId
+				)
+			)
+			const pos = index === -1 ? state.courses.length : index //handle if element does not exist
+			const updatedCourse = courseReducer(state.courses[pos], action)
+			const newCourseList = Object.assign([], state.courses, { [pos]: updatedCourse })
+			return Object.assign({}, state, { courses: newCourseList })
+		}
+		case "FETCH_PART_DATA":
+		case "INITIALIZE_PART_STATE": {
+			const index = state.parts.findIndex(
+				(partData) => (
+					partData.courseId === action.payload.courseId && partData.partId === action.payload.partId
+				)
+			)
+			const pos = index === -1 ? state.parts.length : index
+			const updatedPart = partReducer(state.parts[pos], action)
+			const newPartList = Object.assign([], state.parts, { [pos]: updatedPart })
+			return Object.assign({}, state, { parts: newPartList })
+		}
+		case "FETCH_PART_DATA":
+		case "INITIALIZE_CONTENT_BLOCK_STATE": {
+			const index = state.parts.findIndex(
+				(contentBlockData) => (
+					contentBlockData.courseId === action.payload.courseId &&
+					contentBlockData.partId === action.payload.partId &&
+					contentBlockData.contentBlockId == action.payload.contentBlockId
+				)
+			)
+			const pos = index === -1 ? state.contentBlocks.length : index
+			const updatedContentBlock = contentBlockReducer(state.contentBlocks[pos], action)
+			const newContentBlockList = Object.assign([], state.contentBlocks, { [pos]: updatedContentBlock })
+			return Object.assign({}, state, { contentBlocks: newContentBlockList })
+		}
 		default:
-			return Object.assign({}, state, partsReducer(state.parts, action))
+			return state //Object.assign({}, state, partsReducer(state.parts, action))
 	}
 }
 
-const partsReducer = (state = [], action) => {
+const courseReducer = (state, action) => {//here state refers to a single course meta block
+	switch (action.type) {
+		case "FETCH_COURSE_DATA": {
+			return {
+				courseId: action.payload.courseId,
+				loading:true
+			}
+		}
+		case "INITIALIZE_COURSE_STATE": {
+			const courseData = action.payload.courseData
+			const courseMetaData = {
+				loading:false,
+				title:courseData.title,
+				parts: courseData.parts.map((partData)=>(partData.id))
+			}
+			return Object.assign({}, state, courseMetaData)
+		}
+		default: {
+			return state
+		}
+	}
+}
+
+const partReducer = (state = [], action) => {
 	switch (action.type){
 		case 'INITIALIZE_PART_STATE':
-			console.log('parts reducer', action)
+			const partData = action.payload.partData
+			const partMetaData = {
+				courseId:action.payload.courseId,
+				partId: partData.id,
+				title: partData.title,
+				contentBlocks:partData.contentBlocks.map((contentBlockData)=>(contentBlockData.id))
+			}
+			return Object.assign({}, state, partMetaData)
 		default:
 			return state
 	}
 }
 
-
-const blockReducer = (state = {}, action) => {
-	console.log()
+const contentBlockReducer = (state= {} , action) => {
+	switch (action.type){
+		case "INITIALIZE_CONTENT_BLOCK_STATE":{
+			const contentBlockData = action.payload.contentBlockData
+			const contentMetaData = {
+				courseId:action.payload.courseId,
+				partId: action.payload.partId,
+				contentBlockId: action.payload.contentBlockId,
+				title: contentBlockData.title,
+				type: contentBlockData.type,
+				text: contentBlockData.text
+			}
+			return Object.assign({}, state, contentMetaData)
+		}
+		default:
+			return state
+	}
 }
-
 
 export default contentReducer;

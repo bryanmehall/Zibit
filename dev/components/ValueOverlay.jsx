@@ -168,8 +168,8 @@ class ValueOverlay extends React.Component {
 		//text
         const inactiveOverlay = (
             <g
-				onMouseEnter={mouseOver}
-                onMouseLeave={mouseOut}
+				//onMouseEnter={mouseOver}
+                //onMouseLeave={mouseOut}
 				>
 				<HighlightFilter color={this.props.color} id={this.props.id}></HighlightFilter>
                 {this.props.highlighted ? hoverText : null}
@@ -189,12 +189,18 @@ class ValueOverlay extends React.Component {
 
 		)
 		return (
+			<div style={{width:"100%",  height:150, border:"5px black", borderRadius:5,  backgroundColor:'blue'}}>
+
+			</div>
+		)
+		/*
+		return (
 			<g transform={'translate('+bbox.x+','+(bbox.y+bbox.height)+')'}>
 				{active ? null : inactiveOverlay}
 				{active ? activeOverlay : null}
 			</g>
 			)
-
+			*/
 	}
 }
 

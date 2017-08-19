@@ -1,66 +1,94 @@
 import React from 'react'
 import {connect} from "react-redux"
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom'
 import { linkStyle } from './styles'
 import { Route, Switch, Redirect } from 'react-router'
 import ContentActions from '../ducks/content/actions'
-import { courseIsLoading, getParts, getPartTitle, getPartId } from '../ducks/content/selectors'
+import {UnmountClosed} from 'react-collapse'
+import Link from 'redux-first-router-link'
+import Part from './Part'
+
+import { courseIsLoading, getParts, getCourseTitle, getPartTitle, getPartId, getCurrentCourseId } from '../ducks/content/selectors'
 import SmdApp from "./SmdApp"
 import NavBar from './NavBar'
 
 class Course extends React.Component {
 	componentDidMount(){
-		this.props.fetchCourseData(this.props.match.params.courseId)
+		this.props.fetchCourseData(this.props.courseId)
 	}
 	render() {
-		const match = this.props.match
+		const course = this
 		const parts = this.props.parts //part ids
 		const loading = this.props.loading
-		const courseId = match.params.courseId
-		const navPath = [
-			{name:'Courses', id:'courses'},
-			{name:match.params.courseId, id:match.params.courseId}
-		]
-
-		const createPartList = (partData, index) => {
-
-			return (
-				<li key={getPartId(partData)}>
-					<Link style={linkStyle} to={`${match.url}/${getPartId(partData)}`}>
-						{`Part ${index}: ${getPartTitle(partData)}`}
-					</Link>
-				</li>
-			)
+		const courseId = this.props.courseId
+		const activeCourse = this.props.activeCourse
+		const expanded = activeCourse === courseId
+		const visible = activeCourse === courseId || activeCourse === null
+		if (loading){
+			return <div>loading</div>
 		}
 
-		return (
-			<Switch>
-				<Route path={`${match.url}/:partId`} render={(props) => (<SmdApp {...props} loading={loading}/>)}/>
-				<Route exact path={`${match.url}`}>
-					<div>
-						{this.props.loading ? "Loading..." : parts.map(createPartList)}
+		const createPartList = (partId, index) => {
+			return (
+					<div key={partId}>
+						<Part partId={partId} courseId={courseId}></Part>
 					</div>
-				</Route>
-				<Redirect from={`${match.url}/:courseId/`} to={`${match.url}/:courseId`} />
+			)
+		}
+		const expandedCourse = (
+			<div>
+				{parts.map(createPartList)}
+			</div>
+		)
+		const isOpen = expanded || this.props.activeCourse === null
+		if (!visible){
+			return null
+		} else {
+			return (
+				<div
+					onClick = {expanded ? null : ()=>{course.props.activateCourse(this.props.courseId)}}
 
-			</Switch>
+					>
+					<div style ={{color:'#eee'}}>
+						{expanded ? null : this.props.title}
+					</div>
+					{ expanded ? expandedCourse : null}
+				</div>
 
 		)
+		}
+
 	}
 }
 
 function mapStateToProps(state, props) {
-	return {
-		loading: courseIsLoading(state),
-		parts: getParts(state)
-	};
+	const courseId = props.courseId
+	const loading = courseIsLoading(state, courseId)
+	if (!loading){
+		return {
+			loading: courseIsLoading(state, courseId),
+			parts: getParts(state, courseId),
+			title: getCourseTitle(state, courseId),
+			activeCourse: getCurrentCourseId(state)
+		}
+	} else {
+		return {
+			loading:true,
+			parts:[],
+			title:'',
+			activeCourse:null
+		}
+	}
+
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
 		fetchCourseData: (courseId) => (
 			dispatch(ContentActions.fetchCourseData(courseId))
+		),
+		activateCourse: (courseId) => (
+			dispatch(ContentActions.activateCourse(courseId))
 		)
 	};
 }

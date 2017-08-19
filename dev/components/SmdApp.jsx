@@ -104,7 +104,7 @@ class SmdApp extends React.Component {
 						exact path={`${this.props.match.url}/:contentId`}
 						render = {
 							(props) => {
-								return <Sim width={700}{...props} height={600} pos={{ x: sideBarWidth+cardStyle.margin, y: 100 }}/>
+								return <Sim width={1200}{...props} height={600} pos={{ x: sideBarWidth+cardStyle.margin, y: 100 }}/>
 							}
 						}
 					/>

@@ -10,6 +10,7 @@ import TitleBar from './TitleBar'
 import Plot from './Plot'
 import Abstraction from './Abstraction'
 import Expression from './Expression'
+import Tracker from './Tracker'
 import Value from './Value'
 import { cardStyle } from './styles'
 
@@ -21,35 +22,48 @@ class Sim extends React.Component {
 	}
 
 	componentDidMount(){
-		const url = this.props.match.url
-		this.loadSim(url)
+		const contentBlockId = this.props.contentBlockId
+		this.loadSim(contentBlockId)
 	}
 	componentWillReceiveProps(nextProps){
 		//componentWill update takes next props as argument
 
-		const url = nextProps.match.url
-		if (this.props.match.url !== url) { //only update on change
-			this.loadSim(url)
+		const contentBlockId = nextProps.contentBlockId
+		if (this.props.contentBlockId !== contentBlockId) { //only update on change
+			this.loadSim(contentBlockId)
 		}
 	}
-	loadSim(url){
+	loadSim(contentBlockId){
 
-		this.props.fetchSimData(url)
+		if (contentBlockId === null){
+
+		} else {
+			const url = `/courses/${this.props.courseId}/${this.props.partId}/${contentBlockId}`
+			this.props.fetchSimData(url)
+		}
+
 	}
 	render(){
+		const active = this.props.contentBlockId !== null
 
-		const pos = this.props.pos || { x: 100, y: 100 }
-		var childTypes = {
+		const image = (<div>Thumbnail coming soon</div>)
+
+		const childTypes = {
 			"Plot": Plot,
-            "Expression": Expression
+            "Expression": Expression,
+			"Tracker": Tracker
 		}
 		const simCardStyle = {
 			...cardStyle, 
-			width:this.props.width, 
-			height:this.props.height, 
-			left: pos.x, 
+			width:active? 1200 : this.props.width,
+			height:active ? 600 : this.props.height,
+			position: "relative",
+			left: 0,
+			top: 0,
+			float:'left',
 			backgroundColor: '#fff' 
 		}
+		//combine these into one file for importing children
 		function createChild(childData){
 			var type = childTypes[childData.type]
 			var props = childData.props
@@ -57,23 +71,15 @@ class Sim extends React.Component {
 			return React.createElement(type, props)
 		}
 		const children = this.props.childData.map(createChild)
-		if (this.props.loadState === 'error'){
-			return <div style={{ ...cardStyle, left: pos.x, backgroundColor: '#fff', width: this.props.width, height: this.props.height }}>
-				Error: Failed to Load Simulation
-			</div>
-		}
-		const loadingIcon = <div style={{ position: 'absolute' }}>Loading</div>
+
+		const loadingIcon = (<div >Loading</div>)
+		const content = active ? children : image
+
 		return (
 			<div style={simCardStyle}>
 				{this.props.loadState === "loading" ? loadingIcon : null }
-				
-				<svg
-					width={this.props.width}
-					height={this.props.height}
-					id="sim"
-					>
-				{children}
-				</svg>
+				{this.props.loadState === 'error' ? 'Error: Failed to Load Simulation' : null}
+				{content}
 			</div>
 		)
 	}

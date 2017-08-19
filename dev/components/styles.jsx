@@ -33,6 +33,7 @@ export const linkStyle = {
 export const mathTextStyle = {
 	fontFamily: 'MathJax_Main,"Times New Roman",Times,serif',
 	fontSize: "1.6em",
+	letterSpacing: "2px",
 	WebkitTouchCallout: "none",
 	WebkitUserSelect: "none",
 	MozUserSelect: "none"
@@ -42,6 +43,7 @@ export const mathVarStyle = {
 	fontStyle: "italic",
 	fontFamily: 'MathJax_Main,"Times New Roman",Times,serif',
 	fontSize: "1.6em",
+	letterSpacing: "2px",
 	WebkitTouchCallout: "none",
 	WebkitUserSelect: "none",
 	MozUserSelect: "none"

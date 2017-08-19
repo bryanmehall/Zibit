@@ -11,39 +11,17 @@ import EqText from './EqText'
 class Expression extends React.Component{
 	constructor(props){
 		super(props)
-        this.updatebboxes = this.updatebboxes.bind(this)
-        this.callUpdate = this.callUpdate.bind(this)
-        this.needsUpdate = true
-		this.bboxes = {}
+		this.updateWidth = this.updateWidth.bind(this)
 	}
-    updatebboxes(){
-        const expression = this
-        if (this.needsUpdate){
-            Object.keys(this.refs).forEach((id) => {
-                const domElement = ReactDOM.findDOMNode(expression.refs[id])
-                const extent = domElement.getExtentOfChar(0)//use SVG v1.1
-                const length = domElement.getComputedTextLength()
-                const bbox = { x: extent.x, y: extent.y, height: extent.height, width: length }
-
-                expression.bboxes[id] = bbox
-
-            })
-
-            this.forceUpdate() //need to update other bboxes when one updates
-        }
-        this.needsUpdate = false
-    }
-    callUpdate(){
-        this.needsUpdate = true
-    }
-    componentDidMount(){
-        this.updatebboxes()
+	componentWillReceiveProps(){
+		this.dw = 0
 	}
-    componentDidUpdate(){
-
-        this.updatebboxes()
-    }
-
+	componentDidUpdate(){
+	}
+	updateWidth(dw){
+		this.dw+=dw
+		console.log('updating', dw)
+	}
 	render(){
 		const self = this
 		const childData = this.props.childData
@@ -61,43 +39,19 @@ class Expression extends React.Component{
 			var props = childData.props
 			props.key = props.id
             props.ref = props.id
-            props.callUpdate = self.callUpdate
 			props.index = i
+			props.updateWidth = self.updateWidth
 			props.isSubExpression = true
 			return React.createElement(type, props)
 		}
-        function createOverlays(childData){
-            if (childData.props.quantity !== undefined){ //if a quantity component --could swallow errrors?
-                const active = childData.props.active
-                const id = childData.props.id
-                const bbox = self.bboxes[id]
-                const quantity = childData.props.quantity
-                return (bbox === undefined) ? null : <ValueOverlay quantity={quantity} active={active} id={id} key={id} bbox={bbox}/>
-            } else {return null}
-        }
 
         this.children = this.props.childData.map(createChild)
-        const overlays = this.props.childData.map(createOverlays)
-        const blurmask = null
 
-		//if (this.props.isSubExpression){
-		//	return (
-		//		<tspan>
-		//			{children}
-		//		</tspan>
-		//	)
-		//} else {
-			return (//render children with refs first
-                <g transform={'translate('+pos.x+','+pos.y+')'}>
-                    <text>
-                        {this.children}
-                    </text>
-                    {blurmask}
-					{overlays}
-                </g>
-
-			)
-		//}
+		return (
+			<div style={{position:'absolute', top:pos.y, left:pos.x, display:'flex', justifyContent:'center', width:"0"}}>
+				{this.children}
+			</div>
+		)
 	}
 }
 

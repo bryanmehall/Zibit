@@ -6,15 +6,15 @@ export default class ZibitLogo extends React.Component {
 	  const w = this.props.width || 22//width
 	  const h = w*r //height
 	  const t = w/3.5 //thickness
-	  const topColor ="#58de58"
-	  const diagonalColor="#ccd"
-	  const bottomColor = "#fac531"
-	  const diagonalOpacity = 0.83
+	  const topColor ="#0e759c"
+	  const diagonalColor="#889"
+	  const bottomColor = "#26840b"
+	  const diagonalOpacity = 0.85
 
 	  const pos = this.props.pos || { x: 0, y: 0 }
 	  const slope = h/(w-t*r)
 	  const dt = Math.sqrt(t*t+(t/slope)*(t/slope))
-	  const topPath = 'M0 0 L'+w+' 0L'+(w-t/slope)+' '+t+'L0 '+t
+	  const topPath = 'M0 0 L'+w+' 0L'+(w-t/slope-w/30)+' '+t+'L0 '+t
 	  const diagonalPath = 'M'+(w-dt)+' 0L'+w+' 0L'+dt+' '+h+'L0 '+h
 
 	  const top = (
@@ -31,29 +31,33 @@ export default class ZibitLogo extends React.Component {
 	  )
        const whiteMask = (
 		   <path
-			   fill="white"
+			   fill="#000"
 			   d={diagonalPath}
 			   />
 	   )
        const bottom = (
 		   <path
                   d={topPath}
-                      fill={bottomColor}
+                  fill={bottomColor}
                   transform={'translate('+w+','+h+') rotate(180)'}
                       />)
 	   const text = (
 		   <text
-			   x={w*14.115/15}//14.115/15 to make touching
+			   x={w*0.908}//14.115/15 to make touching
 			   fontFamily='"Yanone Kaffeesatz", sans-serif'
 			   y={h}
-			   fontSize={h}
-			   fill='#58de58'
+			   fontSize={h*1.2}
+			   fill='#0e759c'
 			   >
 			   ibit
 		   </text>
 	   )
     return (
-      <svg width={w*2.6} height={h+10}>
+      <svg
+		  width={w*2.9}
+		  height={h+10}
+		  style= {this.props.style}
+		  >
 		<g transform={'translate('+pos.x+','+pos.y+')'}>
         {whiteMask}
         {top}
