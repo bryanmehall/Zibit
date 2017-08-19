@@ -1,11 +1,24 @@
 import React from 'react'
 import { TestIcon, inactive, active, completed } from './icons'
+import {connect} from "react-redux"
+
 import TestBlock from './TestBlock'
 import AnimBlock from './AnimBlock'
 import LabBlock from './LabBlock'
 import {Collapse} from 'react-collapse'
 import {Motion, spring} from 'react-motion'
 import {cardStyle} from './styles'
+import ContentActions from '../ducks/content/actions'
+import {
+	getContentBlockTitle,
+	getContentBlockType,
+	getPartId,
+	getCurrentCourseId,
+	getCurrentPartId,
+	getCurrentContentBlockId,
+	getContentBlockText
+} from '../ducks/content/selectors'
+
 
 
 
@@ -27,8 +40,10 @@ class ContentBlock extends React.Component {
 		this.setState({highlighted: false})
 	}
 	render(){
+		const component = this
 		const type = this.props.type || 'anim'
-		const active = false
+		const {courseId, partId, contentBlockId, activeCourse, activePart, activeContentBlock} = this.props
+
 		const highlighted = this.state.highlighted
 		const textStyle = {
 			cursor: "default",
@@ -74,6 +89,7 @@ class ContentBlock extends React.Component {
 								backgroundColor: `rgba(238,238,238,${value.alpha})`,
 								color: `hsl(0,0%,${value.tv}%)`
 							}}
+							onClick = {()=>{component.props.activateContentBlock(this.props.courseId, this.props.partId, this.props.contentBlockId)}}
 							onMouseOver={this.onMouseOver}
 							onMouseOut = {this.onMouseOut}
 							>
@@ -82,10 +98,34 @@ class ContentBlock extends React.Component {
 					}}
 				</Motion>
 			</Collapse>
-
 		)
-
 	}
 }
 
-export default ContentBlock;
+function mapStateToProps(state, props) {
+	const courseId = props.courseId
+	const partId = props.partId
+	const contentBlockId = props.contentBlockId
+	const active = getCurrentCourseId(state) === courseId &&
+		  getCurrentPartId(state) === partId &&
+		  getCurrentContentBlockId(state) === contentBlockId
+		return {
+			title: getContentBlockTitle(state, courseId, partId, contentBlockId),
+			type: getContentBlockType(state, courseId, partId, contentBlockId),
+			text: getContentBlockText(state, courseId, partId, contentBlockId),
+			active: active
+		}
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		activateContentBlock: (courseId, partId, contentBlockId) => {
+			dispatch(ContentActions.activateContentBlock(courseId, partId, contentBlockId))
+			}
+	};
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContentBlock)
