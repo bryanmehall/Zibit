@@ -94,14 +94,16 @@ class Part extends React.Component {
 							border:'black'}}>
 
 					{contentBlockBar}
-					<Sim
-					width={400}
-					height={300}
-					pos={{ x: sideBarWidth+cardStyle.margin, y: 0 }}
-					courseId={courseId}
-					partId={partId}
-					contentBlockId={this.props.activeContentBlock}
-					/>
+					<div style={{maxWidth:'75%'}}>
+						<Sim
+						width={400}
+						height={300}
+						pos={{ x: sideBarWidth+cardStyle.margin, y: 0 }}
+						courseId={courseId}
+						partId={partId}
+						contentBlockId={this.props.activeContentBlock}
+						/>
+					</div>
 				</div>
 			</div>
 		)

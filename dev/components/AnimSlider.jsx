@@ -31,7 +31,9 @@ class AnimSlider extends React.Component {
 			"stroke": "#0e759c",
 			"strokeLinecap": "round"
 		}
+
 		return (
+
 			<svg width={width} height={height}>
 				<line
 					style={barStyle}
