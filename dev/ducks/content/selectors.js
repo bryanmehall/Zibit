@@ -10,6 +10,7 @@ export const getCourseById = (state, courseId) => {
 }
 const getCurrentCourse = (state) => (getCourseById(state, getCurrentCourseId(state)))
 export const getCourseTitle = (state, courseId) => (getCourseById(state, courseId).title)
+export const getCourseDescription = (state, courseId) => (getCourseById(state, courseId).description)
 export const courseIsLoading = (state, courseId) => {
 	const courseData = getCourseById(state, courseId)//switch to routing thunks?
 	return (courseData === undefined) ? true : courseData.loading
@@ -69,6 +70,12 @@ export const getContentBlockType = (state, courseId, partId, contentBlockId) => 
 export const getContentBlockText = (state, courseId, partId, contentBlockId) => (
 	getContentBlockById(state, courseId, partId, contentBlockId).text
 )
-export const getPlaying = (state, partId, blockId) => (
-	getContentBlock(state, partId, blockId).anim.playing
+export const getAnimPlaying = (state, courseId, partId, contentBlockId) => (
+	getContentBlockById(state, courseId, partId, contentBlockId).anim.playing
+)
+export const getAnimLength = (state, courseId, partId, contentBlockId) => (
+	getContentBlockById(state, courseId, partId, contentBlockId).anim.length
+)
+export const getAnimTime = (state, courseId, partId, contentBlockId) => (
+	getContentBlockById(state, courseId, partId, contentBlockId).anim.time
 )

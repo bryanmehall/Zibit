@@ -50,7 +50,6 @@ const routesMap = {
 	ACTIVATE_COURSE: '/courses/:courseId', // :id is a dynamic segment
 	ACTIVATE_PART: '/courses/:courseId/:partId',
 	ACTIVATE_CONTENT_BLOCK: '/courses/:courseId/:partId/:contentBlockId'
-
 }
 
 const history = createHistory()

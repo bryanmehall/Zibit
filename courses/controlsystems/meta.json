@@ -1,6 +1,7 @@
 {
 	"id": "controlsystems",
 	"title": "Control Systems",
+	"description":"Fundamentals of control systems from system response through linear controls design",
 	"parts":[
 		{
 			"id":"intro",

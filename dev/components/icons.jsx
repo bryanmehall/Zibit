@@ -83,10 +83,12 @@ export const LabIcon = ({}) => (
 	</svg>
 )
 export const pause = (
-		<path
-			d= "M0,0 L7,0 7,20 0,20 M11,0 L18,0 18,20 11,20"
-			fill="#888"
-		/>
+		<g transform = "translate(8,8) scale(1.2)">
+			<path
+				d= "M0,0 L7,0 7,20 0,20 M11,0 L18,0 18,20 11,20"
+				fill="#888"
+			/>
+		</g>
 )
 
 export const play = (

@@ -58,7 +58,7 @@ export const axisLabelStyle = {
 export const headerStyle = {
 	fontSize:20,
 	color : '#eee',
-	textAlign: 'center',
+	//textAlign: 'center',
 	padding:20
 }
 

@@ -1,6 +1,7 @@
 {
 	"id": "calculus",
 	"title": "Calculus",
+	"description":"Introduction to single variable calculus including differentaition, integration and their applications.",
 	"parts":[
 		{
 			"id":"intro",

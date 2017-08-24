@@ -68,13 +68,17 @@ const contentReducer = (state = defaultContent, action) => {
 			return Object.assign({}, state, { parts: newPartList })
 		}
 		case "FETCH_PART_DATA":
-		case "INITIALIZE_CONTENT_BLOCK_STATE": {
-			const index = state.parts.findIndex(
-				(contentBlockData) => (
-					contentBlockData.courseId === action.payload.courseId &&
+		case "INITIALIZE_CONTENT_BLOCK_STATE":
+		case "ANIM_CONTENT":
+		case "SET_ANIM_LENGTH":
+		case "SET_ANIM_TIME":
+		case "ANIM_CONTENT_STEP": {
+			const index = state.contentBlocks.findIndex(
+				(contentBlockData) => {
+					return contentBlockData.courseId === action.payload.courseId &&
 					contentBlockData.partId === action.payload.partId &&
 					contentBlockData.contentBlockId == action.payload.contentBlockId
-				)
+				}
 			)
 			const pos = index === -1 ? state.contentBlocks.length : index
 			const updatedContentBlock = contentBlockReducer(state.contentBlocks[pos], action)
@@ -97,9 +101,10 @@ const courseReducer = (state, action) => {//here state refers to a single course
 		case "INITIALIZE_COURSE_STATE": {
 			const courseData = action.payload.courseData
 			const courseMetaData = {
-				loading:false,
-				title:courseData.title,
-				parts: courseData.parts.map((partData)=>(partData.id))
+				loading: false,
+				title: courseData.title,
+				description:courseData.description,
+				parts: courseData.parts.map((partData) => (partData.id))
 			}
 			return Object.assign({}, state, courseMetaData)
 		}
@@ -125,19 +130,43 @@ const partReducer = (state = [], action) => {
 	}
 }
 
-const contentBlockReducer = (state= {} , action) => {
+const contentBlockReducer = (state={} , action) => {
 	switch (action.type){
-		case "INITIALIZE_CONTENT_BLOCK_STATE":{
+		case "INITIALIZE_CONTENT_BLOCK_STATE": {
 			const contentBlockData = action.payload.contentBlockData
-			const contentMetaData = {
-				courseId:action.payload.courseId,
+			const type = contentBlockData.type
+
+			let contentMetaData = {
+				courseId: action.payload.courseId,
 				partId: action.payload.partId,
 				contentBlockId: action.payload.contentBlockId,
 				title: contentBlockData.title,
-				type: contentBlockData.type,
+				type: type,
 				text: contentBlockData.text
 			}
+			if (type ==='anim'){
+				contentMetaData.anim = {
+					playing: false,
+					length: 1,
+					time: 0
+				}
+			}
 			return Object.assign({}, state, contentMetaData)
+		}
+		case "ANIM_CONTENT": {
+			const playing = action.payload.playing
+			const newAnimState = Object.assign({}, state.anim, { playing: playing })
+			return Object.assign({}, state, { anim: newAnimState })
+		} case "SET_ANIM_LENGTH": {
+			const length = action.payload.length
+			const newAnimState = Object.assign({}, state.anim, {length:length})
+			return Object.assign({}, state, { anim: newAnimState })
+		}
+		case "SET_ANIM_TIME": {
+			const time = action.payload.time
+
+			const newAnimState = Object.assign({}, state.anim, {time:time})
+			return Object.assign({}, state, { anim: newAnimState })
 		}
 		default:
 			return state

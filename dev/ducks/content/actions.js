@@ -1,3 +1,4 @@
+//fetch content
 const fetchCourseData = (courseId) => ({
 	type: 'FETCH_COURSE_DATA',
 	payload: {
@@ -17,7 +18,7 @@ const activateContentBlock = (courseId, partId, contentBlockId) => ({
 	}
 })
 
-
+//initialize state
 const initializeCourseState = (courseData) => {
 	const parts = courseData.parts
 	let initContentBlockActions = []
@@ -54,19 +55,55 @@ const initializeContentBlockState = (contentBlockData, courseId, partId, content
 	}
 })
 
+//animations
+const fetchAudio = (courseId, partId, contentBlockId) => ({
 
+})
 
-
-const setPlaying = (blockId, value) => {
-	console.log('setPlay', blockId, value)
-	return {
-		type: 'PLAY_CONTENT_ANIM',
-		payload: {
-			blockId,
-			value
-		}
+const setPlaying = (courseId, partId, contentBlockId, playing) => ({
+	type: 'ANIM_CONTENT',
+	payload: {
+		courseId,
+		partId,
+		contentBlockId,
+		playing
 	}
-}
+
+})
+const animContentStep = (courseId, partId, contentBlockId, initTime, initAnimTime) => ({
+	type:"ANIM_CONTENT_STEP",
+	payload:{
+		courseId,
+		partId,
+		contentBlockId,
+		initTime,
+		initAnimTime
+	}
+})
+
+
+const setAnimLength = (courseId, partId, contentBlockId, length) => ({
+	type: 'SET_ANIM_LENGTH',
+	payload: {
+		courseId,
+		partId,
+		contentBlockId,
+		length
+	}
+
+})
+const setAnimTime = (courseId, partId, contentBlockId, time) => ({
+	type: 'SET_ANIM_TIME',
+	payload: {
+		courseId,
+		partId,
+		contentBlockId,
+		time
+	}
+})
+const pauseAll = () => ({
+	type:"PAUSE_ALL"
+})
 
 
 
@@ -77,5 +114,9 @@ export default {
 	fetchCourseData,
 	initializeCourseState,
 	activateCourse,
-	activateContentBlock
+	activateContentBlock,
+	pauseAll,
+	setAnimLength,
+	animContentStep,
+	setAnimTime
 }

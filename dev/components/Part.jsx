@@ -63,6 +63,7 @@ class Part extends React.Component {
 			)
 		}
 		const contentBlockBar = (
+
 			<div style={{
 					overflow: "hidden",
 					width: sideBarWidth - cardStyle.margin,
@@ -73,7 +74,9 @@ class Part extends React.Component {
 					margin: 5,
 
 				}}>
-
+				<div style={headerStyle}>
+					{this.props.title}
+				</div>
 				{contentBlocks.map(createContentBlockList)}
 			</div>
 		)
@@ -83,13 +86,13 @@ class Part extends React.Component {
 		} else {
 			return (
 			<div>
-				<div style={headerStyle}>
-					<div >{this.props.title}</div>
-				</div>
+
 				<div style = {{
 							display:"flex",
+
 							//backgroundColor:'#ccf',
 							border:'black'}}>
+
 					{contentBlockBar}
 					<Sim
 					width={400}

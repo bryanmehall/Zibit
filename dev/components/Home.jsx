@@ -27,7 +27,7 @@ class Home extends React.Component {
 								margin: 'auto'
 							}}
 							></ZibitLogo>
-						<SearchBar></SearchBar>
+					{/*<SearchBar></SearchBar>*/}
 				</div>
 		} else {
 			header = <NavBar></NavBar>

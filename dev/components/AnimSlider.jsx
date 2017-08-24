@@ -28,7 +28,7 @@ class AnimSlider extends React.Component {
 		const pos = { x: barWidth*frac+offset, y: offset }
 		const barStyle = {
 			"strokeWidth": "4",
-			"stroke": "#888",
+			"stroke": "#0e759c",
 			"strokeLinecap": "round"
 		}
 		return (
@@ -41,12 +41,12 @@ class AnimSlider extends React.Component {
 					y2={p2.y}
 				/>
 				<Draggable
-					onDragStart={this.props.onDragStart}
-					onDragMove={this.props.onDragMove}
-					onDragEnd={this.props.onDragEnd}
+					dragStart={this.props.onDragStart}
+					dragMove={this.props.onDragMove}
+					dragEnd={this.props.onDragEnd}
 					>
                     <g transform = {getTransformString(pos)}>
-						<circle cx={0} cy={0} r={8} fill="#eee" filter="url(#dropShadow)"></circle>
+						<circle cx={0} cy={0} r={8} fill="#eee" stroke="#0e759c"></circle>
 					</g>
 				</Draggable>
 			</svg>

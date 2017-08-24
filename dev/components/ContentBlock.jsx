@@ -74,7 +74,7 @@ class ContentBlock extends React.Component {
 		} else {
 			contentBlockStyle = {
 				tv: spring(100),
-				alpha :spring(0)
+				alpha: spring(0)
 			}
 		}
 		return (
@@ -121,7 +121,7 @@ function mapDispatchToProps(dispatch) {
 	return {
 		activateContentBlock: (courseId, partId, contentBlockId) => {
 			dispatch(ContentActions.activateContentBlock(courseId, partId, contentBlockId))
-			}
+		}
 	};
 }
 
