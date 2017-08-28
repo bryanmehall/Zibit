@@ -17,6 +17,7 @@ class Path extends React.Component {
 		var maskString = 'url(#'+this.props.mask+')'
 		return(
 				<path
+				style={this.props.style}
 				d={pointsToSVGPath(points)}
 				fill={fill}
 				stroke={stroke}

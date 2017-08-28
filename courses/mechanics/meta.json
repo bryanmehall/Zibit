@@ -1,20 +1,41 @@
 {
 	"id": "mechanics",
 	"title": "Mechanics",
+	"description":"Introduction to the fundamentals of physics including two dimensional motion and rates of change. Under construction but useable",
 	"parts":[
 		{
-			"id":"intro",
-			"title":"Test",
+			"id":"pendulums",
+			"title":"Pendulums",
 			"contentBlocks":[
 				{
-					"id":"test",
-					"title":"intro",
-					"type":"anim"
+					"id": "introduction",
+					"title": "Introduction",
+					"text": "Introduction to pendulums",
+					"type": "anim"
 				},
 				{
-					"id": "lab",
-					"title": "Pendulum Lab",
-					"type": "lab"
+					"id": "forces",
+					"title": "Forces",
+					"text": "Forces on a pendulum",
+					"type": "anim"
+				},
+				{
+					"id":"acceleration",
+					"title":"Acceleration",
+					"text": "Drag the yellow vector to show the approximate direction of acceleration at three different points in the motion of the pendulum",
+					"type": "test"
+				},
+				{
+					"id": "oscillation",
+					"title": "Oscillation",
+					"text": "Measuring angle over time",
+					"type": "anim"
+				},
+				{
+					"id":"lab",
+					"title":"Lab",
+					"text":"Lab Instructions: \n To make a pendulum you will need a string that is at least 40cm (16 in) long. If you don’t have string, the cord for headphones or a very thin strip of paper will work. If you use your headphones just make sure not to bend the wire too much or they will break. You will also need something to use for the mass. It needs to be bright yellow for the webcam to be able to track it.\nTroubleshooting tips:\n -Make sure that there is only one yellow object in the picture or it will try to track both \n-Turn on the lights or get into sunlight--Your camera takes fewer pictures per second in the dark",
+					"type":"lab"
 				}
 			]
 		}

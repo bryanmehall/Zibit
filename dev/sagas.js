@@ -19,6 +19,7 @@ function* fetchSimData(action) {
 		const response = yield call(fetchJson, action.payload.path)
 		yield put(SimActions.initializeSimState(response.data))
 	} catch (e) {
+
 		yield put(SimActions.simDataFetchFailed(e))
 	}
 }

@@ -13,7 +13,8 @@ const fadeWidgetIn = {
 	},
 	tween: function (store, t, tweenData) {
 		var alpha = (t - tweenData.start) / (tweenData.dur)
-		store.dispatch(WidgetActions.setProp(tweenData.params.name, 'visibility', alpha))
+		console.log(t, alpha)
+		store.dispatch(WidgetActions.setProp(tweenData.params.name, 'opacity', alpha))
 	},
 	end: function () {
 		//console.log('end of fade in')
@@ -24,8 +25,9 @@ const fadeWidgetOut = {
 	inverse: "fadeWidgetIn",
 	start: function (t, tweenData) {},
 	tween: function (store, t, tweenData) {
-		var alpha = (t - tweenData.start) / (tweenData.end - tweenData.start)
-		store.dispatch(WidgetActions.setProp(tweenData.params.name, 'visibility', alpha))
+		var alpha = 1+( tweenData.start - t ) / (tweenData.end - tweenData.start)
+		console.log(alpha)
+		store.dispatch(WidgetActions.setProp(tweenData.params.name, 'opacity', alpha))
 	},
 	end: function (store, t, tweenData) {
 		var params = tweenData.params
@@ -34,7 +36,7 @@ const fadeWidgetOut = {
 	}
 }
 
-const askQuestion = function(){}
+
 
 
 export default {

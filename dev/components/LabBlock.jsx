@@ -14,11 +14,11 @@ class LabBlock extends React.Component {
 		}
 		const instructions = (
 			<div>
-				To start collecting data:
 				<ul >
-					<li >Hold the pivot point of the pendulum even with the top point of the pendulum on the screen</li>
-					<li>release the pendulum</li>
-					<li>press the space bar to start recording data</li>
+					<li>Measure a length of 40 cm from the center of the mass along the string</li>
+					<li>Pinch the string at that point and hold even with the anchor point of the pendulum on the screen</li>
+					<li>Release the pendulum</li>
+					<li>Press the space bar to start recording data</li>
 				</ul>
 			</div>
 		)

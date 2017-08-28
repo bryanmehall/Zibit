@@ -26,6 +26,9 @@ function s(t) {
 function y(sol, t) {
 	return sol.at(t)[0]
 }
+function theta(sol, t){
+	return sol.at(t)[0]
+}
 function thetaF(anchorX, anchorY, x, y) {
 	const dx = x-anchorX
 	const dy = y-anchorY
@@ -45,15 +48,19 @@ export const getQuantityData = function (state, name) { //make this not avaliabl
 	try {
 		if (name === undefined) {
 			throw new Error('Selector Error: name is undefined')
-		} else if (name === 'animTime') { //should this abstraction go here?
-			return state.content.activeBlock.anim
+		} else if (name === 'zero') { //should this abstraction go here?
+			return {value:0, min:0, max:1, independent:true}
 		} else {
-			return state.sim.quantity[name]
+			const quantityData = state.sim.quantity[name]
+			if (quantityData === undefined) {
+				throw new Error(`can not find quantity named ${name}`)
+			}
+			return quantityData
 		}
 
 
 	} catch (e) {
-		throw new Error('quantity ' + name + ' not found')
+		console.log(e)
 	}
 }
 
@@ -105,14 +112,10 @@ export const getCoordSys = (state, xVar, yVar, parentBB) => ({
 
 export const getValue = function (state, name, given={}) {
 	//given is an object of independent variables that replace concrete values
-
+	if (name === undefined){return 0}
 	const quantityData = getQuantityData(state, name)
-
-	if (quantityData.independent) {
+	if (quantityData.independent ||quantityData.independent === undefined) {
 		return (given[name] === undefined) ? quantityData.value : given[name]
-	}
-	if (name !== "measuredTheta"){
-		var sol = getSol(state)
 	}
 	switch (name) {
 		case "x": {
@@ -127,12 +130,14 @@ export const getValue = function (state, name, given={}) {
 
 		case "y": {
 			const t = (given.t === undefined) ? getValue(state, 't') : given.t
+			const sol = getSol(state)
 			const yVal = y(sol, t)
 			return yVal
 		}
 
 		case "dydt": {
 			const t = (given.t === undefined) ? getValue(state, 't') : given.t
+			const sol = getSol(state)
 			let dydt = sol.at(t)[1]
 			return dydt
 		}
@@ -154,9 +159,73 @@ export const getValue = function (state, name, given={}) {
 			var fdVal = 0//getValue(state, 'fd')
 			return fext([fsVal,fdVal])
 		}
-		case "measuredTheta": {
+		case "bobX": {
+			let theta = getValue(state, "theta")
+			let length = getValue(state, 'length')
+
+			return Math.sin(theta)*length
+		}
+		case "bobY": {
+			let theta = getValue(state, "theta")
+			let length = getValue(state, 'length')
+			return -Math.cos(theta)*length
+		}
+		case "theta": {
 			const t = (given.t === undefined) ? getValue(state, 't') : given.t
-			return 40*Math.sin(t)
+			const sol = getPendulumSol(state)
+			const thetaVal = theta(sol, t)
+			return thetaVal
+		}
+		case "omega": {
+			const t = (given.t === undefined) ? getValue(state, 't') : given.t
+			const sol = getPendulumSol(state)
+			return sol.at(t)[1]
+		}
+		case "fg_y": {
+			const m = getValue(state, 'm')
+			const g = getValue(state, 'g')
+			return m*g
+		}
+		case "ft_x":
+		case "ft_y": {
+			const fg = getValue(state, "fg_y")
+			const theta = getValue(state, "theta")
+			const omega = getValue(state, "omega")
+			const m = getValue(state, "m")
+			const l = getValue(state, "length")
+			const f_c = m*omega*omega*l
+			if (name === "ft_x"){
+				return Math.sin(theta)*(-f_c+fg)
+			} else {
+				return Math.cos(theta)*(f_c-fg)
+			}
+		}
+		case "fnet_x":{
+			return getValue(state, "ft_x")
+		}
+		case "fnet_y":{
+			const fg = getValue(state, "fg_y")
+			const ft_y = getValue(state, "ft_y")
+			return fg+ft_y
+		}
+
+		case "measuredBobX":
+		case "measuredBobY":
+		case "measuredTheta":{
+			const t = (given.t === undefined) ? getValue(state, 't') : given.t
+			const l = getValue(state, 'length')
+			const measuredX = getValue(state, 'measuredX')
+			const measuredY = getValue(state, 'measuredY')
+			const aX = 500/2
+			const aY = 500/6 //find better way to calculate coordinate systems
+			const angle = Math.atan2(measuredY-aY, measuredX-aX)
+			if (name === "measuredBobX"){
+				return Math.cos(angle)*l
+			} else if (name === "measuredTheta"){
+				return angle
+			} else {
+				return -Math.sin(angle)*l
+			}
 		}
 		default:
 			throw "make sure that " + name + " is labeled as independent"
@@ -207,6 +276,30 @@ function getSolNoMem(k, m, c, y0, dy0, min, max) {
 	return sol
 }
 
+const getPendulumSol = createSelector(
+	[
+		getValueff('theta0'),
+		//getValueff('m'),
+		//getValueff('c'),
+		getValueff('length'),
+		getValueff('g'),
+		//getValueff('dy0'),
+		getMinff('t'),
+		getMaxff('t')
+	],
+	getPendSolNoMem
+)
+function getPendSolNoMem(theta0, l, g, min, max){
+	var f = function(t, theta){
+		return [
+			theta[1],
+			g / l * Math.sin(theta[0])//-c/(l*m)*theta[1] for damping
+		];
+	}
+	var sol = dopri(min, max, [theta0, 0], f, 1e-6, 2000);
+	return sol
+}
+
 export const getAbsValues = function (state, name, absName) {
 	//abstract name w.r.t. absName
 
@@ -221,19 +314,25 @@ export const getAbsValues = function (state, name, absName) {
 }
 
 export const getAbsPoints = function (state, indVar, xVar, yVar) {
-	if (yVar === "measuredTheta"){//total hack --needs to be cleaned up
+	if (yVar === "measuredTheta"){//total hack --needs to be cleaned up-- cubic splines?
 		const xPrev = getQuantityData(state, "measuredX").previousValues
 		const yPrev = getQuantityData(state, "measuredY").previousValues
-		if (xPrev.length === 0){
+		const aX = 500/2
+		const aY = 500/6
+		if (yPrev.length === 0){
 			return [{x:0, y:0}]
+		} else {
+			return yPrev.map((yPoint, i) => {
+				//iterate over y becasue the most recent y value
+				//is not updated when the action is dispatched
+				const t = yPoint.t
+				const x = xPrev[i].value
+				const y = yPoint.value
+				const theta = Math.atan2( x-aX, y-aY)
+				return {x:t, y:theta}
+			})
 		}
-		return xPrev.map((xPoint, i) => {
-			const t = xPoint.t
-			const x = (xPoint.value-320)/5
-			//const y = yPrev[i].value
-			//const theta = thetaF(350,20,x,y)
-			return {x:t, y:x}
-		})
+
 
 	}
 	var xPoints = getAbsValues(state, xVar, indVar)

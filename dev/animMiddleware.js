@@ -44,10 +44,13 @@ export const animMiddleware = store => next => action => {
 	} else if (action.type === "ANIM_CONTENT_STEP") {
 		const state = store.getState()
 		const {courseId, partId, contentBlockId, initAnimTime, initTime} = action.payload
+		const prevTime = getAnimTime(state, courseId, partId, contentBlockId )
 		const t = Date.now()
 		const newTime = ((t-initTime)/1000)+initAnimTime//time since last play
 		const playing = getAnimPlaying(state, courseId, partId, contentBlockId)
 		const length = getAnimLength(state, courseId, partId, contentBlockId)
+		const activeTweens = getActiveTweens(prevTime, newTime)
+		tween(store, activeTweens, newTime)
 		if (playing){
 			if (newTime > length){
 				const setTimeAction = ContentActions.setAnimTime(courseId, partId, contentBlockId, length)

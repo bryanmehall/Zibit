@@ -17,6 +17,9 @@ class AnimBlock extends React.Component {
 		const {courseId, partId, contentBlockId} = this.props
 		const audioUrl = `/content/courses/${courseId}/${partId}/${contentBlockId}.mp3`
 		this.audio = new Audio(audioUrl)
+		this.audio.addEventListener('error', (error) => {
+			throw new Error( `audio failed to load at ${audioUrl}`)
+		})
 		this.audio.addEventListener('loadedmetadata', () => {
 			//set audio to correct time when sim is reloaded
 			this.audio.currentTime = this.props.time

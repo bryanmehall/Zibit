@@ -15,7 +15,7 @@ class Abstraction extends React.Component {
 				strokeColor={this.props.color}
 				coordSys={this.props.coordSys}
 				mask={this.props.mask}
-				></Path>
+			/>
 		)
 	}
 }

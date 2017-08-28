@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
 
 class Draggable extends React.Component {
@@ -38,10 +39,14 @@ class Draggable extends React.Component {
 			<g
 				onMouseDown={this.mouseDown}
 				pointerEvents = 'all'
+				cursor='pointer'
 				>
 				{this.props.children}
 			</g>
 		)
 	}
+}
+Draggable.propTypes = {
+
 }
 export default Draggable;

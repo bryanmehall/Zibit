@@ -1,65 +1,56 @@
 import keyframeActions from './keyframeActions'
 export const audio = new Audio("/courses/controlsystems/dho/intro.mp3")
 
-const course = {
-	id: "controlSystems",
-	title: "Control Systems"
-}
-
-const contentGroup = {
-	id: "dampedHarmonicOscillator",
-	title: "Part 02: Damped Harmonic Oscilator",
-	contentBlocks: ["intro", "zeroDamping"]
-}
-const contentBlocks = [
-{
-	id: "intro",
-	title:"intro",
-	text:"Introduction to damped harmonic oscillators",
-	type:"animation",
-	initialState: {},//initial state of store goes here
-	completed: false,
-	progress:0,//time in autio to jump to?
-	audio: "intro.mp3",
-	onComplete: { action: 'goTo', contentBlock: "zeroDamping" }
-},{
-	id:"zeroDamping",
-	text: "Adjust the damping coefficient so the oscillations don't decrease over time",
-	type:"test",
-	completed:false,
-	active: false,
-	test: {
-		type: "isEqual",
-		params: { quantity: 'c', value: 0 },
-		helpBlocks: []
-	}
-}
-]
-
 var keyframes = [
-	{ //make keyframes relative to each other to that a change in one shifts all--maybe also have a time so that it can be set absolutely
-		time: 1,
-		dt: 0, //time overrides dt
-		actions: [
+	{
+		"time": 2,
+		"dt": 0,
+		"actions": [
 			{
-				type: "fadeWidgetIn",
-				dur: 1,
-				params: {
-					name: 'posPlot',
-					type: 'Plot',
-					parent: 'app',
-					props: {
-						xVar: 't',
-						yVar: 'y',
-						xVars: ['t'],
-						yVars: ['y'],
-						width: 300,
-						height: 350,
-						pos: { x: 350, y: 400 }
+				"type": "fadeWidgetIn",
+				"dur": 1,
+				"params": {
+					"name": "gForceVector",
+					"type": "Vector",
+					"parent": "pendulumPlot",
+					"props": {
+						"tailX": "bobX",
+						"tailY": "bobY",
+						"x": "fg_x",
+						"y": "fg_y",
+						"opacity": 0
 					},
-					children: ['abstraction1']
+					"children": [
+
+					]
 				},
-				interp: 'linear' //make cubic default
+				"interp": "linear"
+			}
+		]
+	},
+	{
+		"time": 4,
+		"dt": 0,
+		"actions": [
+			{
+				"type": "fadeWidgetOut",
+				"dur": 1,
+				"params": {
+					"name": "gForceVector",
+					"type": "Vector",
+					"parent": "pendulumPlot",
+					"props": {
+						"tailX": "bobX",
+						"tailY": "bobY",
+						"x": "fg_x",
+						"y": "fg_y",
+						"opacity": 0
+					},
+					"children": [
+
+					]
+				},
+				"interp": "linear"
 			}
 		]
 	}

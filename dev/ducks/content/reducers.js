@@ -147,7 +147,7 @@ const contentBlockReducer = (state={} , action) => {
 			if (type ==='anim'){
 				contentMetaData.anim = {
 					playing: false,
-					length: 1,
+					length: 10,
 					time: 0
 				}
 			}

@@ -26,6 +26,8 @@
 			"tracker": {
 				"type": "Tracker",
 				"props": {
+					"width":500,
+					"height":500,
 					"xQuantity":"measuredX",
 					"yQuantity":"measuredY"
 				}
@@ -33,19 +35,19 @@
 			"pendulumPlot":{
 				"type": "Plot",
 				"props": {
-					"xVar": "measuredX",
-					"yVar": "measuredY",
+					"xVar": "meauredBobX",
+					"yVar": "measuredBobY",
 					"xVars": [
-						"measuredX"
+						"measuredBobX"
 					],
 					"yVars": [
-						"measuredY"
+						"measuredBobY"
 					],
-					"width": 640,
-					"height": 480,
+					"width": 500,
+					"height": 500,
 					"pos": {
-						"x": 0,
-						"y": 480
+						"x": 50,
+						"y": 550
 					},
 					"visibility": 1
 				},
@@ -56,6 +58,10 @@
 			"pendulum":{
 				"type": "Pendulum",
 				"props":{
+					"bobX":"measuredBobX",
+					"bobY":"measuredBobY",
+					"anchorX":"anchorX",
+					"anchorY":"anchorY"
 				}
 			},
 			"posPlot":{
@@ -69,11 +75,11 @@
 						"yVars": [
 							"measuredTheta"
 						],
-						"width": 300,
-						"height": 400,
+						"width": 400,
+						"height": 500,
 						"pos": {
-							"x": 750,
-							"y": 480
+							"x": 650,
+							"y": 550
 						},
 						"visibility": 1
 					},
@@ -95,7 +101,7 @@
 			"measuredX": {
 				"value": 0,
 				"min": 0,
-				"max": 1000,
+				"max": 500,
 				"previousValues":[],
 				"independent": true,
 				"symbol": "mX",
@@ -105,12 +111,50 @@
 			"measuredY": {
 				"value": 0,
 				"min": 0,
-				"max": 1000,
+				"max": 500,
 				"abstractions": 0,
 				"previousValues":[],
 				"independent": true,
 				"symbol": "mY",
 				"highlighted": false
+			},
+			"measuredTheta":{
+				"value":0,
+				"min":-3.1415,
+				"max":3.1415,
+				"independent":false,
+				"symbol":"thetaM"
+			},
+			"length":{
+				"value":40,
+				"min":0,
+				"max":50,
+				"independent":true,
+				"symbol":"l"
+			},
+			"measuredBobX":{
+				"value":0,
+				"independent":false,
+				"min":-30,
+				"max":30
+			},
+			"measuredBobY":{
+				"value":0,
+				"independent":false,
+				"min":-50,
+				"max":10
+			},
+			"anchorX":{
+				"value":0,
+				"independent":true,
+				"min":-30,
+				"max":30
+			},
+			"anchorY":{
+				"value":0,
+				"independent":true,
+				"min":-50,
+				"max":10
 			},
 			"t":{
 				"value": 0,
@@ -124,8 +168,8 @@
 			},
 			"measuredTheta":{
 				"value": 0,
-				"min": -80,
-				"max": 80,
+				"min": -1.57,
+				"max": 1.57,
 				"abstractions": 200,
 				"independent": false,
 				"symbol": "&theta;",

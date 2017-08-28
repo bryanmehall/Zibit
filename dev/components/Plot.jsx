@@ -12,6 +12,7 @@ import Spring from './Spring'
 import Anchor from './Anchor'
 import Damper from './Damper'
 import Pendulum from './Pendulum'
+import Vector from './Vector'
 
 
 
@@ -23,7 +24,7 @@ class Plot extends React.Component {
 			pos = this.props.pos,
 			axisPadding = 40,
 			borderPadding = 10,
-			visibility = this.props.visibility || 1,
+			visibility = this.props.visibility !== undefined ? this.props.visibility: 1,
 			xQuantities = this.props.xQuantities,
 			yQuantities = this.props.yQuantities,
 			xQuantity = xQuantities[this.props.xActive],
@@ -49,7 +50,8 @@ class Plot extends React.Component {
 			Spring: Spring,
 			Anchor: Anchor,
 			Damper: Damper,
-			Pendulum: Pendulum
+			Pendulum: Pendulum,
+			Vector: Vector
 		}
 
 		function createChild(childData){

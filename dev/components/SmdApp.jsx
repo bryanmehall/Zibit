@@ -48,6 +48,7 @@ class SmdApp extends React.Component {
 		const sideBarWidth = 0.25*this.state.width
 		const margin = cardStyle.margin
 		const navPath = []
+
 		const createContentBlocks = (contentData) => (
 			<Link
 				key={contentData.id}
