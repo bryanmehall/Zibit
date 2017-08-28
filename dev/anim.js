@@ -53,6 +53,55 @@ var keyframes = [
 				"interp": "linear"
 			}
 		]
+	},
+	{
+		"time": 1,
+		"dt": 0,
+		"actions": [
+			{
+				"type": "tweenProperty",
+				"dur": 0.2,
+				"params": {
+					"objectName": "pendulum",
+					"propName": "stringHighlight",
+					"initValue": 0,
+					"finalValue": 1
+				},
+				"interp": "linear"
+			}
+		]
+	},
+	{
+		"time": 3,
+		"dt": 0,
+		"actions": [
+			{
+				"type": "tweenQuantity",
+				"dur": 1,
+				"params": {
+					"quantityName": "theta0",
+					"initValue": 0,
+					"finalValue": 1
+				},
+				"interp": "linear"
+			}
+		]
+	},
+	{
+		"time": 4.5,
+		"dt": 0,
+		"actions": [
+			{
+				"type": "tweenQuantity",
+				"dur": 6,
+				"params": {
+					"quantityName": "t",
+					"initValue": 0,
+					"finalValue": 6
+				},
+				"interp": "linear"
+			}
+		]
 	}
 ]
 

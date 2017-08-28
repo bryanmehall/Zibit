@@ -72,7 +72,10 @@
 					"bobX":"bobX",
 					"bobY":"bobY",
 					"anchorX":"anchorX",
-					"anchorY":"anchorY"
+					"anchorY":"anchorY",
+					"stringHighlight":0,
+					"massHighlight":0,
+					"anchorHighlight":0
 				}
 			},
 			"tensionVector":{

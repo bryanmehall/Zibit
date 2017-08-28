@@ -14,8 +14,13 @@ class Pendulum extends React.Component {
 
 	render() {
 
-		const anchorPos = this.props.anchorPos
-		const bobPos = this.props.bobPos
+		const {
+			bobPos,
+			anchorPos,
+			stringHighlight,
+			massHighlight,
+			anchorHighlight
+		} = this.props
 
 		const dragStart = (startPos)=>{
 			this.props.setPlay('t', false)
@@ -38,15 +43,23 @@ class Pendulum extends React.Component {
 		const dragEnd = (endPos) =>{
 			this.props.setPlay('t', true)
 		}
+		const stringFilter = <HighlightFilter id="stringFilter" strength={stringHighlight*5} color='#88f'></HighlightFilter>
+		const massFilter = <HighlightFilter id="massFilter" strength={massHighlight*5} color='#88f'></HighlightFilter>
+		const anchorFilter = <HighlightFilter id="anchorFilter" strength={anchorHighlight*5} color='#88f'></HighlightFilter>
 		return (
 			<g>
+				{stringHighlight !== 0 ? stringFilter : null}
+				{massHighlight !== 0 ? massFilter : null}
+				{anchorHighlight !== 0 ? anchorFilter : null}
+
 				<line
-					x1={anchorPos.x}
+					x1={anchorPos.x+0.2/*hack for filter*/}
 					y1={anchorPos.y}
 					x2={bobPos.x}
 					y2={bobPos.y}
 					strokeWidth={2}
-					stroke='black'
+					stroke="black"
+					filter={stringHighlight !== 0 ? "url(#stringFilter)" : null}
 					/>
 				<Draggable
 					dragStart={dragStart}
@@ -57,8 +70,9 @@ class Pendulum extends React.Component {
 					r={20}
 					cx={bobPos.x}
 					cy={bobPos.y}
-					stroke='black'
+					stroke="black"
 					fill="white"
+					filter={massHighlight !== 0 ? "url(#massFilter)" : null}
 					/>
 				</Draggable>
 
@@ -66,6 +80,7 @@ class Pendulum extends React.Component {
 					r={10}
 					cx={anchorPos.x}
 					cy={anchorPos.y}
+					filter={anchorHighlight !== 0 ? "url(#anchorFilter)" : null}
 					/>
 			</g>
 		)
@@ -79,6 +94,11 @@ Pendulum.propTypes = {
 	anchorY: PropTypes.string,
 }
 
+Pendulum.defaultProps = {
+	stringHighlight: 0,
+	massHighlight: 0,
+	anchorHighlight: 0
+}
 
 function mapStateToProps(state, props) {
 	var br = props.boundingRect //bounding rect of plot
