@@ -44,8 +44,7 @@ class AnimBlock extends React.Component {
 	onDragMove(fractionDone){
 		const time = this.props.length*fractionDone
 		const { courseId, partId, contentBlockId } = this.props
-		//this.props.setAnimTime(courseId, partId, contentBlockId, time)
-
+		this.props.setAnimTime(courseId, partId, contentBlockId, time)
 	}
 	onDragEnd() {
 		//if (this.isPlaying){//move side effects to middleware

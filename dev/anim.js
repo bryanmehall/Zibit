@@ -81,14 +81,14 @@ var keyframes = [
 				"params": {
 					"quantityName": "theta0",
 					"initValue": 0,
-					"finalValue": 1
+					"finalValue": 0.5
 				},
 				"interp": "linear"
 			}
 		]
 	},
 	{
-		"time": 4.5,
+		"time": 6,
 		"dt": 0,
 		"actions": [
 			{

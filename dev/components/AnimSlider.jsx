@@ -12,14 +12,26 @@ import {dist} from '../utils/point'
 class AnimSlider extends React.Component {
 	constructor(props){
 		super(props)
+		this.dragMove = this.dragMove.bind(this)
+		this.dragStart = this.dragStart.bind(this)
+		this.offset = 10
+
 	}
-	dragStart(){}
-	dragMove(){}
+	dragStart(pos){
+		this.startPos = pos
+		this.startFrac = this.props.fracDone
+		this.props.onDragStart()
+	}
+	dragMove(pos){
+		const barWidth = this.props.width-this.offset*2
+		const frac = this.startFrac+(pos.x-this.startPos.x)/barWidth
+		this.props.onDragMove(frac)
+	}
 	dragEnd(){}
 	render() {
 		const width = this.props.width
 		const frac = this.props.fracDone
-		const offset = 10
+		const offset = this.offset
 		const barWidth = width-offset*2
 		const height = offset*2
 		const p1 = { x: offset, y: offset }
@@ -43,8 +55,8 @@ class AnimSlider extends React.Component {
 					y2={p2.y}
 				/>
 				<Draggable
-					dragStart={this.props.onDragStart}
-					dragMove={this.props.onDragMove}
+					dragStart={this.dragStart}
+					dragMove={this.dragMove}
 					dragEnd={this.props.onDragEnd}
 					>
                     <g transform = {getTransformString(pos)}>
