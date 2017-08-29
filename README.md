@@ -13,6 +13,10 @@ includes webpack watching files but no hot module reloading
 * need to add test coverage
 
 ### production (ugly deployment --update to nix and CD)
+npm
+* npm run build:server
+* npm run build:client
+
 docker
 * build docker container:
 ```sudo docker build -t zibit-node-server .```
