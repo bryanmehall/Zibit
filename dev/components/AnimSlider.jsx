@@ -25,9 +25,18 @@ class AnimSlider extends React.Component {
 	dragMove(pos){
 		const barWidth = this.props.width-this.offset*2
 		const frac = this.startFrac+(pos.x-this.startPos.x)/barWidth
-		this.props.onDragMove(frac)
+		if (frac < 0){
+			this.props.onDragMove(0)
+		} else if (frac>1){
+			this.props.onDragMove(1)
+		} else {
+			this.props.onDragMove(frac)
+		}
+
 	}
-	dragEnd(){}
+	dragEnd(){
+		this.props.onDragEnd()
+	}
 	render() {
 		const width = this.props.width
 		const frac = this.props.fracDone

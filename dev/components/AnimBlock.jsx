@@ -44,13 +44,11 @@ class AnimBlock extends React.Component {
 	onDragMove(fractionDone){
 		const time = this.props.length*fractionDone
 		const { courseId, partId, contentBlockId } = this.props
+		this.audio.currentTime = time
 		this.props.setAnimTime(courseId, partId, contentBlockId, time)
 	}
 	onDragEnd() {
-		//if (this.isPlaying){//move side effects to middleware
-		//	audio.play()
-		//}
-		//this.props.setPlay('animTime', this.isPlaying)
+		this.props.setPlaying(courseId, partId, contentBlockId, this.isPlaying)
 	}
 	onPlay(){
 		//this.props.setPlaying()
