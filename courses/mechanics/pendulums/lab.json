@@ -136,13 +136,15 @@
 				"value":0,
 				"independent":false,
 				"min":-30,
-				"max":30
+				"max":30,
+				"symbol":"x"
 			},
 			"measuredBobY":{
 				"value":0,
 				"independent":false,
 				"min":-50,
-				"max":10
+				"max":10,
+				"symbol":"y"
 			},
 			"anchorX":{
 				"value":0,
@@ -172,7 +174,7 @@
 				"max": 1.57,
 				"abstractions": 200,
 				"independent": false,
-				"symbol": "&theta;",
+				"symbol": "θ",
 				"highlighted": false
 
 			}

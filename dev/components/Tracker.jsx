@@ -88,7 +88,7 @@ class Tracker extends React.Component {
 					alignSelf: "center",
 					alignItems: "center",
 					justifyContent: "center",
-					top: 50,
+					top: 60,
 					left: 50,
 				}}>
 				<video

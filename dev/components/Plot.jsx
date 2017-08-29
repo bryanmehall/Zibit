@@ -2,8 +2,9 @@ import React from "react"
 import {connect} from "react-redux"
 import { bindActionCreators } from 'redux';
 import * as QuantityActions from '../ducks/quantity/actions';
-import {getValue, getQuantityData} from '../ducks/quantity/selectors'
+import {getValue, getQuantityData, getSymbol} from '../ducks/quantity/selectors'
 import {getChildren} from '../ducks/widget/selectors'
+import {mathVarStyle} from './styles'
 import {CoordSys, Scale} from '../utils/scale'
 import Axis from './Axis'
 import Abstraction from './Abstraction'
@@ -16,13 +17,14 @@ import Vector from './Vector'
 
 
 
+
 class Plot extends React.Component {
 	render(){
 		var plotId = this.props.id,
 			width = this.props.width,//width in px from axis min
 			height = this.props.height,//height in px from axis min
 			pos = this.props.pos,
-			axisPadding = 40,
+			axisPadding = 50,
 			borderPadding = 10,
 			visibility = this.props.visibility !== undefined ? this.props.visibility: 1,
 			xQuantities = this.props.xQuantities,
@@ -66,13 +68,15 @@ class Plot extends React.Component {
 		var children = this.props.childData.map(createChild)
 		return (
 			<svg
-				width={width+axisPadding+borderPadding}
-				height={height+axisPadding+borderPadding}
 				style={{
 					position:"absolute",
 					left:pos.x-axisPadding,
+					//backgroundColor:'gray',//for debug
 					top:pos.y-height
-				}}>
+				}}
+				width={width+axisPadding+borderPadding}
+				height={height+axisPadding+borderPadding}
+				>
 				<g opacity={visibility}>
 					<defs>
 						<mask id={plotId}>
@@ -83,17 +87,28 @@ class Plot extends React.Component {
 					<Axis
 						min={xScale.min}
 						max={xScale.max}
-						p1={{x:axisPadding, y:height}}
-						p2={{x:width+axisPadding, y:height}}
+						p1={{x:axisPadding, y:height+borderPadding}}
+						p2={{x:width+axisPadding, y:height+borderPadding}}
 						offs={15}
-						></Axis>
+						/>
+					<text
+						x={width/2+axisPadding} y={height+axisPadding} textAnchor="middle" style={mathVarStyle}>{this.props.xLabel}
+					</text>
 					<Axis
 						min={yScale.min}
 						max={yScale.max}
-						p1={{x:axisPadding, y:height}}
-						p2={{x:axisPadding, y:0}}
+						p1={{x:axisPadding, y:height+borderPadding}}
+						p2={{x:axisPadding, y:borderPadding}}
 						offs={-15}
-						></Axis>
+						/>
+					<text
+						x={5}
+						y={height/2+borderPadding}
+						alignmentBaseline="middle"
+						style={mathVarStyle}
+						>
+						{this.props.yLabel}
+					</text>
 				</g>
 			</svg>
 		)
@@ -108,9 +123,13 @@ function mapStateToProps(state, props) {
 		})
 		return quantities
 	}
+	const xActive = props.xVars[0]
+	const yActive = props.yVars[0]
 	return {
-		xActive: props.xVars[0],
-		yActive: props.yVars[0],
+		xActive,
+		yActive,
+		xLabel: getSymbol(state, xActive),
+		yLabel: getSymbol(state, yActive),
 		xQuantities: getQuantities(props.xVars),
 		yQuantities: getQuantities(props.yVars),
 		childData: getChildren(state,props.id)

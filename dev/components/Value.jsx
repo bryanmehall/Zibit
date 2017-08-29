@@ -119,7 +119,7 @@ function mapStateToProps(state, props) {
 	return {
 		symbol: quantityData.symbol,
 		independent: getIndependent(state, props.quantity),
-		active: getActive(state, props.id),
+		active: props.active !== undefined ? props.active : getActive(state, props.id),
 		highlighted: getHighlighted(state, props.quantity),
 		quantityValue: getValue(state, props.quantity),
 		color: getColor(state, props.quantity),

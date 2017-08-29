@@ -50,12 +50,6 @@ class AnimBlock extends React.Component {
 	onDragEnd() {
 		this.props.setPlaying(courseId, partId, contentBlockId, this.isPlaying)
 	}
-	onPlay(){
-		//this.props.setPlaying()
-	}
-	onPause(){
-		//audio.pause()
-	}
     render(){
 		const width = this.props.width || 100
 		const height = this.props.height || 30
