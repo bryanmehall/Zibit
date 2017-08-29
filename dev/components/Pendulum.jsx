@@ -7,6 +7,7 @@ import {getValue, getColor, getHighlighted, getTransformedValue, getCoordSys, ge
 import Path from "./Path"
 import Draggable from "./Draggable"
 import {HighlightFilter} from './filters'
+import { dist } from "../utils/point"
 
 
 
@@ -21,7 +22,7 @@ class Pendulum extends React.Component {
 			massHighlight,
 			anchorHighlight
 		} = this.props
-
+		const length = dist(anchorPos, bobPos)
 		const dragStart = (startPos)=>{
 			this.props.setPlay('t', false)
 			this.props.setValue('t', 0)
@@ -39,6 +40,9 @@ class Pendulum extends React.Component {
 			const y = pos.y-this.dragOffset.y+this.initPos.y
 			const angle = Math.atan2(x-anchorPos.x, y-anchorPos.y)
 			this.props.setInitialAngle(angle)
+		}
+		const moveMass = (proxyEvent,event) => {
+			this.props.setInitialAngle(0)
 		}
 		const dragEnd = (endPos) =>{
 			this.props.setPlay('t', true)
@@ -61,6 +65,16 @@ class Pendulum extends React.Component {
 					stroke="black"
 					filter={stringHighlight !== 0 ? "url(#stringFilter)" : null}
 					/>
+				<circle
+					r={length}
+					cx={anchorPos.x}
+					cy={anchorPos.y}
+					stroke='rgba(0,0,0,0.0)'
+					fill="none"
+					strokeWidth="40"
+					onMouseDown = {moveMass}
+
+					/>
 				<Draggable
 					dragStart={dragStart}
 					dragMove={dragMove}
@@ -82,6 +96,7 @@ class Pendulum extends React.Component {
 					cy={anchorPos.y}
 					filter={anchorHighlight !== 0 ? "url(#anchorFilter)" : null}
 					/>
+
 			</g>
 		)
 	}
