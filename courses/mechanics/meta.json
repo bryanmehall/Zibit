@@ -22,14 +22,8 @@
 				{
 					"id":"acceleration",
 					"title":"Acceleration",
-					"text": "Drag the yellow vector to show the approximate direction of acceleration at three different points in the motion of the pendulum",
+					"text": "The test feature is coming soon. It can check for values being in a certain range and the mark the question as being correct. Drag the blue vectors to show the approximate direction of acceleration at three different points in the motion of the pendulum",
 					"type": "test"
-				},
-				{
-					"id": "oscillation",
-					"title": "Oscillation",
-					"text": "Measuring angle over time",
-					"type": "anim"
 				},
 				{
 					"id":"lab",

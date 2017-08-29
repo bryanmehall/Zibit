@@ -15,7 +15,7 @@ class Vector extends React.Component {
 		this.dragEnd = this.dragEnd.bind(this)
 	}
 	dragStart(initPos){
-		//this.startOffset = this.props.pos.y-initPos.y //offset in px
+		this.props.pos.y-initPos.y //offset in px
 		//this.props.setX0(this.startOffset, this.props.coordSys.yScale)
 	}
 	dragMove(newPos){

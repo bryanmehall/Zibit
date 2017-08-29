@@ -4,13 +4,14 @@
 	"description":"Fundamentals of control systems from system response through linear controls design",
 	"parts":[
 		{
-			"id":"intro",
-			"title":"Intro",
+			"id":"introduction",
+			"title":"Introduction",
 			"contentBlocks":[
 				{
-					"id":"intro",
-					"title":"intro",
-					"type":"test"
+					"id":"introduction",
+					"title":"Introduction",
+					"text":"Introduction",
+					"type":"anim"
 				}
 			]
 		},

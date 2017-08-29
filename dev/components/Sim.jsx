@@ -56,7 +56,7 @@ class Sim extends React.Component {
 		const simCardStyle = {
 			...cardStyle, 
 			width:active? 1200 : this.props.width,
-			height:active ? 600 : this.props.height,
+			height:active ? 650 : this.props.height,
 			position: "relative",
 			left: 0,
 			top: 0,

@@ -30,11 +30,11 @@ class NavBar extends React.Component {
 		}
 		const navLinkStyle = {
 			...linkStyle,
-			fontSize:20
+			fontSize:18
 		}
 		const { courseTitle, partTitle, contentBlockTitle, courseId, partId, contentBlockId } = this.props
 		const sep = <span style ={{
-					  fontSize:24,
+					  fontSize:22,
 					  paddingLeft:10
 				  }}
 						> &#x232A; </span>
