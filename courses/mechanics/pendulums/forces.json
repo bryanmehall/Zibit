@@ -1,120 +1,68 @@
 {
 	"onComplete": {
 		"action": "goTo",
-		"course":"mechanics",
-		"part":"pendulums",
-		"contentBlock": "forces"
+		"contentBlock": "zeroDamping"
 	},
 	"keyframes": [
 		{
-			"time": 9,
+			"time": 10.5,
 			"dt": 0,
 			"actions": [
 				{
-					"type": "tweenProperty",
-					"dur": 0.2,
+					"type": "fadeWidgetIn",
+					"dur": 0.5,
 					"params": {
-						"objectName": "pendulum",
-						"propName": "massHighlight",
-						"initValue": 0,
-						"finalValue": 1
+						"name": "gForceVector",
+						"type": "Vector",
+						"parent": "pendulumPlot",
+						"props": {
+							"tailX": "bobX",
+							"tailY": "bobY",
+							"x": "fg_x",
+							"y": "fg_y",
+							"opacity": 0
+						},
+						"children": [
+
+						]
 					},
 					"interp": "linear"
 				}
 			]
 		},
 		{
-			"time": 11,
+			"time": 25,
 			"dt": 0,
 			"actions": [
 				{
-					"type": "tweenProperty",
-					"dur": 0.2,
+					"type": "fadeWidgetIn",
+					"dur": 0.5,
 					"params": {
-						"objectName": "pendulum",
-						"propName": "massHighlight",
-						"initValue": 1,
-						"finalValue": 0
+						"name": "tensionVector",
+						"type": "Vector",
+						"parent": "pendulumPlot",
+						"props": {
+							"tailX": "bobX",
+							"tailY": "bobY",
+							"x": "ft_x",
+							"y": "ft_y",
+							"opacity": 0
+						},
+						"children": [
+
+						]
 					},
 					"interp": "linear"
 				}
 			]
 		},
 		{
-			"time": 10,
-			"dt": 0,
-			"actions": [
-				{
-					"type": "tweenProperty",
-					"dur": 0.2,
-					"params": {
-						"objectName": "pendulum",
-						"propName": "stringHighlight",
-						"initValue": 0,
-						"finalValue": 1
-					},
-					"interp": "linear"
-				}
-			]
-		},
-		{
-			"time": 12,
-			"dt": 0,
-			"actions": [
-				{
-					"type": "tweenProperty",
-					"dur": 0.2,
-					"params": {
-						"objectName": "pendulum",
-						"propName": "stringHighlight",
-						"initValue": 1,
-						"finalValue": 0
-					},
-					"interp": "linear"
-				}
-			]
-		},
-		{
-			"time": 11.5,
-			"dt": 0,
-			"actions": [
-				{
-					"type": "tweenProperty",
-					"dur": 0.2,
-					"params": {
-						"objectName": "pendulum",
-						"propName": "anchorHighlight",
-						"initValue": 0,
-						"finalValue": 1
-					},
-					"interp": "linear"
-				}
-			]
-		},
-		{
-			"time": 14,
-			"dt": 0,
-			"actions": [
-				{
-					"type": "tweenProperty",
-					"dur": 0.2,
-					"params": {
-						"objectName": "pendulum",
-						"propName": "anchorHighlight",
-						"initValue": 1,
-						"finalValue": 0
-					},
-					"interp": "linear"
-				}
-			]
-		},
-		{
-			"time": 15,
+			"time": 32,
 			"dt": 0,
 			"actions": [
 				{
 					"type": "tweenQuantity",
-					"dur": 4,
+					"dur": 10,
 					"params": {
 						"quantityName": "theta0",
 						"initValue": 0,
@@ -125,7 +73,33 @@
 			]
 		},
 		{
-			"time": 21,
+			"time": 25,
+			"dt": 0,
+			"actions": [
+				{
+					"type": "fadeWidgetIn",
+					"dur": 0.5,
+					"params": {
+						"name": "netForceVector",
+						"type": "Vector",
+						"parent": "pendulumPlot",
+						"props": {
+							"tailX": "bobX",
+							"tailY": "bobY",
+							"x": "fnet_x",
+							"y": "fnet_y",
+							"opacity": 0
+						},
+						"children": [
+
+						]
+					},
+					"interp": "linear"
+				}
+			]
+		},
+		{
+			"time": 49,
 			"dt": 0,
 			"actions": [
 				{
@@ -134,7 +108,7 @@
 					"params": {
 						"quantityName": "t",
 						"initValue": 0,
-						"finalValue": 20
+						"finalValue": 3
 					},
 					"interp": "linear"
 				}
@@ -186,7 +160,6 @@
 					"anchorHighlight":0
 				}
 			}
-
 		},
 		"quantity": {
 			"bobX": {
