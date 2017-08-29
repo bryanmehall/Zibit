@@ -24,14 +24,25 @@ const loadState = (state = "loading", action) => {
 			return state
 	}
 }
+const keyframes = (state=[], action) => {
+	switch(action.type){
+		case "INITIALIZE_SIM_STATE":{
+			return action.payload.keyframes
+		}
+		default:{
+			return state
+		}
+	}
+}
 
-const subReducer = combineReducers({ quantity, widget, loadState })
+const subReducer = combineReducers({ quantity, widget, loadState, keyframes })
 
 const simReducer = (state = {}, action) => {
 	switch (action.type){
 		case "INITIALIZE_SIM_STATE":
 			const simData = action.payload.simData
-			return Object.assign({}, simData, { loadState: "loaded" })
+			const normalizedKeyframes = keyframes([], action)
+			return Object.assign({}, simData, { loadState: "loaded", keyframes:normalizedKeyframes})
 		default:
 			return subReducer(state, action)
 	}

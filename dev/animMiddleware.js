@@ -1,6 +1,7 @@
-import { getActiveTweens, tween, audio } from "./anim"
+import { tween, getActiveTweens } from "./anim"
 import { getValue, getAnimatable, getMax, getPlaying } from './ducks/quantity/selectors'
 import { getAnimTime, getAnimPlaying, getAnimLength} from './ducks/content/selectors'
+import {getKeyframes} from './ducks/sim/selectors'
 import QuantityActions from './ducks/quantity/actions'
 import ContentActions from './ducks/content/actions'
 
@@ -49,7 +50,7 @@ export const animMiddleware = store => next => action => {
 		const newTime = ((t-initTime)/1000)+initAnimTime//time since last play
 		const playing = getAnimPlaying(state, courseId, partId, contentBlockId)
 		const length = getAnimLength(state, courseId, partId, contentBlockId)
-		const activeTweens = getActiveTweens(prevTime, newTime)
+		const activeTweens = getActiveTweens(prevTime, newTime, getKeyframes(state))//getActiveTweens(prevTime, newTime)
 		tween(store, activeTweens, newTime)
 		if (playing){
 			if (newTime > length){
@@ -89,7 +90,6 @@ export const animMiddleware = store => next => action => {
 			var state = store.getState()
             var max = getMax(state, name)
             var isPlaying = getPlaying(state, name)
-
 			if (isPlaying) { //only update and continue if quantity is still playing
                if (value > max){
                     store.dispatch(QuantityActions.setValue(name, max))

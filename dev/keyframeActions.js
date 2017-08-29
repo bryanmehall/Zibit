@@ -34,6 +34,7 @@ const fadeWidgetOut = {
 	}
 }
 const tweenProperty = {
+	inverse:"tweenProperty",
 	start: (store, t, tweenData) => {},
 	tween: (store, t, tweenData) => {
 		const {initValue, finalValue, objectName, propName} = tweenData.params
@@ -47,6 +48,7 @@ const tweenProperty = {
 	}
 }
 const tweenQuantity = {//this should be combined with tween property
+	inverse: "tweenQuantity",
 	start: (store, t, tweenData) => {},
 	tween: (store, t, tweenData) => {
 		const {initValue, finalValue, quantityName} = tweenData.params

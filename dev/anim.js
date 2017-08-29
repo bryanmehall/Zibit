@@ -1,112 +1,7 @@
 import keyframeActions from './keyframeActions'
-export const audio = new Audio("/courses/controlsystems/dho/intro.mp3")
-
-var keyframes = [
-	{
-		"time": 2,
-		"dt": 0,
-		"actions": [
-			{
-				"type": "fadeWidgetIn",
-				"dur": 1,
-				"params": {
-					"name": "gForceVector",
-					"type": "Vector",
-					"parent": "pendulumPlot",
-					"props": {
-						"tailX": "bobX",
-						"tailY": "bobY",
-						"x": "fg_x",
-						"y": "fg_y",
-						"opacity": 0
-					},
-					"children": [
-
-					]
-				},
-				"interp": "linear"
-			}
-		]
-	},
-	{
-		"time": 4,
-		"dt": 0,
-		"actions": [
-			{
-				"type": "fadeWidgetOut",
-				"dur": 1,
-				"params": {
-					"name": "gForceVector",
-					"type": "Vector",
-					"parent": "pendulumPlot",
-					"props": {
-						"tailX": "bobX",
-						"tailY": "bobY",
-						"x": "fg_x",
-						"y": "fg_y",
-						"opacity": 0
-					},
-					"children": [
-
-					]
-				},
-				"interp": "linear"
-			}
-		]
-	},
-	{
-		"time": 1,
-		"dt": 0,
-		"actions": [
-			{
-				"type": "tweenProperty",
-				"dur": 0.2,
-				"params": {
-					"objectName": "pendulum",
-					"propName": "stringHighlight",
-					"initValue": 0,
-					"finalValue": 1
-				},
-				"interp": "linear"
-			}
-		]
-	},
-	{
-		"time": 3,
-		"dt": 0,
-		"actions": [
-			{
-				"type": "tweenQuantity",
-				"dur": 1,
-				"params": {
-					"quantityName": "theta0",
-					"initValue": 0,
-					"finalValue": 0.5
-				},
-				"interp": "linear"
-			}
-		]
-	},
-	{
-		"time": 6,
-		"dt": 0,
-		"actions": [
-			{
-				"type": "tweenQuantity",
-				"dur": 6,
-				"params": {
-					"quantityName": "t",
-					"initValue": 0,
-					"finalValue": 6
-				},
-				"interp": "linear"
-			}
-		]
-	}
-]
 
 //transform keyframes into a list of actions and their start-end times --could be part of the build process
-function keyframesToActions(actions, keyframe) {
+export const keyframesToActions = (actions, keyframe) => {
 	function addStartEnd(action) {
 		var t0 = keyframe.time
 		return Object.assign(action, {
@@ -118,7 +13,7 @@ function keyframesToActions(actions, keyframe) {
 	return actions.concat(newActions)
 }
 
-const tweens = keyframes.reduce(keyframesToActions, [])//do at compile time
+//const tweens = keyframes.reduce(keyframesToActions, [])//do at compile time
 
 
 /* possible frame and start/end time spacing
@@ -138,7 +33,7 @@ backwards
 	|       | 2 1   none
 */
 
-export const getActiveTweens = (tp, t) => {
+export const getActiveTweens = (tp, t, tweens) => {
 	//previous time and time
 	var playingForward = t >= tp
 	var activeTweens = tweens.filter((tween) => (!(tp < tween.start && t < tween.start || tp > tween.end && t > tween.end)))
