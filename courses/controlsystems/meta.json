@@ -4,18 +4,6 @@
 	"description":"Fundamentals of control systems from system response through linear controls design",
 	"parts":[
 		{
-			"id":"introduction",
-			"title":"Introduction",
-			"contentBlocks":[
-				{
-					"id":"introduction",
-					"title":"Introduction",
-					"text":"Introduction",
-					"type":"anim"
-				}
-			]
-		},
-		{
 			"id":"simpleharmonicoscillator",
 			"title":"Simple Harmonic Oscillator",
 
@@ -24,7 +12,7 @@
 					"id":"introduction",
 					"title":"Introduction",
 					"type":"anim",
-					"text":"Intro to simple harmonic motion"
+					"text":"Intro to simple harmonic motion.  Most of the links below are broken but this shows the concept"
 				},
 				{
 					"id":"hookes-law",

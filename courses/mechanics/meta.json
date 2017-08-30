@@ -22,13 +22,13 @@
 				{
 					"id":"acceleration",
 					"title":"Acceleration",
-					"text": "The test feature is coming soon. It can check for values being in a certain range and the mark the question as being correct. Drag the blue vectors to show the approximate direction of acceleration at three different points in the motion of the pendulum",
+					"text": "The test feature is coming soon. Continue to the lab below. The test block can check that values fall within a certain range and then mark the question as being correct. Drag the blue vectors to show the approximate direction of acceleration at three different points in the motion of the pendulum",
 					"type": "test"
 				},
 				{
 					"id":"lab",
 					"title":"Lab",
-					"text":"Lab Instructions: \n To make a pendulum you will need a string that is at least 40cm (16 in) long. If you don’t have string, the cord for headphones or a very thin strip of paper will work. If you use your headphones just make sure not to bend the wire too much or they will break. You will also need something to use for the mass. It needs to be bright yellow for the webcam to be able to track it.\nTroubleshooting tips:\n -Make sure that there is only one yellow object in the picture or it will try to track both \n-Turn on the lights or get into sunlight--Your camera takes fewer pictures per second in the dark",
+					"text":"Lab Instructions:",
 					"type":"lab"
 				}
 			]

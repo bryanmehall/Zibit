@@ -120,3 +120,4 @@ export const Anim = ({ state, onClick, onMouseOver, onMouseOut }) => {
 		</svg>
 	)
 }
+

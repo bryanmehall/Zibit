@@ -112,11 +112,14 @@ export const getCoordSys = (state, xVar, yVar, parentBB) => ({
 
 export const getValue = function (state, name, given={}) {
 	//given is an object of independent variables that replace concrete values
+
 	if (name === undefined){return 0}
 	const quantityData = getQuantityData(state, name)
-	if (quantityData.independent ||quantityData.independent === undefined) {
+
+	if (quantityData.independent) {
 		return (given[name] === undefined) ? quantityData.value : given[name]
 	}
+
 	switch (name) {
 		case "x": {
 			const t = (given.t === undefined) ? getValue(state, 't') : given.t

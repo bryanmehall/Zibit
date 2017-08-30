@@ -76,6 +76,7 @@ class Mass extends React.Component {
 function mapStateToProps(state, props) {
 	var br = props.boundingRect
 	var coordSys = getCoordSys(state, props.xVar, props.yVar, br)
+
 	return {
 		mass: getValue(state, 'm'),
 		active:getActive(state, 'mass'),

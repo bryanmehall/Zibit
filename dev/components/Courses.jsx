@@ -15,7 +15,7 @@ const Courses = ({activeCourse}) => {
 			<div>
 				<Course courseId="controlsystems" />
 				<Course courseId="mechanics" />
-				<Course courseId="calculus" />
+				{/*<Course courseId="calculus" />*/}
 			</div>
 		)
 }
