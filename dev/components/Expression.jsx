@@ -48,7 +48,7 @@ class Expression extends React.Component{
         this.children = this.props.childData.map(createChild)
 
 		return (
-			<div style={{position:'absolute', top:pos.y, left:pos.x, display:'flex', justifyContent:'center', width:"0"}}>
+			<div style={{position:'absolute', top:pos.y, left:pos.x}}>
 				{this.children}
 			</div>
 		)

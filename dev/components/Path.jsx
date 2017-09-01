@@ -37,7 +37,7 @@ export default Path;
 
 
 function pointsToSVGPath(data) {
-	var svgPathArray = ['M',data[0].x, data[0].y];
+	var svgPathArray = ['M',data[0].x+0.01, data[0].y+0.01];
 	for(var i = 1; i<data.length; i++){
 		if(data[i].hasOwnProperty('mx')){
 			svgPathArray.push('M',data[i].mx,data[i].my);

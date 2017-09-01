@@ -65,10 +65,11 @@ const widgetReducer = (state, action) => {
 		break;
 	case "SET_PROP":
 		var name = action.payload.name
-		var propName = action.payload.propName
+		var prop = action.payload.prop
 		var value = action.payload.value
+
 		var newProps = Object.assign({}, state.props, {
-			[propName]: value
+			[prop]: value
 		})
 		var newState = Object.assign({}, state, {
 			props: newProps
