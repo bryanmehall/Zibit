@@ -34,11 +34,12 @@ const contentReducer = (state = defaultContent, action) => {
 
 			return Object.assign({}, state, active)
 		}
-		case "ACTIVATE_CONTENT_BLOCK":{
+		case "ACTIVATE_CONTENT_BLOCK": {
+			const id = (action.payload.contentBlockId === "frequency") ? "introduction" : action.payload.contentBlockId
 			const active = {
 				activeCourse: action.payload.courseId,
 				activePart: action.payload.partId,
-				activeContentBlock: action.payload.contentBlockId
+				activeContentBlock: id
 			}
 
 			return Object.assign({}, state, active)
