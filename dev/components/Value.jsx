@@ -5,6 +5,7 @@ import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
 import { UpArrow, DownArrow, Anim } from './icons'
 import { getActive } from '../ducks/widget/selectors'
+import { clamp } from '../utils/quantity'
 import {
 	getValue,
 	getQuantityData,
@@ -80,7 +81,8 @@ class Value extends React.Component {
 		const dy = e.clientY-this.mouseDownPos.y
 		const range = this.props.max - this.props.min
 		const newValue = this.initialValue-dy/150*range
-		this.props.setValue(this.props.quantity, newValue)
+
+		this.props.setValue(this.props.quantity, clamp(newValue, this.props.min, this.props.max))
 
 	}
 	closeSlider(e){//mouse move handler for closing slider
@@ -142,18 +144,29 @@ class Value extends React.Component {
 				style={{
 					position: 'absolute',
 					left: '50%',
+					display:'flex',
+					flexWrap: 'wrap',
+					//backgroundColor:'gray',
+					justifyContent: 'center',
 					transform: 'translate(-50%, 0%)'
 				}}
 				>
-				<div style={{ position: "absolute", width: "100%" }}>
-					{(independent ) ?  <DownArrow active={false}></DownArrow>: null}
-				</div>
-				<div style={{ position: "absolute", width: "100%", margin:'0 auto',top:-45}}>
+				<div style={{ position: "absolute",top:-45}}>
 					{(independent ) ?  <UpArrow active={false}></UpArrow>: null}
 				</div>
-				{highlighted ? (<div>{symbol}=<span style={{...mathTextStyle, fontSize:"100%", fontStyle:'normal'}}>{displayValue(value)}</span></div>) : null}
+				<div style={{ position: "absolute"}}>
+					{(independent ) ?  <DownArrow active={false}></DownArrow>: null}
+				</div>
+				<div style={{
+						paddingTop:20,
+							//backgroundColor:'blue'
+					}}>
+					{highlighted ? (<div>{symbol}=<span style={{...mathTextStyle, fontSize:"100%", fontStyle:'normal'}}>{displayValue(value)}</span></div>) : null}
+				</div>
+				<div>
+					{/*(!this.dragging&&independent&&highlighted)? anim : null*/}
+				</div>
 
-				{(!this.dragging && independent&&active)||(highlighted&&!independent) ? anim : null}
 			</div>
 		)
         //const precision = this.props.precision || Math.min(3,Math.max(Math.log10(Math.abs(value)+2),1))
@@ -167,9 +180,11 @@ class Value extends React.Component {
 						...style,
 						display:"inline",
 						position:'relative',
+						//backgroundColor:'green',
+						paddingBottom:50,
 						//repeat shadows to make thicker because css is a giant hack
 						textShadow: highlighted ? `-1px -1px 4px ${this.props.color},  1px 1px 4px ${this.props.color}` : null,
-						cursor:'ns-resize'
+						cursor: independent? 'ns-resize': 'default'
 					}}
 					onMouseOver={this.mouseOver}
 					onMouseOut={this.mouseOut}

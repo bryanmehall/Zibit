@@ -27,10 +27,10 @@ const removeChild = (childName, name) => ({
 	}
 });
 
-const setProp = (name, propName, value) => ({
+const setProp = (name, prop, value) => ({
 	type: "SET_PROP",
 	payload: {
-		name, propName, value
+		name, prop, value
 	}
 })
 

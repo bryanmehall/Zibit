@@ -48,7 +48,6 @@ class Sim extends React.Component {
 	render(){
 		const active = this.props.contentBlockId !== null
 		const imageUrl = `/content/courses/${this.props.courseId}/${this.props.partId}/thumbnail.png`
-		console.log(`/courses/${this.props.courseId}/${this.props.partId}/${this.props.contentBlockId}`)
 		const image = (
 			<Link to={`/courses/${this.props.courseId}/${this.props.partId}/${this.props.contentBlockId}`}>
 				<img style={{maxWidth:'100%', maxHeight:'100%', margin:'0 auto', draggable:"false" }} src={imageUrl}></img>

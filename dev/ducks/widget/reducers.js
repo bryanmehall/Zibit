@@ -67,7 +67,6 @@ const widgetReducer = (state, action) => {
 		var name = action.payload.name
 		var prop = action.payload.prop
 		var value = action.payload.value
-
 		var newProps = Object.assign({}, state.props, {
 			[prop]: value
 		})
