@@ -80,7 +80,7 @@ class Part extends React.Component {
 				{contentBlocks.map(createContentBlockList)}
 			</div>
 		)
-
+		const imageUrl = `/content/courses/${courseId}/${partId}/thumbnail.png`
 		if (!visible) {
 			return null
 		} else {
@@ -94,16 +94,22 @@ class Part extends React.Component {
 							border:'black'}}>
 
 					{contentBlockBar}
-					<div style={{maxWidth:'75%'}}>
-						<Sim
-						width={400}
-						height={300}
-						pos={{ x: sideBarWidth+cardStyle.margin, y: 0 }}
-						courseId={courseId}
-						partId={partId}
-						contentBlockId={this.props.activeContentBlock}
-						/>
-					</div>
+					{this.props.activeContentBlock === null ?(
+						<Link style={{ width:400, height:300, backgroundColor:"white", }}to={`/courses/${courseId}/${partId}/${contentBlocks[0]}`}>
+							<img style={{maxWidth:'100%', maxHeight:'100%', margin:'0 auto', draggable:"false" }} src={imageUrl}></img>
+						</Link>
+					):(
+						<div style={{maxWidth:'75%'}}>
+								<Sim
+								width={400}
+								height={300}
+								pos={{ x: sideBarWidth+cardStyle.margin, y: 0 }}
+								courseId={courseId}
+								partId={partId}
+								contentBlockId={this.props.activeContentBlock}
+								/>
+						</div>
+					)}
 				</div>
 			</div>
 		)

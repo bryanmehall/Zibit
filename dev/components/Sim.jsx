@@ -13,6 +13,8 @@ import Expression from './Expression'
 import Tracker from './Tracker'
 import Value from './Value'
 import { cardStyle } from './styles'
+import Link from 'redux-first-router-link'
+
 
 
 class Sim extends React.Component {
@@ -45,9 +47,13 @@ class Sim extends React.Component {
 	}
 	render(){
 		const active = this.props.contentBlockId !== null
-
-		const image = (<div>Thumbnail coming soon</div>)
-
+		const imageUrl = `/content/courses/${this.props.courseId}/${this.props.partId}/thumbnail.png`
+		console.log(`/courses/${this.props.courseId}/${this.props.partId}/${this.props.contentBlockId}`)
+		const image = (
+			<Link to={`/courses/${this.props.courseId}/${this.props.partId}/${this.props.contentBlockId}`}>
+				<img style={{maxWidth:'100%', maxHeight:'100%', margin:'0 auto', draggable:"false" }} src={imageUrl}></img>
+			</Link>
+		)
 		const childTypes = {
 			"Plot": Plot,
             "Expression": Expression,
@@ -55,8 +61,8 @@ class Sim extends React.Component {
 		}
 		const simCardStyle = {
 			...cardStyle, 
-			width:active? 1200 : this.props.width,
-			height:active ? 650 : this.props.height,
+			width: 1200,
+			height: 650,
 			position: "relative",
 			left: 0,
 			top: 0,
@@ -73,11 +79,11 @@ class Sim extends React.Component {
 		const children = this.props.childData.map(createChild)
 
 		const loadingIcon = (<div >Loading</div>)
-		const content = active ? children : image
+		const content =  children
 
 		return (
 			<div style={simCardStyle}>
-				{this.props.loadState === "loading" ? loadingIcon : null }
+				{/*this.props.loadState === "loading" ? loadingIcon : null*/ }
 				{this.props.loadState === 'error' ? 'Error: Failed to Load Simulation' : null}
 				{content}
 			</div>
