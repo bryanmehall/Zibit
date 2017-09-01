@@ -148,7 +148,7 @@ class Value extends React.Component {
 				<div style={{ position: "absolute", width: "100%" }}>
 					{(independent ) ?  <DownArrow active={false}></DownArrow>: null}
 				</div>
-				<div style={{ position: "absolute", width: "100%" }}>
+				<div style={{ position: "absolute", width: "100%", margin:'0 auto',top:-45}}>
 					{(independent ) ?  <UpArrow active={false}></UpArrow>: null}
 				</div>
 				{highlighted ? (<div>{symbol}=<span style={{...mathTextStyle, fontSize:"100%", fontStyle:'normal'}}>{displayValue(value)}</span></div>) : null}
