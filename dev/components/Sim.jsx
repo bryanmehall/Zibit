@@ -95,7 +95,7 @@ function mapStateToProps(state, props) {
 	return {
 		childData: getChildren(state, 'app'),
 		loadState: getLoadState(state)
-	};
+	}
 }
 
 function mapDispatchToProps(dispatch) {
@@ -103,11 +103,10 @@ function mapDispatchToProps(dispatch) {
 		fetchSimData: (path) => {
 			dispatch(SimActions.fetchSimData(path))
 		}
-
-	};
+	}
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Sim);
+)(Sim)

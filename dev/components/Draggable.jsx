@@ -13,7 +13,6 @@ class Draggable extends React.Component {
 		if (this.props.hasOwnProperty('dragStart')){
 			this.props.dragStart(initPos)
 		}
-
 		var mouseMove = function(e){
 			e.preventDefault();
 			e.stopPropagation();

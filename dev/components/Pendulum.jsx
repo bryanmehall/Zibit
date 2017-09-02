@@ -1,9 +1,11 @@
 import React from "react"
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import {connect} from "react-redux"
 import { bindActionCreators } from 'redux'
-import QuantityActions from '../ducks/quantity/actions';
+import QuantityActions from '../ducks/quantity/actions'
+import SimActions from '../ducks/sim/actions'
 import {getValue, getColor, getHighlighted, getTransformedValue, getCoordSys, getQuantityData} from '../ducks/quantity/selectors'
+import {getCurrentCourseId, getCurrentPartId, getCurrentContentBlockId} from '../ducks/content/selectors'
 import Path from "./Path"
 import Draggable from "./Draggable"
 import {HighlightFilter} from './filters'
@@ -23,25 +25,26 @@ class Pendulum extends React.Component {
 			anchorHighlight
 		} = this.props
 		const length = dist(anchorPos, bobPos)
-		const dragStart = (startPos)=>{
+		const dragStart = (startPos) => {
+			this.props.startUserInteraction(this.props.courseId, this.props.partId, this.props.contentBlockId)
 			this.props.setPlay('t', false)
 			this.props.setValue('t', 0)
 			this.dragOffset = {
-				x:startPos.x,
-				y:startPos.y
+				x: startPos.x,
+				y: startPos.y
 			}
 			this.initPos = {
-				x:bobPos.x,
-				y:bobPos.y
+				x: bobPos.x,
+				y: bobPos.y
 			}
 		}
-		const dragMove = (pos) =>{
+		const dragMove = (pos) => {
 			const x = pos.x-this.dragOffset.x+this.initPos.x
 			const y = pos.y-this.dragOffset.y+this.initPos.y
 			const angle = Math.atan2(x-anchorPos.x, y-anchorPos.y)
 			this.props.setInitialAngle(angle)
 		}
-		const moveMass = (proxyEvent,event) => {
+		const moveMass = () => {
 			this.props.setInitialAngle(0)
 		}
 		const dragEnd = (endPos) =>{
@@ -118,7 +121,6 @@ Pendulum.defaultProps = {
 function mapStateToProps(state, props) {
 	var br = props.boundingRect //bounding rect of plot
 	var coordSys = getCoordSys(state, props.bobX, props.bobY, br)
-
 	return {
 		bobPos:{
 			x:getTransformedValue(state, props.bobX, coordSys.xScale),
@@ -127,7 +129,10 @@ function mapStateToProps(state, props) {
 		anchorPos:{
 			x:getTransformedValue(state, props.anchorX, coordSys.xScale),
 			y:getTransformedValue(state, props.anchorY, coordSys.yScale)
-		}
+		},
+		courseId:getCurrentCourseId(state),
+		partId:getCurrentPartId(state),
+		contentBlockId: getCurrentContentBlockId(state)
 	}
 }
 
@@ -141,6 +146,9 @@ function mapDispatchToProps(dispatch) {
 		},
 		setPlay:(name, value) => {
 			dispatch(QuantityActions.setPlay(name, value))
+		},
+		startUserInteraction: (courseId, partId, contentBlockId) => {
+			dispatch((SimActions.startUserInteraction(courseId, partId, contentBlockId)))
 		}
 	};
 }

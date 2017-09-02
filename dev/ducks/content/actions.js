@@ -1,3 +1,4 @@
+import SimActions from '../sim/actions'
 //fetch content
 const fetchCourseData = (courseId) => ({
 	type: 'FETCH_COURSE_DATA',
@@ -60,16 +61,20 @@ const fetchAudio = (courseId, partId, contentBlockId) => ({
 
 })
 
-const setPlaying = (courseId, partId, contentBlockId, playing) => ({
-	type: 'ANIM_CONTENT',
-	payload: {
-		courseId,
-		partId,
-		contentBlockId,
-		playing
-	}
-
-})
+const setPlaying = (courseId, partId, contentBlockId, playing) => {
+	return [
+		SimActions.returnToAnimation(),
+		{
+			type: 'ANIM_CONTENT',
+			payload: {
+				courseId,
+				partId,
+				contentBlockId,
+				playing
+			}
+		}
+	]
+}
 const animContentStep = (courseId, partId, contentBlockId, initTime, initAnimTime) => ({
 	type:"ANIM_CONTENT_STEP",
 	payload:{

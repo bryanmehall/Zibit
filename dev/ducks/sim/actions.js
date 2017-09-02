@@ -1,4 +1,5 @@
 import {keyframesToActions} from '../../anim'
+import ContentActions from '../content/actions'
 
 const fetchSimData = (path) => ({
 	type: 'FETCH_SIM_DATA',
@@ -12,7 +13,6 @@ const initializeSimState = (simData) => {
 	let normalizedKeyframes = []
 
 	if (simData.hasOwnProperty('keyframes')){
-
 		normalizedKeyframes = simData.keyframes.reduce(keyframesToActions, [])//do at compile time
 	}
 	return {
@@ -23,6 +23,20 @@ const initializeSimState = (simData) => {
 		}
 	}
 }
+const startUserInteraction = (courseId, partId, contentBlockId) => {
+	return [
+		ContentActions.setPlaying(courseId, partId, contentBlockId, false),
+		{
+			type: "START_USER_INTERACTION"
+		}
+	]
+}
+const returnToAnimation = () => {
+	return {
+		type: "RETURN_TO_ANIMATION"
+	}
+}
+
 
 const simDataFetchFailed = (error) => (
 	{
@@ -39,5 +53,7 @@ const simDataFetchFailed = (error) => (
 export default {
 	fetchSimData,
 	initializeSimState,
-	simDataFetchFailed
+	simDataFetchFailed,
+	startUserInteraction,
+	returnToAnimation
 }
