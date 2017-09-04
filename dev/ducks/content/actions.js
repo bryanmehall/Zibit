@@ -12,12 +12,17 @@ const activateCourse = (courseId) => ({
 		courseId
 	}
 })
-const activateContentBlock = (courseId, partId, contentBlockId) => ({
-	type: "ACTIVATE_CONTENT_BLOCK",
-	payload: {
-		courseId, partId, contentBlockId
-	}
-})
+const activateContentBlock = (courseId, partId, contentBlockId) => (
+	[
+		pauseOthers(courseId, partId, contentBlockId),
+		{
+			type: "ACTIVATE_CONTENT_BLOCK",
+			payload: {
+				courseId, partId, contentBlockId
+			}
+		}
+	]
+)
 
 //initialize state
 const initializeCourseState = (courseData) => {
@@ -106,8 +111,9 @@ const setAnimTime = (courseId, partId, contentBlockId, time) => ({
 		time
 	}
 })
-const pauseAll = () => ({
-	type:"PAUSE_ALL"
+const pauseOthers = (courseId, partId, contentBlockId) => ({
+	type: "PAUSE_OTHERS",
+	payload: { courseId, partId, contentBlockId }
 })
 
 
@@ -120,7 +126,7 @@ export default {
 	initializeCourseState,
 	activateCourse,
 	activateContentBlock,
-	pauseAll,
+	pauseOthers,
 	setAnimLength,
 	animContentStep,
 	setAnimTime

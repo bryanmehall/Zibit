@@ -42,7 +42,7 @@ const keyframes = (state=[], action) => {
 		}
 	}
 }
-const cache = (state={}, action) => (state)
+const cache = (state={cached:false}, action) => (state)
 
 const subReducer = combineReducers({ quantity, widget, loadState, keyframes, cache })
 
@@ -51,7 +51,7 @@ const simReducer = (state = {cache:{cached:false}}, action) => {
 		case "INITIALIZE_SIM_STATE":
 			const simData = action.payload.simData
 			const normalizedKeyframes = keyframes([], action)
-			return Object.assign({}, simData, { loadState: "loaded", keyframes:normalizedKeyframes})
+			return Object.assign({}, simData, { loadState: "loaded", cache:{cached:false}, keyframes:normalizedKeyframes})
 		case "START_USER_INTERACTION": {//eventually this should be put somewhere else. maybe in the content block state?
 			const currentState = {
 				cached:true,

@@ -48,6 +48,7 @@ class AnimBlock extends React.Component {
 		this.props.setAnimTime(courseId, partId, contentBlockId, time)
 	}
 	onDragEnd() {
+		const { courseId, partId, contentBlockId } = this.props
 		this.props.setPlaying(courseId, partId, contentBlockId, this.isPlaying)
 	}
     render(){

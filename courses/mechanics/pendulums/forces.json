@@ -259,6 +259,7 @@
 				"independent":false,
 				"min":0,
 				"max":10000,
+				"symbol":"F_g",
 				"color": "#0055ff"
 			},
 			"ft_x":{

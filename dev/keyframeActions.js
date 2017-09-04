@@ -24,7 +24,7 @@ const fadeWidgetOut = {
 	inverse: "fadeWidgetIn",
 	start: function (store, t, tweenData) {},
 	tween: function (store, t, tweenData) {
-		const alpha = 1+( tweenData.start - t ) / (tweenData.end - tweenData.start)
+		const alpha = 1+(tweenData.start - t) / (tweenData.end - tweenData.start)
 		store.dispatch(WidgetActions.setProp(tweenData.params.name, 'opacity', alpha))
 	},
 	end: function (store, t, tweenData) {
@@ -34,16 +34,16 @@ const fadeWidgetOut = {
 	}
 }
 const tweenProperty = {
-	inverse:"tweenProperty",
+	inverse: "tweenProperty",
 	start: (store, t, tweenData) => {},
 	tween: (store, t, tweenData) => {
-		const {initValue, finalValue, objectName, propName} = tweenData.params
+		const { initValue, finalValue, objectName, propName } = tweenData.params
 		const timeFraction = (t-tweenData.start)/(tweenData.end-tweenData.start)
 		const value = timeFraction*(finalValue-initValue)+initValue
 		store.dispatch(WidgetActions.setProp(objectName, propName, value))
 	},
 	end: (store, t, tweenData) => {
-		const {finalValue, objectName, propName} = tweenData.params
+		const { finalValue, objectName, propName } = tweenData.params
 		store.dispatch(WidgetActions.setProp(objectName, propName, finalValue))
 	}
 }
@@ -51,13 +51,13 @@ const tweenQuantity = {//this should be combined with tween property
 	inverse: "tweenQuantity",
 	start: (store, t, tweenData) => {},
 	tween: (store, t, tweenData) => {
-		const {initValue, finalValue, quantityName} = tweenData.params
+		const { initValue, finalValue, quantityName } = tweenData.params
 		const timeFraction = (t-tweenData.start)/(tweenData.end-tweenData.start)
 		const value = timeFraction*(finalValue-initValue)+initValue
 		store.dispatch(QuantityActions.setValue(quantityName, value))
 	},
 	end: (store, t, tweenData) => {
-		const {finalValue, quantityName} = tweenData.params
+		const { finalValue, quantityName } = tweenData.params
 		store.dispatch(QuantityActions.setValue(quantityName, finalValue))
 	}
 }

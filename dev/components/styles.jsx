@@ -24,7 +24,7 @@ export const cardStyle = {
 export const linkStyle = {
 	fontFamily: '"Roboto Condensed", sans-serif',
 	fontWeight: "500",
-	color:"#ccc",
+	color: "#ccc",
 	cursor: 'pointer',
 	fontSize: 15,
 	textDecoration: 'none'
@@ -50,16 +50,17 @@ export const mathVarStyle = {
 }
 export const axisLabelStyle = {
     fontFamily: "helvetica",
-    fontSize:12,
-    textAnchor:"middle",
-    alignmentBaseline:"middle",
+    fontSize: 12,
+    textAnchor: "middle",
+    alignmentBaseline: "middle",
     cursor: "default",
+	pointerEvents: "none"
 }
 export const headerStyle = {
-	fontSize:20,
-	color : '#eee',
+	fontSize: 20,
+	color: '#eee',
 	//textAlign: 'center',
-	padding:20
+	padding: 20
 }
 
 export const displayValue = (value) => {

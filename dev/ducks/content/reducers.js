@@ -68,7 +68,22 @@ const contentReducer = (state = defaultContent, action) => {
 			const newPartList = Object.assign([], state.parts, { [pos]: updatedPart })
 			return Object.assign({}, state, { parts: newPartList })
 		}
-		case "FETCH_PART_DATA":
+		case "PAUSE_OTHERS": {
+			const contentBlocks = state.contentBlocks
+			const paused = contentBlocks.map((contentBlockData) => {
+				if (contentBlockData.type === 'anim'){
+					const active = contentBlockData.courseId === action.payload.courseId &&
+						  contentBlockData.partId === action.payload.partId &&
+						  contentBlockData.contentBlockId === action.payload.contentBlockId
+					const playing = active ? contentBlockData.anim.playing : false
+					const newAnim = Object.assign({}, contentBlockData.anim, { playing })
+					return Object.assign({}, contentBlockData, { anim: newAnim })
+				} else {
+					return contentBlockData
+				}
+			})
+			return Object.assign({}, state, { contentBlocks: paused })
+		}
 		case "INITIALIZE_CONTENT_BLOCK_STATE":
 		case "ANIM_CONTENT":
 		case "SET_ANIM_LENGTH":

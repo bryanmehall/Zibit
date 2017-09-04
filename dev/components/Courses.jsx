@@ -13,8 +13,9 @@ import NavBar from './NavBar'
 const Courses = ({activeCourse}) => {
 		return  (
 			<div>
-				<Course courseId="controlsystems" />
+				{/*<Course courseId="about-zibit"/>*/}
 				<Course courseId="mechanics" />
+				<Course courseId="controlsystems" />
 				{/*<Course courseId="calculus" />*/}
 			</div>
 		)

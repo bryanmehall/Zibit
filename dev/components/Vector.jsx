@@ -15,11 +15,20 @@ class Vector extends React.Component {
 		this.dragEnd = this.dragEnd.bind(this)
 	}
 	dragStart(initPos){
-		this.props.pos.y-initPos.y //offset in px
+
+		this.offset = {
+			x:this.props.tipX-initPos.x,
+			y:this.props.tipY-initPos.y
+		}
+
 		//this.props.setX0(this.startOffset, this.props.coordSys.yScale)
 	}
-	dragMove(newPos){
-		//var newYPos = newPos.y+this.startOffset
+	dragMove(pos){
+		const newPos = {
+			x:pos.x+this.offset.x-this.props.tailX,
+			y:pos.y+this.offset.y-this.props.tailY
+		}
+		this.props.setPos( this.props.x, newPos.x, this.props.y, -newPos.y, this.props.vectorCoordSys)
 		//this.props.setX0(newYPos, this.props.coordSys.yScale)
 	}
 	dragEnd(endPos){
@@ -28,20 +37,38 @@ class Vector extends React.Component {
 	render(){
 		const {tipX, tipY, tailX, tailY, color} = this.props
 		const opacity = this.props.opacity || 1
+		const draggable = this.props.draggable || false
+		const dragHandle = (
+			<Draggable
+				dragStart={this.dragStart}
+				dragMove={this.dragMove}
+				>
+				<circle
+					cx={tipX}
+					cy={tipY}
+					r={10}
+					>
+				</circle>
+			</Draggable>
+		)
 		const dx = tipX-tailX,
 			  dy = tipY-tailY,
 			  length = Math.sqrt(dx*dx+dy*dy),
-			  angle = Math.atan2(-dy, dx)*180/Math.PI
+			  angle = Math.atan2(dy, dx)*180/Math.PI
 		const arrowPath = calcVector(length, 10)
 		const transform = `translate(${tailX},${tailY}) rotate(${angle})`
 		return (
-			<Path
-				style={{ pointerEvents:'none', opacity:opacity}}
-				points={arrowPath}
-				transform={transform}
-				fill={this.props.color}
-				strokeWidth="0"
-				/>
+			<g>
+
+				<Path
+					style={{ pointerEvents:'none', opacity:opacity}}
+					points={arrowPath}
+					transform={transform}
+					fill={this.props.color}
+					strokeWidth="0"
+					/>
+				{draggable ? dragHandle : null}
+			</g>
     	)
   }
 }
@@ -60,21 +87,26 @@ function mapStateToProps(state, props) {
 		  dy = getTransformedValue(state, props.y, vectorCoordSys.yScale),
 
 		  tipX = dx+tailX,
-		  tipY = dy+tailY
+		  tipY = -dy+tailY
 	//console.log(vectorCoordSys,props.x, dx, dy)
 	return {
 		tailX,
 		tailY,
 		tipX,
 		tipY,
+		vectorCoordSys,
 		color:getColor(state, props.x)
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		setX0:(value, scale) => {
-			dispatch(QuantityActions.setValueFromCoords('x', value, scale))
+		setPos:( xName, xValue, yName, yValue, coordSys) => {
+			dispatch([
+				QuantityActions.setValueFromCoords(xName, xValue, coordSys.xScale),
+				QuantityActions.setValueFromCoords(yName, yValue, coordSys.yScale)
+			])
+
 		},
 		setValue:(name, value) => {
 			dispatch(QuantityActions.setValue(name, value))

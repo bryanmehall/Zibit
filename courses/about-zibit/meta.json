@@ -1,0 +1,41 @@
+{
+	"id": "about-zibit",
+	"title": "What is Zibit?",
+	"description": "A guided walkthrough of the philosophy behind Zibit and its features structured like a course",
+	"parts":[
+		{
+			"id":"",
+			"title":"Introduction",
+			"contentBlocks":[
+				{
+
+				}
+			]
+		},
+		{
+			"id": "features",
+			"title":"Features",
+			"contentBlocks":[
+				{
+					"id":"animations",
+					"title":"Animations",
+					"text":"Zibit animations are similar to video lectures but allow students to pause and explore for themselves",
+					"type":"anim"
+				},
+				{
+					"id":"labs",
+					"title":"Labs",
+					"text":"Interactive labs let students to collect data in real time using their webcam, microphone, or external data collection devices that can be added in the future",
+					"type":"lab"
+				},
+				{
+					"id": "concept-checks",
+					"title": "Concept Checks",
+					"text": "At every step along the way students check their understanding and can go back to fill any gaps so they are never lost",
+					"type":"test"
+				}
+			]
+		}
+
+	]
+}

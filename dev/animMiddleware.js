@@ -32,13 +32,13 @@ export const animMiddleware = store => next => action => {
 	if (action.type === "SET_VALUE" && action.payload.keepHistory === true){
 		var state = store.getState()
 		var time = getValue(state, 't')
-		action.payload.previousPoint = {t:time, value:action.payload.value}
+		action.payload.previousPoint = { t:time, value:action.payload.value }
 	}
 	//for animation of
 	if (action.type === "ANIM_CONTENT"){
 		const initTime = Date.now()
 		const state = store.getState()
-		const {courseId, partId, contentBlockId} = action.payload
+		const { courseId, partId, contentBlockId } = action.payload
 		const initAnimTime = getAnimTime(state, courseId, partId, contentBlockId)
 		const stepAction = ContentActions.animContentStep(courseId, partId, contentBlockId, initTime, initAnimTime)
 		requestAnimationFrame(()=>{store.dispatch(stepAction)})
@@ -48,6 +48,7 @@ export const animMiddleware = store => next => action => {
 		const prevTime = getAnimTime(state, courseId, partId, contentBlockId )
 		const t = Date.now()
 		const newTime = ((t-initTime)/1000)+initAnimTime//time since last play
+		//state, courseId, partId, contentBlockId, prevTime, newTime
 		const playing = getAnimPlaying(state, courseId, partId, contentBlockId)
 		const length = getAnimLength(state, courseId, partId, contentBlockId)
 		const activeTweens = getActiveTweens(prevTime, newTime, getKeyframes(state))//getActiveTweens(prevTime, newTime)
@@ -63,6 +64,12 @@ export const animMiddleware = store => next => action => {
 				requestAnimationFrame(()=>{store.dispatch(stepAction)})
 			}
 		}
+	} else if (action.type === "SET_ANIM_TIME"){
+		const state = store.getState()
+		const { courseId, partId, contentBlockId, time } = action.payload
+		const prevTime = getAnimTime(state, courseId, partId, contentBlockId)
+		const activeTweens = getActiveTweens(prevTime, time, getKeyframes(state))
+		tween(store, activeTweens, time)
 	}
 	/*
 	if (action.type === "SET_VALUE" && action.payload.name === 'animTime'){

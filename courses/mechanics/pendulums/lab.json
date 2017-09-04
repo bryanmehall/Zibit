@@ -133,14 +133,14 @@
 				"symbol":"l"
 			},
 			"measuredBobX":{
-				"value":0,
+				"value":250,
 				"independent":false,
 				"min":-30,
 				"max":30,
 				"symbol":"x"
 			},
 			"measuredBobY":{
-				"value":0,
+				"value":400,
 				"independent":false,
 				"min":-50,
 				"max":10,

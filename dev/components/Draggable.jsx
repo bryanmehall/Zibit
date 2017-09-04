@@ -8,7 +8,7 @@ class Draggable extends React.Component {
 		this.mouseDown = this.mouseDown.bind(this)
 	}
 	mouseDown(e){
-		var initPos = { x:e.clientX, y: e.clientY }
+		const initPos = { x:e.clientX, y: e.clientY }
 		var draggable = this
 		if (this.props.hasOwnProperty('dragStart')){
 			this.props.dragStart(initPos)
@@ -17,14 +17,14 @@ class Draggable extends React.Component {
 			e.preventDefault();
 			e.stopPropagation();
 			if (draggable.props.hasOwnProperty('dragMove')){
-				draggable.props.dragMove({x:e.clientX, y:e.clientY})
+				draggable.props.dragMove({x:e.clientX, y:e.clientY}, initPos )
 			}
 		}
 		var mouseUp = function(e){
 			document.removeEventListener('mousemove', mouseMove)
 			document.removeEventListener('mouseup', mouseUp)
 			if (draggable.props.hasOwnProperty('dragEnd')){
-				draggable.props.dragEnd({x:e.clientX, y:e.clientY})
+				draggable.props.dragEnd({x:e.clientX, y:e.clientY}, initPos)
 			}
 
 		}
