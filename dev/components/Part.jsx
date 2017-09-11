@@ -46,6 +46,7 @@ class Part extends React.Component {
 		const courseId = this.props.courseId
 		const partId = this.props.partId
 		const {activeCourse, activePart} = this.props
+		const isActive = this.props.activeContentBlock !== null
 		const sideBarWidth = 0.25*this.state.width
 		const margin = cardStyle.margin
 		const expanded =  this.props.activeCourse === courseId
@@ -62,6 +63,7 @@ class Part extends React.Component {
 					</div>
 			)
 		}
+		console.log(this.props)
 		const contentBlockBar = (
 
 			<div style={{
@@ -74,10 +76,14 @@ class Part extends React.Component {
 					margin: 5,
 
 				}}>
+
 				<div style={headerStyle}>
 					{this.props.title}
 				</div>
+				<div>{this.props.index-1}
+				</div>
 				{contentBlocks.map(createContentBlockList)}
+				<div>{this.props.index+1}</div>
 			</div>
 		)
 		const imageUrl = `/content/courses/${courseId}/${partId}/thumbnail.png`
@@ -85,16 +91,15 @@ class Part extends React.Component {
 			return null
 		} else {
 			return (
-			<div>
+			<div style={{margin:12}}>
 
 				<div style = {{
 							display:"flex",
-
 							//backgroundColor:'#ccf',
 							border:'black'}}>
 
 					{contentBlockBar}
-					{this.props.activeContentBlock === null ?(
+					{!isActive ?(
 						<Link style={{ width:400, height:300, backgroundColor:"white", }}to={`/courses/${courseId}/${partId}/${contentBlocks[0]}`}>
 							<img style={{maxWidth:'100%', maxHeight:'100%', margin:'0 auto', draggable:"false" }} src={imageUrl}></img>
 						</Link>

@@ -13,7 +13,7 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 })
 
 var config = {
-	entry: ['babel-polyfill', DEV + "/smd.jsx"],
+	entry: ['babel-polyfill', DEV + "/index.jsx"],
 	output: {
 		filename: "bundle.js",
 		path: DIST,//__dist

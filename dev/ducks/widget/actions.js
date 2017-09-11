@@ -1,4 +1,12 @@
 import types from "./types";
+
+const addWidget = (name, type, props, children) => ({
+	type: "ADD_WIDGET",
+	payload: {
+		name, type, props, children
+	}
+})
+
 const setActive = (name, active) => ({
 	type: "SET_PROP",
 	payload: {
@@ -7,12 +15,6 @@ const setActive = (name, active) => ({
         value: active
 	}
 })
-const addWidget = (name, type, props, children) => ({
-	type: "ADD_WIDGET",
-	payload: {
-		name, type, props, children
-	}
-});
 
 const addChild = (childName, name) => ({
 	type: "ADD_CHILD",
@@ -25,7 +27,7 @@ const removeChild = (childName, name) => ({
 	payload: {
 		name, childName
 	}
-});
+})
 
 const setProp = (name, prop, value) => ({
 	type: "SET_PROP",
@@ -42,4 +44,4 @@ export default {
 	removeChild,
 	setProp,
 	setActive
-};
+}

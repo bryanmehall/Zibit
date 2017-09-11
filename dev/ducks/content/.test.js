@@ -1,5 +1,5 @@
 describe('fetch course content', () => {
   it('initialize all course data', () => {
-    expect(true).toBe(true);
-  });
-});
+    expect(true).toBe(true)
+  })
+})
