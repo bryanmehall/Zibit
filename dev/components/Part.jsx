@@ -1,8 +1,6 @@
 import React from 'react'
-import {connect} from "react-redux"
-import { bindActionCreators } from 'redux';
+import { connect } from "react-redux"
 import ContentActions from '../ducks/content/actions'
-import {UnmountClosed} from 'react-collapse'
 import Link from 'redux-first-router-link'
 import ContentBlock from './ContentBlock'
 import { cardStyle, linkStyle, headerStyle } from './styles'
@@ -14,10 +12,9 @@ import {
 	getPartId,
 	getCurrentCourseId,
 	getCurrentPartId,
-	getCurrentContentBlockId } from '../ducks/content/selectors'
+	getCurrentContentBlockId
+} from '../ducks/content/selectors'
 
-import SmdApp from "./SmdApp"
-import NavBar from './NavBar'
 import Sim from './Sim'
 
 class Part extends React.Component {

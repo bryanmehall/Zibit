@@ -1,17 +1,15 @@
-import React, {PropTypes} from "react"
-import {connect} from "react-redux"
+import React, { PropTypes } from "react"
+import { connect } from "react-redux"
 import { bindActionCreators } from 'redux';
 import SimActions from '../ducks/sim/actions'
 import { getLoadState } from '../ducks/sim/selectors'
-import {getValue} from '../ducks/quantity/selectors'
-import {getChildren} from '../ducks/widget/selectors'
-import Slider from './Slider'
-import TitleBar from './TitleBar'
+import { getValue } from '../ducks/quantity/selectors'
+import { getChildren } from '../ducks/widget/selectors'
+import Video from './Video'
+
 import Plot from './Plot'
-import Abstraction from './Abstraction'
 import Expression from './Expression'
 import Tracker from './Tracker'
-import Value from './Value'
 import { cardStyle } from './styles'
 import Link from 'redux-first-router-link'
 
@@ -46,32 +44,40 @@ class Sim extends React.Component {
 
 	}
 	render(){
+		const { contentBlockId, partId, courseId } = this.props
 		const active = this.props.contentBlockId !== null
 		const imageUrl = `/content/courses/${this.props.courseId}/${this.props.partId}/thumbnail.png`
 		const image = (
 			<Link to={`/courses/${this.props.courseId}/${this.props.partId}/${this.props.contentBlockId}`}>
-				<img style={{maxWidth:'100%', maxHeight:'100%', margin:'0 auto', draggable:"false" }} src={imageUrl}></img>
+				<img
+					style={{
+						maxWidth: '100%',
+						maxHeight: '100%',
+						margin: '0 auto',
+						draggable: 'false' }} src={imageUrl}></img>
 			</Link>
 		)
 		const childTypes = {
 			"Plot": Plot,
             "Expression": Expression,
-			"Tracker": Tracker
+			"Tracker": Tracker,
+			"Video": Video
 		}
 		const simCardStyle = {
 			...cardStyle, 
 			width: 1200,
 			height: 650,
 			position: "relative",
+			overflow: 'hidden',
 			left: 0,
 			top: 0,
-			float:'left',
+			float: 'left',
 			backgroundColor: '#fff' 
 		}
 		//combine these into one file for importing children
 		function createChild(childData){
 			var type = childTypes[childData.type]
-			var props = childData.props
+			var props = {...childData.props, contentBlockId, partId, courseId}
 			props.key = props.id
 			return React.createElement(type, props)
 		}

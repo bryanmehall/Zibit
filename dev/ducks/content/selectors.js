@@ -27,6 +27,10 @@ const getPartById = (state, courseId, partId) => {
 		)
 	)
 }
+export const getPartIdByIndex = (state, courseId, index) => (
+	state.content.parts[index].partId
+)
+
 export const getPartTitle = (state, courseId, partId) => (getPartById(state, courseId, partId).title)
 const getCurrentPart = (state) => (getPartById(state, getCurrentPartId(state)))
 // contentBlock
