@@ -12,7 +12,8 @@ import {
 	getPartId,
 	getCurrentCourseId,
 	getCurrentPartId,
-	getCurrentContentBlockId
+	getCurrentContentBlockId,
+	getPartIdByIndex
 } from '../ducks/content/selectors'
 
 import Sim from './Sim'
@@ -60,7 +61,10 @@ class Part extends React.Component {
 					</div>
 			)
 		}
-		console.log(this.props)
+		const prevUrl = `/courses/${courseId}/${this.props.prevPartId}`
+		const previousPartLink = this.props.hasPrevPart ? (<Link to={prevUrl}> Previous Part: {this.props.previousPartTitle}</Link>) : null
+		const nextUrl = `/courses/${courseId}/${this.props.nextPartId}`
+		const nextPartLink = this.props.hasNextPart ? (<Link to={nextUrl}>Next Part: {this.props.nextPartTitle}</Link>) : null
 		const contentBlockBar = (
 
 			<div style={{
@@ -77,10 +81,9 @@ class Part extends React.Component {
 				<div style={headerStyle}>
 					{this.props.title}
 				</div>
-				<div>{this.props.index-1}
-				</div>
-				{contentBlocks.map(createContentBlockList)}
-				<div>{this.props.index+1}</div>
+				{ isActive ? previousPartLink : null }
+				{ contentBlocks.map(createContentBlockList) }
+				{ isActive ? nextPartLink : null}
 			</div>
 		)
 		const imageUrl = `/content/courses/${courseId}/${partId}/thumbnail.png`
@@ -123,13 +126,24 @@ class Part extends React.Component {
 function mapStateToProps(state, props) {
 	const courseId = props.courseId
 	const partId = props.partId
-		return {
-			contentBlocks: getContentBlocks(state, courseId, partId),
-			title: getPartTitle(state, courseId, partId),
-			activeCourse: getCurrentCourseId(state),
-			activePart: getCurrentPartId(state),
-			activeContentBlock: getCurrentContentBlockId(state)
-		}
+	const index = props.index
+	const prevPartId = getPartIdByIndex(state, courseId, index-1)
+	const hasPrevPart = prevPartId !== undefined
+	const nextPartId = getPartIdByIndex(state, courseId, index+1)
+	const hasNextPart = nextPartId !== undefined
+	return {
+		contentBlocks: getContentBlocks(state, courseId, partId),
+		title: getPartTitle(state, courseId, partId),
+		activeCourse: getCurrentCourseId(state),
+		activePart: getCurrentPartId(state),
+		activeContentBlock: getCurrentContentBlockId(state),
+		hasPrevPart,
+		prevPartId,
+		previousPartTitle: hasPrevPart ? getPartTitle(state, courseId, prevPartId) : null,
+		hasNextPart,
+		nextPartId,
+		nextPartTitle: hasNextPart ? getPartTitle(state, courseId, nextPartId) : null
+	}
 }
 
 function mapDispatchToProps(dispatch) {

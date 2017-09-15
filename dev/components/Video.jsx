@@ -23,18 +23,21 @@ class Video extends React.Component {
 		const video = this.refs.video
 		const lag = this.props.time - video.currentTime //how far ahead is time relative to video time?
 		const playbackRate = 1
-		const pauseThreshold = 0.1
-
-		if (lag > pauseThreshold){
+		const pauseThreshold = 0.8
+		const skewThreshold = 0.08
+		if (Math.abs(lag) > pauseThreshold){
+			console.log('setting time')
+			video.currentTime = this.props.time
+		} else if (lag > skewThreshold){
 			//console.log('playing')
 			if (skewing){
 				video.playbackRate = playbackRate+lag//proportional controller for lag
 			}
-
 			video.play()
-		} else if (lag < -1*pauseThreshold){
+		} else if (lag < -1*skewThreshold){
 			video.pause()
-		} else if (Math.abs(lag)< pauseThreshold*10){ //avoid nan lag number
+			//video.currentTime = this.props.time
+		} else if (Math.abs(lag)< skewThreshold*10){ //avoid nan lag number
 			if (skewing){
 				video.playbackRate = playbackRate+lag
 			}
@@ -66,8 +69,8 @@ function mapDispatchToProps(dispatch) {
 		setTime:(name, value) => {
 			dispatch(QuantityActions.setValue(name, value))
 		},
-		setPlay:(name, value) => {
-			dispatch(QuantityActions.setPlay(name, value))
+		setPlay:(name, isPlaying) => {
+			dispatch(WidgetActions.setProp(name, playing, value))
 		},
 	};
 }
