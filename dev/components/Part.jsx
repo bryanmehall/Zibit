@@ -62,9 +62,23 @@ class Part extends React.Component {
 			)
 		}
 		const prevUrl = `/courses/${courseId}/${this.props.prevPartId}`
-		const previousPartLink = this.props.hasPrevPart ? (<Link to={prevUrl}> Previous Part: {this.props.previousPartTitle}</Link>) : null
+		const prevLink = (
+			<Link to={prevUrl}>
+				<div>
+					Previous Part: {this.props.previousPartTitle}
+				</div>
+			</Link>
+		)
+		const previousPartLink = this.props.hasPrevPart ? prevLink : null
 		const nextUrl = `/courses/${courseId}/${this.props.nextPartId}`
-		const nextPartLink = this.props.hasNextPart ? (<Link to={nextUrl}>Next Part: {this.props.nextPartTitle}</Link>) : null
+		const nextLink = (
+			<Link to={nextUrl}>
+				<div>
+					Next Part: {this.props.nextPartTitle}
+				</div>
+			</Link>
+		)
+		const nextPartLink = this.props.hasNextPart ? nextLink : null
 		const contentBlockBar = (
 
 			<div style={{

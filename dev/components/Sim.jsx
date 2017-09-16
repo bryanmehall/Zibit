@@ -19,6 +19,7 @@ class Sim extends React.Component {
 	constructor(props){
 		super(props)
 		this.loadSim = this.loadSim.bind(this)
+		this.closeSim = this.closeSim.bind(this)
 	}
 
 	componentDidMount(){
@@ -34,13 +35,15 @@ class Sim extends React.Component {
 		}
 	}
 	loadSim(contentBlockId){
-
 		if (contentBlockId === null){
 
 		} else {
 			const url = `/courses/${this.props.courseId}/${this.props.partId}/${contentBlockId}`
 			this.props.fetchSimData(url)
 		}
+
+	}
+	closeSim(){
 
 	}
 	render(){

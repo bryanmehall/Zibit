@@ -25,7 +25,7 @@ class AnimBlock extends React.Component {
 			})
 			this.audio.addEventListener('loadedmetadata', () => {
 				//set audio to correct time when sim is reloaded
-				this.audio.currentTime = this.props.time
+				self.audio.currentTime = this.props.time
 				//read audio length property and put in store
 				self.props.setAnimLength(courseId, partId, contentBlockId, this.audio.duration)
 			})
