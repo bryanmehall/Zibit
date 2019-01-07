@@ -52,7 +52,8 @@ export const animMiddleware = store => next => action => {
 		const playing = getAnimPlaying(state, courseId, partId, contentBlockId)
 		const length = getAnimLength(state, courseId, partId, contentBlockId)
 		const activeTweens = getActiveTweens(prevTime, newTime, getKeyframes(state))//getActiveTweens(prevTime, newTime)
-		tween(store, activeTweens, newTime)
+        //console.log('adding anim content step')
+		//tween(store, activeTweens, newTime)
 		if (playing){
 			if (newTime > length){
 				const setTimeAction = ContentActions.setAnimTime(courseId, partId, contentBlockId, length)
@@ -69,7 +70,7 @@ export const animMiddleware = store => next => action => {
 				requestAnimationFrame(()=>{store.dispatch(stepAction)})
 			}
 		}
-	} else if (action.type === "SET_ANIM_TIME"){
+	} else if (action.type === "SET_ANIM_TIME"){ //needed?
 		const state = store.getState()
 		const { courseId, partId, contentBlockId, time } = action.payload
 		const prevTime = getAnimTime(state, courseId, partId, contentBlockId)

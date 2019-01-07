@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux"
 
-import QuantityActions from '../ducks/quantity/actions';
+import QuantityActions from '../ducks/quantity/actions'
 import WidgetActions from '../ducks/widget/actions'
-import { getTransformedValue, getValue, getScale, getMin, getMax} from '../ducks/quantity/selectors'
+import { getTransformedValue, getValue, getScale, getMin, getMax, getColor} from '../ducks/quantity/selectors'
 import {getTransformString, getClosestPointOnLine} from '../utils/point'
 import Draggable from "./Draggable"
 import Axis from './Axis';
@@ -62,7 +62,7 @@ class Slider extends React.Component {
 		const lengthOffset = this.props.lengthOffset || 0
 		const barStyle = {
 			"strokeWidth": "3",
-			"stroke": "#0ee",
+			"stroke": this.props.color,
 			"strokeLinecap": "round"
 		}
 		const axis = <Axis
@@ -93,7 +93,7 @@ class Slider extends React.Component {
                 y2={p2.y}
             />
         )
-		return (
+		const s = (
 			<g>
 
 				{bar}
@@ -109,7 +109,8 @@ class Slider extends React.Component {
 				</Draggable>
 
 			</g>
-		);
+		)
+        return s
 	}
 }
 
@@ -119,7 +120,7 @@ function mapStateToProps(state, props) {
     const min = props.min || getMin(state, props.quantity)
     const max = props.max || getMax(state, props.quantity)
     const value = props.value || getValue(state, props.quantity)
-
+    const color = getColor(state, props.quantity)
     const length = dist(props.p1,props.p2)
     const dx = props.p2.x-props.p1.x
     const dy = props.p2.y-props.p1.y
@@ -128,11 +129,13 @@ function mapStateToProps(state, props) {
         x: frac*dx+props.p1.x,
         y: frac*dy+props.p1.y
     }
+
 	var scale = getScale(state, props.quantity, min, max)
 	return {
+        color,
 		scale: scale,
         min: min,
-        max:  max,
+        max: max,
         pos: pos,
         length: length,
         value: value

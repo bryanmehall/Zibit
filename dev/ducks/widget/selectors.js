@@ -27,7 +27,11 @@ export const getProp = function(state, name, prop){
 	const widgetData = getWidget(state, name)
 	return widgetData.props[prop]
 }
-
+export const getVisibility = (state, name) => {
+    const widgetData = getWidget(state, name)
+    const vis = widgetData.props.visibility
+    return (typeof vis === 'undefined') ? 1 : vis
+}
 
 
 export const getChildren = function (state, id) {

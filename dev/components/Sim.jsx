@@ -6,10 +6,12 @@ import { getLoadState } from '../ducks/sim/selectors'
 import { getValue } from '../ducks/quantity/selectors'
 import { getChildren } from '../ducks/widget/selectors'
 import Video from './Video'
-
 import Plot from './Plot'
 import Expression from './Expression'
+import Equation from './Equation'
 import Tracker from './Tracker'
+import Text from './Text'
+import Line from './Line'
 import { cardStyle } from './styles'
 import Link from 'redux-first-router-link'
 
@@ -63,13 +65,16 @@ class Sim extends React.Component {
 		const childTypes = {
 			"Plot": Plot,
             "Expression": Expression,
+            "Equation": Equation,
+            "Text": Text,
+            "Line": Line,
 			"Tracker": Tracker,
 			"Video": Video
 		}
 		const simCardStyle = {
 			...cardStyle, 
 			width: 1200,
-			height: 650,
+			height: 800,
 			position: "relative",
 			overflow: 'hidden',
 			left: 0,
@@ -86,11 +91,12 @@ class Sim extends React.Component {
 		}
 		const children = this.props.childData.map(createChild)
 
-		const loadingIcon = (<div >Loading</div>)
+		const loadingIcon = (<div>Loading</div>)
 		const content =  children
 
 		return (
 			<div style={simCardStyle}>
+
 				{/*this.props.loadState === "loading" ? loadingIcon : null*/ }
 				{this.props.loadState === 'error' ? 'Error: Failed to Load Simulation' : null}
 				{content}
@@ -101,8 +107,9 @@ class Sim extends React.Component {
 
 
 function mapStateToProps(state, props) {
+    const children = getChildren(state, 'app')
 	return {
-		childData: getChildren(state, 'app'),
+		childData: children,
 		loadState: getLoadState(state)
 	}
 }

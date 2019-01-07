@@ -14,7 +14,7 @@ const widgetsReducer = (state = {}, action) => {
             const props = action.payload.props
             const children = action.payload.children || []
             return Object.assign({}, state, {
-                            [name]: {
+                [name]: {
                     type, props, children
                 }
             })

@@ -1,7 +1,7 @@
 {
-	"id": "calculus",
-	"title": "Calculus",
-	"description":"Introduction to single variable calculus including differentaition, integration and their applications.",
+	"id": "differential-equations",
+	"title": "Differential Equations",
+    "description":"Introduction to single variable calculus including differentaition, integration and their applications.",
 	"parts":[
 		{
 			"id":"intro",

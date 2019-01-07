@@ -44,12 +44,11 @@ class Video extends React.Component {
 		}
 	}
 	render(){
-		const { contentBlockId, partId, courseId, playing, time } = this.props
+		const { contentBlockId, partId, courseId, playing, time, filePath } = this.props
 		const videoUrl = `/content/courses/${courseId}/${partId}/${contentBlockId}.webm`
-		//console.log(time)
 		return (
 			<video ref="video" width="640" height="480">
-				<source src={videoUrl} type="video/webm"/>
+				<source src={filePath} type="video/webm"/>
 			</video>
 		)
 	}
@@ -59,8 +58,9 @@ class Video extends React.Component {
 
 
 function mapStateToProps(state, props) {
-	return {
 
+	return {
+        filePath: `/content/courses/${props.courseId}/${props.partId}/${props.fileName || props.contentBlockId}.webm`
 	}
 }
 

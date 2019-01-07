@@ -66,8 +66,8 @@ export const tween = function (store, activeTweens, t) {
 	activeTweens.forEach((tween) => {
 		if (tween.hasOwnProperty('dur')){//if tween has duration
 			if (tween.playingForward) {
+                keyframeActions[tween.type]['tween'](store, t, tween)
 				keyframeActions[tween.type][tween.stage](store, t, tween)
-				keyframeActions[tween.type]['tween'](store, t, tween)
 			} else {
 				var inverseType = keyframeActions[tween.type].inverse
 				keyframeActions[inverseType][tween.stage](store, t, tween)

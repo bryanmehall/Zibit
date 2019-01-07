@@ -59,6 +59,10 @@ const router = connectRoutes(history, routesMap)
 
 const sagaMiddleware = createSagaMiddleware()
 
+const logger = createLogger({
+        // ...options
+    })
+
 let middlewareList = [
 	animMiddleware,
 	sagaMiddleware,
@@ -70,7 +74,7 @@ if (process.env.NODE_ENV === 'production'){
 	const ravenMiddleware = ravenMiddleware(sentryPublicDSN)
 	middlewareList.push(ravenMiddleware)
 } else {
-	//dev specific middlewares here
+	//middlewareList.push(logger)//dev specific middlewares here
 }
 
 const middleware = applyMiddleware(...middlewareList) //ravenMiddleware)

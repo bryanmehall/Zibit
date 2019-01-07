@@ -8,7 +8,7 @@ const fadeWidgetIn = {
 	inverse: "fadeWidgetOut",
 	start: function (store, t, tweenData) {
 		var params = tweenData.params
-		store.dispatch(WidgetActions.addWidget(params.name, params.type, params.props, params.children))
+		store.dispatch(WidgetActions.addWidget(params.name, params.type, params.props, params.children, params.parent))
 		store.dispatch(WidgetActions.addChild(params.name, params.parent))
 	},
 	tween: function (store, t, tweenData) {
@@ -30,21 +30,30 @@ const fadeWidgetOut = {
 	end: function (store, t, tweenData) {
 		var params = tweenData.params
 		store.dispatch(WidgetActions.removeChild(params.name, params.parent))
-			//store.dispatch(WidgetActions.removeWidget(params.name))
+        //store.dispatch(WidgetActions.removeWidget(params.name))
 	}
 }
+const tweenNumber = (timeFraction, initValue, finalValue) => (
+    timeFraction*(finalValue-initValue)+initValue
+)
 const tweenProperty = {
 	inverse: "tweenProperty",
 	start: (store, t, tweenData) => {},
 	tween: (store, t, tweenData) => {
-		const { initValue, finalValue, objectName, propName } = tweenData.params
+		const { initValue, finalValue, name, prop } = tweenData.params
 		const timeFraction = (t-tweenData.start)/(tweenData.end-tweenData.start)
-		const value = timeFraction*(finalValue-initValue)+initValue
-		store.dispatch(WidgetActions.setProp(objectName, propName, value))
+
+        const value = finalValue.hasOwnProperty('x') ? //if is a position
+            {
+                x: tweenNumber(timeFraction, initValue.x, finalValue.x),
+                y: tweenNumber(timeFraction, initValue.y, finalValue.y)
+            }:
+            tweenNumber(timeFraction, initValue, finalValue)
+		store.dispatch(WidgetActions.setProp(name, prop, value))
 	},
 	end: (store, t, tweenData) => {
-		const { finalValue, objectName, propName } = tweenData.params
-		store.dispatch(WidgetActions.setProp(objectName, propName, finalValue))
+		const { finalValue, name, prop } = tweenData.params
+		store.dispatch(WidgetActions.setProp(name, prop, finalValue))
 	}
 }
 const tweenQuantity = {//this should be combined with tween property

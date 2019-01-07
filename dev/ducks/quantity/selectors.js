@@ -1,11 +1,8 @@
 import { createSelector } from 'reselect'
 import { linspace, dopri } from 'numeric'
+import * as math from 'mathjs'
 
 //define dependent variables --should be pure functions
-
-function x(t) { //could depend on numeric spline
-	return 0*t//4 * Math.cos(t)
-}
 
 function dl(x, y) {
 	return y - x
@@ -64,6 +61,69 @@ export const getQuantityData = function (state, name) { //make this not avaliabl
 	}
 }
 
+export const getMath = (state, name) => { //get math.js object of a quantity
+    const independent = getIndependent(state, name)
+    const quantityData = getQuantityData(state, name)
+    return independent ? math.parse(quantityData.value) : math.parse(quantityData.equation)
+}
+
+const fMap = new Map()
+const getFunction = (state, name, indVars) => {
+    const node = getMath(state, name)
+    const symbols = node
+        .filter((node) => (
+            node.isSymbolNode
+        ))
+        .map((symbolNode) => (symbolNode.name))
+    const uniqueSymbols = new Set(symbols)
+    indVars.forEach((indVar) => { uniqueSymbols.delete(indVar) })
+    const globals = [...uniqueSymbols]
+    const varDefs = globals.map((varName) => (`${varName} = ${getValue(state, varName)}`))
+    const functionString = `${varDefs.join('\n')}\nreturn ${node.toString()}`
+    if (fMap.has(functionString)){
+        return fMap.get(functionString)
+    } else {
+        const func = new Function(indVars, functionString)
+        fMap.set(functionString, func)
+        return func
+    }
+
+}
+
+
+
+const getStyledSymbol = (state, name) => {
+    const color = getColor(state, name)
+    const highlighted = getHighlighted(state, name)
+    const symbol = getSymbol(state, name)
+    const coloredTex = `\\textcolor{${color}}{${symbol}}`
+    return highlighted ? `\\underline{${coloredTex}}` : coloredTex
+}
+
+export const getTex = (state, name) => {
+    const customLaTeX = (node, options) => {
+        if (node.type === 'SymbolNode') {
+            //don't forget to pass the options to the toTex functions
+            return ' ' + getStyledSymbol(state, node.name)
+        } else if (node.type === 'FunctionNode'){
+            return ' ' + getStyledSymbol(state, node.fn.name)
+        } else if (node.type === 'AssignmentNode'){
+            const expanded = getExpanded(state, node.name)
+            if (expanded) {
+                const highlighted = getHighlighted(state, node.name)
+                const expandedTex = node.value.toTex(options)
+                const symbol = getStyledSymbol(state, node.name)
+                return highlighted ? `\\overbrace{${expandedTex}}^{${symbol}}` : expandedTex
+            } else {
+                return getStyledSymbol(state, node.name)
+            }
+        }
+    }
+    return getMath(state, name).toTex({ handler: customLaTeX, implicit: 'hide', parenthesis: 'auto' }
+    )
+}
+
+
 export const getMin = (state, name) => (getQuantityData(state, name).min)
 
 export const getMax = (state, name) => (getQuantityData(state, name).max)
@@ -71,6 +131,8 @@ export const getMax = (state, name) => (getQuantityData(state, name).max)
 export const getSymbol = (state, name) => (getQuantityData(state, name).symbol)
 
 export const getIndependent = (state, name) => (getQuantityData(state, name).independent || false)
+
+export const getExpanded = (state, name) => (getQuantityData(state, name).expanded || true)
 
 export const getAnimatable = (state, name) => (getQuantityData(state, name).hasOwnProperty('animation'))
 
@@ -119,32 +181,44 @@ export const getValue = function (state, name, given={}) {
 	if (quantityData.independent) {
 		return (given[name] === undefined) ? quantityData.value : given[name]
 	}
+    if (quantityData.hasOwnProperty('equation')){
+        const indVars = Object.keys(given)
+        const func = getFunction(state, name, indVars)
+        if (indVars.length !== 0){ throw 'given' }
+        return func(getValue(state, 't'))
 
+    }
 	switch (name) {
 		case "x": {
 			const t = (given.t === undefined) ? getValue(state, 't') : given.t
-			return x(t)
+			return 0//0x(t)
 		}
 
 		case 's': {
 			const t = (given.t === undefined) ? getValue(state, 't') : given.t
 			return s(t)
 		}
-
+        case "stateVector": {
+            const y0 = getValue(state, 'y0')
+            const dy0 = getValue(state, 'dy0')
+            const min = getMin(state, 't')
+            const max = getMax(state, 't')
+            const dyVec = getFunction(state, 'dyVec', ['t', 'y'])
+            const init = [y0, dy0]
+			const sol = getSolNoMem(dyVec, init, min, max)
+            return sol
+        }
 		case "y": {
 			const t = (given.t === undefined) ? getValue(state, 't') : given.t
-			const sol = getSol(state)
-			const yVal = y(sol, t)
-			return yVal
+            const stateVector = getValue(state, 'stateVector')
+			return stateVector.at(t)[0]
 		}
 
 		case "dydt": {
 			const t = (given.t === undefined) ? getValue(state, 't') : given.t
-			const sol = getSol(state)
-			let dydt = sol.at(t)[1]
-			return dydt
+            const stateVector = getValue(state, 'stateVector')
+			return stateVector.at(t)[1]
 		}
-
 		case "dl": {
 			var xVal = getValue(state, 'x')
 			var yVal = getValue(state, 'y')
@@ -253,30 +327,18 @@ function getMinff(name) {
 function getMaxff(name) {
 	return (state) => getMax(state, name)
 }
+const solMap = new Map()
+function getSolNoMem(f, init, min, max) {
+    const memoKey = JSON.stringify({ f:f.toString(), init, min, max })
+    //console.log(solMap)
+    if (solMap.has(memoKey)){
+        return solMap.get(memoKey)
+    } else {
+        const sol = dopri(min, max, init, f, 1e-6, 2000)
+        solMap.set(memoKey, sol)
+        return sol
+    }
 
-const getSol = createSelector(
-	[
-		getValueff('k'),
-		getValueff('m'),
-		getValueff('c'),
-		getValueff('y0'),
-		getValueff('dy0'),
-		getMinff('t'),
-		getMaxff('t')
-	],
-	getSolNoMem
-)
-
-function getSolNoMem(k, m, c, y0, dy0, min, max) {
-	//right now only works for y(t) and y'(t)
-	var f = function (t, y) {
-		return [
-			y[1],
-			-k / m * (y[0] - x(t)) - c / m * y[1]
-		];
-	};
-	var sol = dopri(min, max, [y0, dy0], f, 1e-6, 2000);
-	return sol
 }
 
 const getPendulumSol = createSelector(
@@ -303,7 +365,7 @@ function getPendSolNoMem(theta0, l, g, min, max){
 	return sol
 }
 
-export const getAbsValues = function (state, name, absName) {
+export const getAbsValues = function (state, name, absName) { //slowdown is here
 	//abstract name w.r.t. absName
 
 	var absData = getQuantityData(state, absName)

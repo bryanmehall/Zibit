@@ -14,6 +14,7 @@ const Courses = ({activeCourse}) => {
 		return  (
 			<div>
 				<Course courseId="about-zibit"/>
+                <Course courseId="differential-equations"/>
 				<Course courseId="mechanics" />
 				<Course courseId="controlsystems" />
 				{/*<Course courseId="calculus" />*/}
