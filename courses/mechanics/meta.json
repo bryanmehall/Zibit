@@ -21,8 +21,8 @@
 				},
 				{
 					"id":"acceleration",
-					"title":"Acceleration",
-					"text": "The test feature is coming soon. Continue to the lab below. The test block can check that values fall within a certain range and then mark the question as being correct. Drag the blue vectors to show the approximate direction of acceleration at three different points in the motion of the pendulum",
+					"title":"Acceleration Vectors",
+					"text": "Check your understanding: Drag the tip of the vectors to show the approximate direction of acceleration at three different points in the motion of the pendulum",
 					"type": "test"
 				},
 				{
