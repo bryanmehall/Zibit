@@ -296,7 +296,7 @@ export const getValue = function (state, name, given={}) {
 			if (name === "measuredBobX"){
 				return Math.cos(angle)*l
 			} else if (name === "measuredTheta"){
-				return angle
+				return angle*180/Math.PI
 			} else {
 				return -Math.sin(angle)*l
 			}
@@ -390,7 +390,7 @@ export const getAbsPoints = function (state, indVar, xVar, yVar) {
 				const t = yPoint.t
 				const x = xPrev[i].value
 				const y = yPoint.value
-				const theta = Math.atan2( x-aX, y-aY)
+				const theta = Math.atan2( x-aX, y-aY)*180/Math.PI
 				return {x:t, y:theta}
 			})
 		}
