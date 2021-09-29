@@ -42,7 +42,6 @@ function transform(value, scale) {
 
 //define value accessors
 export const getQuantityData = function (state, name) { //make this not avaliable
-	try {
 		if (name === undefined) {
 			throw new Error('Selector Error: name is undefined')
 		} else if (name === 'zero') { //should this abstraction go here?
@@ -50,15 +49,13 @@ export const getQuantityData = function (state, name) { //make this not avaliabl
 		} else {
 			const quantityData = state.sim.quantity[name]
 			if (quantityData === undefined) {
+				console.log(state, name)
 				throw new Error(`can not find quantity named ${name}`)
 			}
 			return quantityData
 		}
 
 
-	} catch (e) {
-		console.log(e)
-	}
 }
 
 export const getMath = (state, name) => { //get math.js object of a quantity
