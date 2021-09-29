@@ -40,7 +40,7 @@ const tweenProperty = {
 	inverse: "tweenProperty",
 	start: (store, t, tweenData) => {},
 	tween: (store, t, tweenData) => {
-		const { initValue, finalValue, name, prop } = tweenData.params
+		const { initValue, finalValue, objectName, propName } = tweenData.params
 		const timeFraction = (t-tweenData.start)/(tweenData.end-tweenData.start)
 
         const value = finalValue.hasOwnProperty('x') ? //if is a position
@@ -49,7 +49,7 @@ const tweenProperty = {
                 y: tweenNumber(timeFraction, initValue.y, finalValue.y)
             }:
             tweenNumber(timeFraction, initValue, finalValue)
-		store.dispatch(WidgetActions.setProp(name, prop, value))
+		store.dispatch(WidgetActions.setProp(objectName, propName, value))
 	},
 	end: (store, t, tweenData) => {
 		const { finalValue, name, prop } = tweenData.params
