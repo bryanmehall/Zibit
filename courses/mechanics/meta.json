@@ -27,8 +27,8 @@
 				},
 				{
 					"id":"lab",
-					"title":"Lab",
-					"text":"Lab Instructions:",
+					"title":"Interactive Lab",
+					"text":"",
 					"type":"lab"
 				}
 			]
