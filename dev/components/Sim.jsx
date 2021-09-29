@@ -7,6 +7,7 @@ import { getValue } from '../ducks/quantity/selectors'
 import { getChildren } from '../ducks/widget/selectors'
 import Video from './Video'
 import Plot from './Plot'
+import PolarPlot from './PolarPlot'
 import Expression from './Expression'
 import Equation from './Equation'
 import Tracker from './Tracker'
@@ -64,6 +65,7 @@ class Sim extends React.Component {
 		)
 		const childTypes = {
 			"Plot": Plot,
+			"PolarPlot": PolarPlot,
             "Expression": Expression,
             "Equation": Equation,
             "Text": Text,
