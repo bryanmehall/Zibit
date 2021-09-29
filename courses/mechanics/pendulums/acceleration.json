@@ -13,23 +13,30 @@
 				]
 			},
 			"pendulumPlot":{
-				"type": "Plot",
+				"type": "PolarPlot",
 					"props": {
+						"thetaVar":"theta",
+						"rVar":"length",
 						"xVar": "middleX",
 						"yVar": "middleY",
+						"thetaVars":[
+							"theta"
+						],
 						"xVars": [
 							"middleX"
 						],
 						"yVars": [
 							"middleY"
 						],
-						"width": 400,
-						"height": 400,
 						"pos": {
-							"x": 50,
-							"y": 450
+							"x": 300,
+							"y": 100
 						},
-					"visibility": 1
+						"radius":400,
+						"minAngle":-120,
+						"maxAngle":-60,
+						"thetaOffset":-90,
+						"visibility": 1
 					},
 					"children": [
 						"middlePendulum",
@@ -40,7 +47,6 @@
 						"leftAcc"
 					]
 			},
-
 			"middlePendulum":{
 				"type": "Pendulum",
 				"props":{
@@ -60,7 +66,10 @@
 					"tailY": "middleY",
 					"x": "middleAccX",
 					"y": "middleAccY",
-					"opacity": 0
+					"opacity": 0,
+					"draggable": true,
+					"minAngle": -95,
+					"maxAngle": -85
 				}
 			},
 			"rightPendulum":{
@@ -82,7 +91,10 @@
 					"tailY": "rightY",
 					"x": "rightAccX",
 					"y": "rightAccY",
-					"opacity": 0
+					"opacity": 0,
+					"draggable": true,
+					"minAngle": 130,
+					"maxAngle": 170
 				}
 			},
 			"leftPendulum":{
@@ -104,16 +116,26 @@
 					"tailY": "leftY",
 					"x": "leftAccX",
 					"y": "leftAccY",
-					"opacity": 0
+					"opacity": 0,
+					"draggable": true,
+					"minAngle": 10,
+					"maxAngle": 50
 				}
 			}
 
 		},
 		"quantity": {
+			"theta":{
+				"value":0,
+				"min":-3.1415,
+				"max":3.1415,
+				"independent":false,
+				"symbol":"θ"
+			},
 			"middleX": {
 				"value": 0,
-				"min": -30,
-				"max": 30,
+				"min": -45,
+				"max": 45,
 				"previousValues":[],
 				"independent": true,
 				"symbol": "x",
@@ -122,8 +144,8 @@
 			},
 			"middleY": {
 				"value": -40,
-				"min": -50,
-				"max": 10,
+				"min": -45,
+				"max": 45,
 				"abstractions": 0,
 				"previousValues":[],
 				"independent": true,
@@ -132,8 +154,8 @@
 			},
 			"middleAccX":{
 				"value": -10,
-				"min": -50,
-				"max": 10,
+				"min": -45,
+				"max": 45,
 				"abstractions": 0,
 				"independent": true,
 				"symbol": "y",
@@ -142,8 +164,8 @@
 			},
 			"middleAccY":{
 				"value": -10,
-				"min": -50,
-				"max": 10,
+				"min": -45,
+				"max": 45,
 				"abstractions": 0,
 				"previousValues":[],
 				"independent": true,
@@ -152,8 +174,8 @@
 			},
 			"rightX": {
 				"value": 15,
-				"min": -30,
-				"max": 30,
+				"min": -45,
+				"max": 45,
 				"previousValues":[],
 				"independent": true,
 				"symbol": "x",
@@ -162,8 +184,8 @@
 			},
 			"rightY": {
 				"value": -37,
-				"min": -50,
-				"max": 10,
+				"min": -45,
+				"max": 45,
 				"abstractions": 0,
 				"previousValues":[],
 				"independent": true,
@@ -172,8 +194,8 @@
 			},
 			"rightAccX":{
 				"value": -10,
-				"min": -50,
-				"max": 10,
+				"min": -45,
+				"max": 45,
 				"abstractions": 0,
 				"independent": true,
 				"symbol": "y",
@@ -182,8 +204,8 @@
 			},
 			"rightAccY":{
 				"value": -10,
-				"min": -50,
-				"max": 10,
+				"min": -45,
+				"max": 45,
 				"abstractions": 0,
 				"previousValues":[],
 				"independent": true,
@@ -192,8 +214,8 @@
 			},
 			"leftX": {
 				"value": -15,
-				"min": -30,
-				"max": 30,
+				"min": -45,
+				"max": 45,
 				"previousValues":[],
 				"independent": true,
 				"symbol": "x",
@@ -202,8 +224,8 @@
 			},
 			"leftY": {
 				"value": -37,
-				"min": -50,
-				"max": 10,
+				"min": -45,
+				"max": 45,
 				"abstractions": 0,
 				"previousValues":[],
 				"independent": true,
@@ -212,8 +234,8 @@
 			},
 			"leftAccX":{
 				"value": -10,
-				"min": -50,
-				"max": 10,
+				"min": -45,
+				"max": 45,
 				"abstractions": 0,
 				"independent": true,
 				"symbol": "y",
@@ -222,8 +244,8 @@
 			},
 			"leftAccY":{
 				"value": -10,
-				"min": -50,
-				"max": 10,
+				"min": -45,
+				"max": 45,
 				"abstractions": 0,
 				"previousValues":[],
 				"independent": true,

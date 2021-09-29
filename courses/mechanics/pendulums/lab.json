@@ -33,27 +33,34 @@
 				}
 			},
 			"pendulumPlot":{
-				"type": "Plot",
-				"props": {
-					"xVar": "meauredBobX",
-					"yVar": "measuredBobY",
-					"xVars": [
-						"measuredBobX"
-					],
-					"yVars": [
-						"measuredBobY"
-					],
-					"width": 500,
-					"height": 500,
-					"pos": {
-						"x": 50,
-						"y": 550
+				"type": "PolarPlot",
+					"props": {
+						"thetaVar":"measuredTheta",
+						"rVar":"length",
+						"xVar": "measuredBobX",
+						"yVar": "measuredBobY",
+						"thetaVars":[
+							"measuredTheta"
+						],
+						"xVars": [
+							"measuredBobX"
+						],
+						"yVars": [
+							"measuredBobY"
+						],
+						"pos": {
+							"x": 300,
+							"y": 100
+						},
+						"radius":400,
+						"minAngle":-120,
+						"maxAngle":-60,
+						"thetaOffset":-90,
+						"visibility": 1
 					},
-					"visibility": 1
-				},
-				"children": [
-					"pendulum"
-				]
+					"children": [
+						"pendulum"
+					]
 			},
 			"pendulum":{
 				"type": "Pendulum",
@@ -118,13 +125,6 @@
 				"symbol": "mY",
 				"highlighted": false
 			},
-			"measuredTheta":{
-				"value":0,
-				"min":-3.1415,
-				"max":3.1415,
-				"independent":false,
-				"symbol":"thetaM"
-			},
 			"length":{
 				"value":40,
 				"min":0,
@@ -135,15 +135,15 @@
 			"measuredBobX":{
 				"value":250,
 				"independent":false,
-				"min":-30,
-				"max":30,
+				"min":-45,
+				"max":45,
 				"symbol":"x"
 			},
 			"measuredBobY":{
 				"value":400,
 				"independent":false,
-				"min":-50,
-				"max":10,
+				"min":-45,
+				"max":45,
 				"symbol":"y"
 			},
 			"anchorX":{
@@ -161,7 +161,7 @@
 			"t":{
 				"value": 0,
 				"min": 0,
-				"max": 5,
+				"max": 20,
 				"abstractions": 200,
 				"independent": true,
 				"symbol": "t",
@@ -170,8 +170,8 @@
 			},
 			"measuredTheta":{
 				"value": 0,
-				"min": -1.57,
-				"max": 1.57,
+				"min": -80,
+				"max": 80,
 				"abstractions": 200,
 				"independent": false,
 				"symbol": "θ",

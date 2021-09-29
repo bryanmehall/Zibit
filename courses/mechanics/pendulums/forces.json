@@ -125,23 +125,30 @@
 				]
 			},
 			"pendulumPlot":{
-				"type": "Plot",
+				"type": "PolarPlot",
 					"props": {
+						"thetaVar":"theta",
+						"rVar":"length",
 						"xVar": "bobX",
 						"yVar": "bobY",
+						"thetaVars":[
+							"theta"
+						],
 						"xVars": [
 							"bobX"
 						],
 						"yVars": [
 							"bobY"
 						],
-						"width": 400,
-						"height": 400,
 						"pos": {
-							"x": 50,
-							"y": 450
+							"x": 300,
+							"y": 100
 						},
-					"visibility": 1
+						"radius":400,
+						"minAngle":-120,
+						"maxAngle":-60,
+						"thetaOffset":-90,
+						"visibility": 1
 					},
 					"children": [
 						"pendulum"
@@ -164,8 +171,8 @@
 		"quantity": {
 			"bobX": {
 				"value": 0,
-				"min": -30,
-				"max": 30,
+				"min": -45,
+				"max": 45,
 				"previousValues":[],
 				"independent": false,
 				"symbol": "x",
@@ -174,8 +181,8 @@
 			},
 			"bobY": {
 				"value": -30,
-				"min": -50,
-				"max": 10,
+				"min": -45,
+				"max": 45,
 				"abstractions": 0,
 				"previousValues":[],
 				"independent": false,
@@ -194,7 +201,7 @@
 				"min":-3.1415,
 				"max":3.1415,
 				"independent":false,
-				"symbol":"theta"
+				"symbol":"θ"
 			},
 			"omega":{
 				"value":0,
