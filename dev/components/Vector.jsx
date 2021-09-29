@@ -5,6 +5,7 @@ import QuantityActions from '../ducks/quantity/actions';
 import {getTransformedValue, getValue, getCoordSys, getQuantityData, getColor} from '../ducks/quantity/selectors'
 import Draggable from "./Draggable"
 import Path from './Path'
+import {HighlightFilter} from './filters'
 
 
 class Vector extends React.Component {
@@ -35,9 +36,32 @@ class Vector extends React.Component {
 
 	}
 	render(){
-		const {tipX, tipY, tailX, tailY, color} = this.props
+		const { tipX, tipY, tailX, tailY, color, minAngle, maxAngle } = this.props
+		//console.log(minAngle, maxAngle)
 		const opacity = this.props.opacity || 1
 		const draggable = this.props.draggable || false
+		//below is for checking angle for pendulum test. This needs to be generalized
+		const dx = tipX-tailX
+		const dy = tipY-tailY
+		const length = Math.sqrt(dx*dx+dy*dy)
+		const angle = Math.atan2(dy, dx)*180/Math.PI
+		const arrowPath = calcVector(length, 10)
+		const transform = `translate(${tailX},${tailY}) rotate(${angle})`
+		const isCorrectAngle = angle < maxAngle && angle > minAngle
+		const handleColor = isCorrectAngle ? '#0f0' : '#f00'
+		const filterName = 'vectorDragFilter'+tipX //hack because the different arrows are not unique so the filter names overwrite each other
+		const dragTarget = <g>
+			<HighlightFilter id={filterName} strength= {8} color={handleColor}></HighlightFilter>
+				<circle
+					cx={tipX}
+					cy={tipY}
+					r={5}
+					fill={handleColor}
+					filter={`url(#${filterName})`}
+					cursor="grab"
+					>
+				</circle>
+		</g>
 		const dragHandle = (
 			<Draggable
 				dragStart={this.dragStart}
@@ -46,25 +70,23 @@ class Vector extends React.Component {
 				<circle
 					cx={tipX}
 					cy={tipY}
-					r={10}
+					r={20}
+					stroke="none"
+					fill="#ffffff00"
+					cursor="grab"
 					>
 				</circle>
 			</Draggable>
 		)
-		const dx = tipX-tailX,
-			  dy = tipY-tailY,
-			  length = Math.sqrt(dx*dx+dy*dy),
-			  angle = Math.atan2(dy, dx)*180/Math.PI
-		const arrowPath = calcVector(length, 10)
-		const transform = `translate(${tailX},${tailY}) rotate(${angle})`
+		
 		return (
 			<g>
-
+				{draggable ? dragTarget : null}
 				<Path
 					style={{ pointerEvents:'none', opacity:opacity}}
 					points={arrowPath}
 					transform={transform}
-					fill={this.props.color}
+					fill={color}
 					strokeWidth="0"
 					/>
 				{draggable ? dragHandle : null}
