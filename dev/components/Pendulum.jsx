@@ -68,16 +68,6 @@ class Pendulum extends React.Component {
 					stroke="black"
 					filter={stringHighlight !== 0 ? "url(#stringFilter)" : null}
 					/>
-				<circle
-					r={length}
-					cx={anchorPos.x}
-					cy={anchorPos.y}
-					stroke='rgba(0,0,0,0.0)'
-					fill="none"
-					strokeWidth="40"
-					onMouseDown = {moveMass}
-
-					/>
 				<Draggable
 					dragStart={dragStart}
 					dragMove={dragMove}
