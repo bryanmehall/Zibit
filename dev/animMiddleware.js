@@ -1,11 +1,11 @@
 import { tween, getActiveTweens } from "./anim"
 import { getValue, getAnimatable, getMax, getPlaying } from './ducks/quantity/selectors'
 import { getAnimTime, getAnimPlaying, getAnimLength} from './ducks/content/selectors'
-import {getKeyframes, getNext} from './ducks/sim/selectors'
+import {getKeyframes, getNext, getNextAction} from './ducks/sim/selectors'
 import QuantityActions from './ducks/quantity/actions'
 import ContentActions from './ducks/content/actions'
 
-export const animMiddleware = store => next => action => {
+export const animMiddleware = (store) => (next) => (action) => {
 	function animStep() {
 		var t0 = action.payload.initTime
 		var v0 = action.payload.initValue
@@ -56,13 +56,14 @@ export const animMiddleware = store => next => action => {
 		//tween(store, activeTweens, newTime)
 		if (playing){
 			if (newTime > length){
-				const setTimeAction = ContentActions.setAnimTime(courseId, partId, contentBlockId, length)
-				const nextCourseId = 'about-zibit'
-				const nextPartId = 'features'
-				const nextContentBlockId = 'animations'
+				/*const setTimeAction = ContentActions.setAnimTime(courseId, partId, contentBlockId, length)
+				const nextBlock = getNextAction(state)
+				const nextCourseId = nextBlock.course //'about-zibit'
+				const nextPartId = nextBlock.part //'features'
+				const nextContentBlockId = nextBlock.contentBlock //'animations'
 				const animCompleteAction = ContentActions.activateContentBlock(nextCourseId, nextPartId, nextContentBlockId)
-				setTimeout(() => {store.dispatch(animCompleteAction)}, 1000)//wait 1 s before moving to next section
-				store.dispatch(setTimeAction)
+				setTimeout(() => { store.dispatch(animCompleteAction) }, 1000)//wait 1 s before moving to next section
+				store.dispatch(setTimeAction)*/
 			} else {
 				const stepAction = ContentActions.animContentStep(courseId, partId, contentBlockId, initTime, initAnimTime)
 				const setTimeAction = ContentActions.setAnimTime(courseId, partId, contentBlockId, newTime)
