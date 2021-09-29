@@ -12,12 +12,12 @@ class TestBlock extends React.Component {
 		} else{
 			questionState = "inactive"
 		}
-		const questionsList = (
+		const questionsList = null/*(
 			<ul style={{ listStyle: "none" }}>
 				<li style={{ textDecoration: "underline" }}>what makes this happen?</li>
 				<li style={{ textDecoration: "underline" }}>+ ask a new question</li>
 			</ul>
-		)
+		)*/
 		return (
 			<div style={{display: "flex"}}>
 				<div style={{ width: 50, flexGrow: 1}}>
