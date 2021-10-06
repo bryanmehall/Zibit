@@ -1,0 +1,19 @@
+{
+	"id": "differential-equations",
+	"title": "Differential Equations",
+    "description":"Introduction to single variable calculus including differentaition, integration and their applications.",
+	"parts":[
+		{
+			"id":"intro",
+			"title":"Introduction",
+			"contentBlocks":[
+				{
+					"id":"what-is-a-differential-equation",
+					"title":"What is a differential equation?",
+					"text":"",
+					"type":"anim"
+				}
+			]
+		}
+	]
+}

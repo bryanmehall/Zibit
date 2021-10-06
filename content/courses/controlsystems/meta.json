@@ -1,0 +1,27 @@
+{
+	"id": "controlsystems",
+	"title": "Control Systems",
+	"description":"Fundamentals of control systems from system response through linear controls design",
+	"parts":[
+		{
+			"id":"simpleharmonicoscillator",
+			"title":"Damped Harmonic Oscillator",
+			"contentBlocks":[
+				{
+					"id":"introduction",
+					"title":"Introduction",
+					"type":"anim",
+					"text":"Intro to damped harmonic motion."
+				},
+				{
+					"id":"coming-soon",
+					"title":"More parts coming soon!",
+					"type":"anim",
+					"text":"",
+					"complete": true
+				}
+
+			]
+		}
+	]
+}

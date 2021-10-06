@@ -1,0 +1,184 @@
+{
+	"id": "intro",
+	"title": "intro",
+	"text": "Introduction to damped harmonic oscillators",
+	"type": "animation",
+	"completed": false,
+	"progress": 0,
+	"audio": "intro.mp3",
+	"onComplete": {
+		"action": "goTo",
+		"contentBlock": "zeroDamping"
+	},
+	"keyframes": [
+	],
+	"initialState": {
+		"widget": {
+			"app": {
+				"type": "SmdApp",
+				"props": {},
+				"children": [
+					"tracker",
+					"pendulumPlot",
+					"posPlot"
+				]
+			},
+			"tracker": {
+				"type": "Tracker",
+				"props": {
+					"width":500,
+					"height":500,
+					"xQuantity":"measuredX",
+					"yQuantity":"measuredY"
+				}
+			},
+			"pendulumPlot":{
+				"type": "PolarPlot",
+					"props": {
+						"thetaVar":"measuredTheta",
+						"rVar":"length",
+						"xVar": "measuredBobX",
+						"yVar": "measuredBobY",
+						"thetaVars":[
+							"measuredTheta"
+						],
+						"xVars": [
+							"measuredBobX"
+						],
+						"yVars": [
+							"measuredBobY"
+						],
+						"pos": {
+							"x": 300,
+							"y": 100
+						},
+						"radius":400,
+						"minAngle":-120,
+						"maxAngle":-60,
+						"thetaOffset":-90,
+						"visibility": 1
+					},
+					"children": [
+						"pendulum"
+					]
+			},
+			"pendulum":{
+				"type": "Pendulum",
+				"props":{
+					"bobX":"measuredBobX",
+					"bobY":"measuredBobY",
+					"anchorX":"anchorX",
+					"anchorY":"anchorY"
+				}
+			},
+			"posPlot":{
+				"type": "Plot",
+					"props": {
+						"xVar": "t",
+						"yVar": "measuredTheta",
+						"xVars": [
+							"t"
+						],
+						"yVars": [
+							"measuredTheta"
+						],
+						"width": 400,
+						"height": 500,
+						"pos": {
+							"x": 650,
+							"y": 550
+						},
+						"visibility": 1
+					},
+					"children": [
+						"abstraction1"
+					]
+			},
+			"abstraction1": {
+				"type": "Abstraction",
+				"props": {
+					"indVar": "t",
+					"xVar": "t",
+					"yVar": "measuredTheta"
+				},
+				"children": []
+			}
+		},
+		"quantity": {
+			"measuredX": {
+				"value": 0,
+				"min": 0,
+				"max": 500,
+				"previousValues":[],
+				"independent": true,
+				"symbol": "mX",
+				"highlighted": false,
+				"color": "#ffa020"
+			},
+			"measuredY": {
+				"value": 0,
+				"min": 0,
+				"max": 500,
+				"abstractions": 0,
+				"previousValues":[],
+				"independent": true,
+				"symbol": "mY",
+				"highlighted": false
+			},
+			"length":{
+				"value":40,
+				"min":0,
+				"max":50,
+				"independent":true,
+				"symbol":"l"
+			},
+			"measuredBobX":{
+				"value":250,
+				"independent":false,
+				"min":-45,
+				"max":45,
+				"symbol":"x"
+			},
+			"measuredBobY":{
+				"value":400,
+				"independent":false,
+				"min":-45,
+				"max":45,
+				"symbol":"y"
+			},
+			"anchorX":{
+				"value":0,
+				"independent":true,
+				"min":-30,
+				"max":30
+			},
+			"anchorY":{
+				"value":0,
+				"independent":true,
+				"min":-50,
+				"max":10
+			},
+			"t":{
+				"value": 0,
+				"min": 0,
+				"max": 20,
+				"abstractions": 200,
+				"independent": true,
+				"symbol": "t",
+				"highlighted": false,
+				"color": "#0055ff"
+			},
+			"measuredTheta":{
+				"value": 0,
+				"min": -80,
+				"max": 80,
+				"abstractions": 200,
+				"independent": false,
+				"symbol": "θ",
+				"highlighted": false
+
+			}
+
+		}
+	}
+}

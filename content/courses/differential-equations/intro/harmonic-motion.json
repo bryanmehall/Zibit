@@ -1,0 +1,305 @@
+{
+	"id": "intro",
+	"title": "intro",
+	"text": "Introduction to damped harmonic oscillators",
+	"type": "animation",
+	"completed": false,
+	"progress": 0,
+	"audio": "intro.mp3",
+	"onComplete": {
+		"action": "goTo",
+		"contentBlock": "zeroDamping"
+	},
+	"initialState": {
+		"widget": {
+			"app": {
+				"type": "SmdApp",
+				"props": {},
+				"children": [
+					"massPlot",
+					"posPlot",
+                    "eqTest"
+				]
+			},
+            "eqTest":{
+                "type": "Equation",
+                "props":{
+                    "pos":{
+                        "x": 200,
+                        "y": 475
+                    },
+                    "quantity1":"facc",
+                    "quantity2":"fext",
+                    "indVars":["t", "m", "c", "k"]
+                }
+            },
+			"animVal": {
+				"type": "Value",
+				"props": {
+					"quantity": "animTime",
+					"active": false
+				}
+			},
+			"massPlot": {
+				"type": "Plot",
+				"props": {
+					"xVar": "s",
+					"yVar": "y",
+					"xVars": [
+						"s",
+						"t"
+					],
+					"yVars": [
+						"y",
+						"x"
+					],
+					"width": 200,
+					"height": 350,
+					"pos": {
+						"x": 100,
+						"y": 400
+					},
+					"visibility": 1
+				},
+				"children": [
+					"anchor",
+					"mass",
+					"spring",
+					"damper"
+				]
+			},
+			"anchor": {
+				"type": "Anchor",
+				"props": {
+					"xVar": "s",
+					"yVar": "x"
+				},
+				"children": []
+			},
+			"mass": {
+				"type": "Mass",
+				"props": {
+					"xVar": "s",
+					"yVar": "y"
+				},
+				"children": []
+			},
+			"spring": {
+				"type": "Spring",
+				"props": {
+					"xVar1": "s",
+					"yVar1": "x",
+					"xVar2": "s",
+					"yVar2": "y"
+				},
+				"children": []
+			},
+			"damper": {
+				"type": "Damper",
+				"props": {
+					"xVar1": "s",
+					"yVar1": "x",
+					"xVar2": "s",
+					"yVar2": "y"
+				},
+				"children": []
+			},
+			"abstraction1": {
+				"type": "Abstraction",
+				"props": {
+					"indVar": "t",
+					"xVar": "t",
+					"yVar": "y"
+				},
+				"children": []
+			},
+			"posPlot": {
+				"type": "Plot",
+						"props": {
+							"xVar": "t",
+							"yVar": "y",
+							"xVars": [
+								"t"
+							],
+							"yVars": [
+								"y"
+							],
+							"width": 300,
+							"height": 350,
+							"pos": {
+								"x": 350,
+								"y": 400
+							}
+						},
+						"children": [
+							"abstraction1"
+						]
+					}
+		},
+		"quantity": {
+			"animTime": {
+				"value": 0,
+				"min": 0,
+				"max": 28,
+				"symbol": "dispT",
+				"independent": true,
+				"abstractions": 10,
+				"animation": {
+					"playing": false
+				}
+			},
+			"t": {
+				"value": 0,
+				"min": 0,
+				"max": 20,
+				"abstractions": 200,
+				"independent": true,
+				"symbol": "t",
+				"highlighted": false,
+				"animation": {
+					"playing": false
+				},
+				"color": "#ffa020"
+			},
+			"imx": {
+				"value": 0,
+				"min": -10,
+				"max": 10,
+				"abstractions": 0,
+				"independent": false,
+				"symbol": "im(x)",
+				"highlighted": false
+			},
+			"x": {
+				"value": 0,
+				"min": -10,
+				"max": 40,
+				"abstractions": 0,
+				"symbol": "x",
+				"prevPoints": [],
+				"highlighted": false
+			},
+			"y": {
+				"value": 0,
+				"min": -25,
+				"max": 20,
+				"symbol": "y",
+				"highlighted": false
+			},
+			"dydt": {
+				"value": 0,
+				"min": -25,
+				"max": 20,
+				"symbol": "\\frac{dy}{dt}",
+				"highlighted": false
+			},
+            "dyVec": {
+				"value": 0,
+				"min": -25,
+				"max": 20,
+				"symbol": "\bm{y}",
+				"highlighted": false,
+                "equation":"[y[1], -k / m * y[0] - c / m *y[1] ]"
+			},
+            "d2ydt2": {
+				"value": 0,
+				"min": -25,
+				"max": 20,
+				"symbol": "\\frac{d^2y}{dt^2}",
+				"highlighted": false
+			},
+			"k": {
+				"value": 5,
+				"min": 0,
+				"max": 100,
+				"symbol": "k",
+				"abstractions": 10,
+				"independent": true,
+				"highlighted": false,
+				"color": "#88c"
+			},
+            "stateVector": {
+                "independent":false,
+                "symbol":"sv"
+            },
+			"fs": {
+				"value": 100,
+				"min": -100,
+				"max": 100,
+				"symbol": "F_{\\text{spring}}",
+				"independent": false,
+				"highlighted": true,
+                "equation":"fs=k y(t)"
+			},
+            "facc": {
+                "value": 100,
+				"min": -100,
+				"max": 100,
+				"symbol": "F_{\\text{acc}}",
+				"independent": false,
+				"highlighted": true,
+                "equation":"facc = m d2ydt2"
+            },
+            "fext": {
+				"value": 10,
+				"min": -100,
+				"max": 100,
+				"symbol": "F_{\\text{ext}}",
+				"independent": false,
+				"highlighted": true,
+                "equation":"fext = k y(t) +c dydt(t)"
+			},
+			"dl": {
+				"value": 10,
+				"min": -10,
+				"max": 10,
+				"symbol": "displacement",
+				"independent": false,
+				"highlighted": false
+			},
+			"m": {
+				"value": 1,
+				"min": 0.01,
+				"max": 30,
+				"symbol": "m",
+				"independent": true,
+				"highlighted": false,
+				"color": "#ff8888"
+			},
+			"c": {
+				"value": 0.6,
+				"min": 0,
+				"max": 5,
+				"symbol": "c",
+				"independent": true,
+				"highlighted": false,
+				"color": "#58de58",
+                "equation":"c = 0.6 N/(m/sec)"
+			},
+			"y0": {
+				"value": 12,
+				"min": -20,
+				"max": 20,
+				"symbol": "y_0",
+				"independent": true,
+				"highlighted": false
+			},
+			"dy0": {
+				"value": 0,
+				"min": -20,
+				"max": 20,
+				"symbol": "dy0",
+				"independent": true,
+				"highlighted": false
+			},
+			"s": {
+				"value": 0,
+				"min": -6,
+				"max": 6,
+				"abstractions": 0,
+				"symbol": "s",
+				"highlighted": false
+			}
+		}
+	}
+}

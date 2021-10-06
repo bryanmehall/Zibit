@@ -1,0 +1,528 @@
+{
+	"id": "intro",
+	"title": "intro",
+	"text": "Introduction to damped harmonic oscillators",
+	"type": "animation",
+	"completed": false,
+	"progress": 0,
+	"audio": "introduction.mp3",
+	"onComplete": {
+		"action": "goTo",
+		"contentBlock": "zeroDamping"
+	},
+    "keyframes": [
+		{
+			"time": 1,
+			"dt": 0,
+			"actions": [
+				{
+					"type": "fadeWidgetIn",
+					"dur": 1,
+					"params": {
+						"name": "decay",
+						"type": "Equation",
+						"parent": "app",
+						"props": {
+                            "pos":{
+                                "x": 100,
+                                "y": 80
+                            },
+                            "quantity1":"decayLeft",
+                            "quantity2":"decayRight",
+                            "indVars":[],
+                            "opacity":0
+                        },
+						"children": [
+
+						]
+					},
+					"interp": "linear"
+				}
+			]
+		},
+        {
+			"time": 6,
+			"dt": 0,
+			"actions": [
+				{
+					"type": "fadeWidgetIn",
+					"dur": 1,
+					"params": {
+						"name": "navier",
+						"type": "Equation",
+						"parent": "app",
+						"props": {
+                            "pos":{
+                                "x": 100,
+                                "y": 230
+                            },
+                            "quantity1":"navierLeft",
+                            "quantity2":"navierRight",
+                            "indVars":[],
+                            "opacity":0
+                        },
+						"children": [
+
+						]
+					},
+					"interp": "linear"
+				}
+			]
+		},
+        {
+			"time": 8,
+			"dt": 0,
+			"actions": [
+				{
+					"type": "fadeWidgetIn",
+					"dur": 1,
+					"params": {
+						"name": "black",
+						"type": "Equation",
+						"parent": "app",
+						"props": {
+                            "pos":{
+                                "x": 100,
+                                "y": 380
+                            },
+                            "quantity1":"blackLeft",
+                            "quantity2":"blackRight",
+                            "indVars":[],
+                            "opacity":0
+                        },
+						"children": [
+
+						]
+					},
+					"interp": "linear"
+				}
+			]
+		},
+        {
+			"time": 10,
+			"dt": 0,
+			"actions": [
+				{
+					"type": "fadeWidgetIn",
+					"dur": 1,
+					"params": {
+						"name": "swing",
+						"type": "Equation",
+						"parent": "app",
+						"props": {
+                            "pos":{
+                                "x": 100,
+                                "y": 530
+                            },
+                            "quantity1":"swingLeft",
+                            "quantity2":"swingRight",
+                            "indVars":[],
+                            "opacity":0
+                        },
+						"children": [
+
+						]
+					},
+					"interp": "linear"
+				}
+			]
+		},
+        {
+			"time": 13,
+			"dt": 0,
+			"actions": [
+				{
+					"type": "fadeWidgetOut",
+					"dur": 1,
+					"params": {
+						"name": "swing",
+						"type": "Equation",
+						"parent": "app",
+                        "children": [
+						]
+					},
+					"interp": "linear"
+				},
+                {
+					"type": "fadeWidgetOut",
+					"dur": 1,
+					"params": {
+						"name": "navier",
+						"type": "Equation",
+						"parent": "app",
+                        "children": [
+						]
+					},
+					"interp": "linear"
+				},
+                {
+					"type": "fadeWidgetOut",
+					"dur": 1,
+					"params": {
+						"name": "black",
+						"type": "Equation",
+						"parent": "app",
+                        "children": [
+						]
+					},
+					"interp": "linear"
+				}
+			]
+		},
+        {
+			"time": 15,
+			"dt": 0,
+			"actions": [
+                {
+					"type": "fadeWidgetIn",
+					"dur": 1,
+					"params": {
+						"name": "DElabel",
+						"type": "Text",
+						"parent": "app",
+						"props": {
+                            "pos":{
+                                "x": 200,
+                                "y": 80
+                            },
+                            "text":"Differential Equations",
+                            "opacity":0
+                        },
+						"children": [
+
+						]
+					},
+					"interp": "linear"
+				},
+                {
+					"type": "fadeWidgetIn",
+					"dur": 1,
+					"params": {
+						"name": "algebraLabel",
+						"type": "Text",
+						"parent": "app",
+						"props": {
+                            "pos":{
+                                "x": 520,
+                                "y": 80
+                            },
+                            "text":"Algebraic Equations",
+                            "opacity":0
+                        },
+						"children": [
+
+						]
+					},
+					"interp": "linear"
+				},
+                {
+					"type": "fadeWidgetIn",
+					"dur": 1,
+					"params": {
+						"name": "line",
+						"type": "Line",
+						"parent": "app",
+						"props": {
+                            "p1":{
+                                "x":500,
+                                "y":80
+                            },
+                            "p2":{
+                                "x":500,
+                                "y":600
+                            }
+                        },
+						"children": [
+
+						]
+					},
+					"interp": "linear"
+				},
+                {
+                    "type": "tweenProperty",
+                    "dur":5,
+                    "params":{
+                        "name":"decay",
+                        "prop":"pos",
+                        "initValue": {
+                            "x": 100,
+                            "y": 80
+
+                        },
+                        "finalValue":{
+                            "x": 260,
+                            "y": 150
+                        }
+                    },
+                    "interp":"linear"
+                }
+			]
+		},
+        {
+			"time": 17,
+			"dt": 0,
+			"actions": [
+				{
+					"type": "fadeWidgetIn",
+					"dur": 1,
+					"params": {
+						"name": "quadratic",
+						"type": "Equation",
+						"parent": "app",
+						"props": {
+                            "pos":{
+                                "x": 550,
+                                "y": 150
+                            },
+                            "quantity1":"quadLeft",
+                            "quantity2":"quadRight",
+                            "indVars":[],
+                            "opacity":0
+                        },
+						"children": [
+
+						]
+					},
+					"interp": "linear"
+				}
+			]
+		},
+        {
+			"time": 19,
+			"dt": 0,
+			"actions": [
+				{
+					"type": "fadeWidgetIn",
+					"dur": 1,
+					"params": {
+						"name": "quadSol",
+						"type": "Equation",
+						"parent": "app",
+						"props": {
+                            "pos":{
+                                "x": 520,
+                                "y": 290
+                            },
+                            "quantity1":"quadSolLeft",
+                            "quantity2":"quadSolRight",
+                            "indVars":[],
+                            "opacity":0
+                        },
+						"children": [
+
+						]
+					},
+					"interp": "linear"
+				}
+			]
+		},
+        {
+			"time": 21,
+			"dt": 0,
+			"actions": [
+				{
+					"type": "fadeWidgetIn",
+					"dur": 1,
+					"params": {
+						"name": "exponential",
+						"type": "Equation",
+						"parent": "app",
+						"props": {
+                            "pos":{
+                                "x": 260,
+                                "y": 300
+                            },
+                            "quantity1":"exponentialLeft",
+                            "quantity2":"exponentialRight",
+                            "indVars":[],
+                            "opacity":0
+                        },
+						"children": [
+
+						]
+					},
+					"interp": "linear"
+				}
+			]
+		}
+
+
+	],
+	"initialState": {
+		"widget": {
+			"app": {
+				"type": "SmdApp",
+				"props": {},
+				"children": [
+				]
+			},
+			"animVal": {
+				"type": "Value",
+				"props": {
+					"quantity": "animTime",
+					"active": false
+				}
+			}
+		},
+		"quantity": {
+			"animTime": {
+				"value": 0,
+				"min": 0,
+				"max": 28,
+				"symbol": "dispT",
+				"independent": true,
+				"abstractions": 10,
+				"animation": {
+					"playing": false
+				}
+			},
+            "decayLeft":{
+                "value": 100,
+				"min": -100,
+				"max": 100,
+				"symbol": "\\frac{dy}{dt}",
+				"independent": false,
+				"highlighted": false,
+                "equation":"decayLeft"
+            },
+            "decayRight":{
+                "value": 100,
+				"min": -100,
+				"max": 100,
+				"symbol": "ky",
+				"independent": false,
+				"highlighted": false,
+                "equation":"decayRight"
+
+            },
+            "navierLeft": {
+                "value": 100,
+				"min": -100,
+				"max": 100,
+				"symbol": "\\frac{\\partial (\\rho u_{i})}{\\partial t} + \\frac{\\partial[\\rho u_{i}u_{j}]}{\\partial x_{j}}",
+				"independent": false,
+				"highlighted": false,
+                "equation":"navierLeft"
+
+            },
+            "navierRight": {
+                "value": 100,
+				"min": -100,
+				"max": 100,
+				"symbol": " -\\frac{\\partial p}{\\partial x_{i}} + \\frac{\\partial \\tau_{ij}}{\\partial x_{j}} + \\rho f_{i}",
+				"independent": false,
+				"highlighted": false,
+                "equation":"navierRight"
+
+            },
+            "blackLeft": {
+                "value": 100,
+				"min": -100,
+				"max": 100,
+				"symbol": " \\frac{\\partial V}{\\partial t} + \\frac{\\sigma^2 S^2}{2} \\frac{\\partial^2 V}{\\partial S^2}+ r S \\frac{\\partial V}{\\partial S} - rV",
+				"independent": false,
+				"highlighted": false,
+                "equation":"blackLeft"
+
+            },
+            "blackRight": {
+                "value": 100,
+				"min": -100,
+				"max": 100,
+				"symbol": "0",
+				"independent": false,
+				"highlighted": false,
+                "equation":"blackRight"
+
+            },
+            "swingLeft": {
+                "value": 100,
+				"min": -100,
+				"max": 100,
+				"symbol": "\\ddot{\\theta}+\\omega^2\\theta",
+				"independent": false,
+				"highlighted": false,
+                "equation":"swingLeft"
+
+            },
+            "swingRight": {
+                "value": 100,
+				"min": -100,
+				"max": 100,
+				"symbol": "F \\cos \\omega t +A \\theta \\cos 2 \\omega t +B\\dot{\\theta} \\sin 2\\omega t +C \\ddot{\\theta} \\cos 2 \\omega t",
+				"independent": false,
+				"highlighted": false,
+                "equation":"swingRight"
+
+            },
+            "quadLeft": {
+                "value": 100,
+				"min": -100,
+				"max": 100,
+				"symbol": "0",
+				"independent": false,
+				"highlighted": false,
+                "equation":"quadLeft"
+
+            },
+            "quadRight": {
+                "value": 100,
+				"min": -100,
+				"max": 100,
+				"symbol": "x^2+bx+c",
+				"independent": false,
+				"highlighted": false,
+                "equation":"quadRight"
+
+            },
+            "quadSolLeft": {
+                "value": 100,
+				"min": -100,
+				"max": 100,
+				"symbol": "x",
+				"independent": false,
+				"highlighted": false,
+                "equation":"quadSolLeft"
+
+            },
+            "quadSolRight": {
+                "value": 100,
+				"min": -100,
+				"max": 100,
+				"symbol": "\\pm \\frac{1}{2}\\left(\\sqrt{b^2-4c}-b\\right)",
+				"independent": false,
+				"highlighted": false,
+                "equation":"quadSolRight"
+
+            },
+            "exponentialLeft": {
+                "value": 100,
+				"min": -100,
+				"max": 100,
+				"symbol": "y(t)",
+				"independent": false,
+				"highlighted": false,
+                "equation":"exponentialLeft"
+
+            },
+            "exponentialRight": {
+                "value": 100,
+				"min": -100,
+				"max": 100,
+				"symbol": "c_1e^{kt}",
+				"independent": false,
+				"highlighted": false,
+                "equation":"exponentialRight"
+
+            },
+            "fext": {
+				"value": 10,
+				"min": -100,
+				"max": 100,
+				"symbol": "F_{\\text{ext}}",
+				"independent": true,
+				"highlighted": false
+			}
+        }
+	}
+}

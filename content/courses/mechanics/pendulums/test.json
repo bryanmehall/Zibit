@@ -1,0 +1,154 @@
+{
+	"id": "intro",
+	"title": "intro",
+	"text": "Introduction to damped harmonic oscillators",
+	"type": "animation",
+	"completed": false,
+	"progress": 0,
+	"audio": "intro.mp3",
+	"onComplete": {
+		"action": "goTo",
+		"contentBlock": "zeroDamping"
+	},
+	"keyframes": [
+	],
+	"initialState": {
+		"widget": {
+			"app": {
+				"type": "SmdApp",
+				"props": {},
+				"children": [
+					"tracker",
+					"pendulumPlot",
+					"posPlot"
+				]
+			},
+			"tracker": {
+				"type": "Tracker",
+				"props": {
+					"xQuantity":"measuredX",
+					"yQuantity":"measuredY"
+				}
+			},
+			"pendulumPlot":{
+				"type": "Plot",
+				"props": {
+					"xVar": "measuredX",
+					"yVar": "measuredY",
+					"xVars": [
+						"measuredX"
+					],
+					"yVars": [
+						"measuredY"
+					],
+					"width": 400,
+					"height": 400,
+					"pos": {
+						"x": 50,
+						"y": 450
+					},
+					"visibility": 1
+				},
+				"children": [
+					"pendulum"
+				]
+			},
+			"pendulum":{
+				"type": "Pendulum",
+				"props":{
+					"bobX":"measuredX",
+					"bobY":"measuredY",
+					"anchorX":"anchorX",
+					"anchorY":"anchorY"
+				}
+			},
+			"posPlot":{
+				"type": "Plot",
+					"props": {
+						"xVar": "t",
+						"yVar": "measuredTheta",
+						"xVars": [
+							"t"
+						],
+						"yVars": [
+							"measuredTheta"
+						],
+						"width": 300,
+						"height": 400,
+						"pos": {
+							"x": 750,
+							"y": 480
+						},
+						"visibility": 1
+					},
+					"children": [
+						"abstraction1"
+					]
+			},
+			"abstraction1": {
+				"type": "Abstraction",
+				"props": {
+					"indVar": "t",
+					"xVar": "t",
+					"yVar": "measuredTheta"
+				},
+				"children": []
+			}
+		},
+		"quantity": {
+			"measuredX": {
+				"value": 0,
+				"min": 0,
+				"max": 1000,
+				"previousValues":[],
+				"independent": true,
+				"symbol": "mX",
+				"highlighted": false,
+				"color": "#ffa020"
+			},
+			"measuredY": {
+				"value": 0,
+				"min": 0,
+				"max": 1000,
+				"abstractions": 0,
+				"previousValues":[],
+				"independent": true,
+				"symbol": "mY",
+				"highlighted": false
+			},
+			"t":{
+				"value": 0,
+				"min": 0,
+				"max": 5,
+				"abstractions": 200,
+				"independent": true,
+				"symbol": "t",
+				"highlighted": false,
+				"color": "#0055ff"
+			},
+			"measuredTheta":{
+				"value": 0,
+				"min": -80,
+				"max": 80,
+				"abstractions": 200,
+				"independent": false,
+				"symbol": "&theta;",
+				"highlighted": false
+
+			},
+			"anchorX":{
+				"value":0,
+				"independent":true,
+				"min":-30,
+				"max":30
+			},
+			"anchorY":{
+				"value":0,
+				"independent":true,
+				"min":-50,
+				"max":10
+			},
+
+		}
+	}
+}

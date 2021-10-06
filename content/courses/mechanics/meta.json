@@ -1,0 +1,43 @@
+{
+	"id": "mechanics",
+	"title": "Mechanics",
+	"description":"Introduction to the fundamentals of physics including two dimensional motion and rates of change. Under construction but useable",
+	"parts":[
+		{
+			"id":"pendulums",
+			"title":"Pendulums",
+			"contentBlocks":[
+				{
+					"id": "introduction",
+					"title": "Introduction",
+					"text": "Introduction to pendulums",
+					"type": "anim"
+				},
+				{
+					"id": "forces",
+					"title": "Forces",
+					"text": "Forces on a pendulum",
+					"type": "anim"
+				},
+				{
+					"id":"acceleration",
+					"title":"Acceleration Vectors",
+					"text": "Check your understanding: Drag the tip of the vectors to show the approximate direction of acceleration at three different points in the motion of the pendulum",
+					"type": "test"
+				},
+				{
+					"id":"lab-directions",
+					"title":"Lab Directions",
+					"text":"Lab Directions",
+					"type":"anim"
+				},
+				{
+					"id":"lab",
+					"title":"Interactive Lab",
+					"text":"",
+					"type":"lab"
+				}
+			]
+		}
+	]
+}
